@@ -28,14 +28,14 @@ $auth = $_SESSION["login"] ?? false;
                         class="self-center text-2xl hidden sm:block font-semibold whitespace-nowrap dark:text-white">StomaDiaHelp</span>
                 </a>
                 <?php if ($auth): ?>
-                    <a href="/cerrarSesion.php" class="md:order-2">
+                    <a href="/public/logout" class="md:order-2">
                         <button type="button"
                             class="  text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cerrar
                             Sesion</button>
                     </a>
                 <?php endif; ?>
                 <?php if (!$auth): ?>
-                    <a href="/inicioSesion.php" class="md:order-2">
+                    <a href="/public/login" class="md:order-2">
                         <button type="button"
                             class="  text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Inicia
                             Sesion</button>
@@ -58,7 +58,7 @@ $auth = $_SESSION["login"] ?? false;
                         class="flex flex-col font-medium align-center items-center p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
 
                         <li>
-                            <a href="/"
+                            <a href="/public"
                                 class="block  text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
                                 aria-current="page">Home</a>
                         </li>
@@ -77,13 +77,25 @@ $auth = $_SESSION["login"] ?? false;
                                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-400"
                                     aria-labelledby="dropdownLargeButton">
                                     <li>
-                                        <a href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Psicologos</a>
+                                        <a href="/public/medico"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medico</a>
+                                    </li>
+                                    <li>
+                                        <a href="/public/juridico"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Juridico</a>
+                                    </li>
+                                    <li>
+                                        <a href="/public/psicologico"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Psicologico</a>
+                                    </li>
+                                    <li>
+                                        <a href="/public/contacto"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Contacto</a>
                                     </li>
                                     <li aria-labelledby="dropdownNavbarLink">
                                         <button id="doubleDropdownButton" data-dropdown-toggle="doubleDropdown"
                                             data-dropdown-placement="right-start" type="button"
-                                            class="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Medico<svg
+                                            class="flex items-center justify-between w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Otros<svg
                                                 aria-hidden="true" class="w-5 h-5" fill="currentColor"
                                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path fill-rule="evenodd"
@@ -113,10 +125,6 @@ $auth = $_SESSION["login"] ?? false;
                                                 </li>
                                             </ul>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <a href="#"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Juridico</a>
                                     </li>
                                 </ul>
                             </div>

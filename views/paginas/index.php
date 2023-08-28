@@ -85,7 +85,7 @@
             <div class="grid gap-x-4 gap-y-8 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-3">
                 <!-- product - start -->
                 <div>
-                    <a href="#"
+                    <a href="/public/juridico"
                         class="group relative mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                         <img src="../public/build/img/clarisse-meyer-jKU2NneZAbI-unsplash.webp" loading="lazy"
                             alt="Photo by Austin Wade"
@@ -111,7 +111,7 @@
 
                 <!-- product - start -->
                 <div>
-                    <a href="#"
+                    <a href="/public/psicologico"
                         class="group relative mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                         <img src="../public/build/img/roman-kraft-0EVKn3-5JSU-unsplash.webp" loading="lazy"
                             alt="Photo by Austin Wade"
@@ -121,7 +121,7 @@
                     <div class="flex items-start justify-between gap-2 px-2">
                         <div class="flex flex-col">
                             <h2 class="mb-2 text-lg font-semibold text-gray-800 dark:text-white">
-                                <a href="#"
+                                <a href="/public/psicologico"
                                     class="transition duration-100 hover:text-indigo-500 active:text-indigo-600">Apoyo
                                     Psicológico</a>
                             </h2>
@@ -137,7 +137,7 @@
 
                 <!-- product - start -->
                 <div>
-                    <a href="#"
+                    <a href="/public/medico"
                         class="group relative mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
                         <img src="../public/build/img/patty-brito-Y-3Dt0us7e0-unsplash.webp" loading="lazy"
                             alt="Photo by Vladimir Fedotov"
@@ -147,7 +147,7 @@
                     <div class="flex items-start justify-between gap-2 px-2">
                         <div class="flex flex-col">
                             <h2 class="mb-2 text-lg font-semibold text-gray-800 dark:text-white">
-                                <a href="#"
+                                <a href="/public/medico"
                                     class="transition duration-100 hover:text-indigo-500 active:text-indigo-600">Atención
                                     Médica</a>
                             </h2>
