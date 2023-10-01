@@ -1,11 +1,11 @@
 <main class="container mx-auto p-4 md:py-12 mt-10">
-    <div class="bg-white pb-6 sm:pb-8 lg:pb-12">
+    <div class="bg-white pb-6 sm:pb-4 lg:pb-12 dark:bg-gray-900"">
         <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
             <header class="mb-4 flex items-center justify-between py-4 md:py-8">
                 <section
                     class="min-h-96 relative flex flex-1 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-100 py-16 shadow-lg md:py-20 xl:py-48">
                     <!-- image - start -->
-                    <img src="https://images.unsplash.com/photo-1618004652321-13a63e576b80?auto=format&q=75&fit=crop&w=1500"
+                    <img src="/src/img/neom-0rvKw0fDiHk-unsplash (3).jpg"
                         loading="lazy" alt="Photo by Fakurian Design"
                         class="absolute inset-0 h-full w-full object-cover object-center" />
                     <!-- image - end -->
@@ -16,19 +16,17 @@
 
                     <!-- text start -->
                     <div class="relative flex flex-col items-center p-4 sm:max-w-xl">
-                        <p class="mb-4 text-center text-lg text-indigo-200 sm:text-xl md:mb-8">Very proud to introduce
+                        <p class="mb-4 text-center text-lg text-indigo-200 sm:text-xl md:mb-8">Estamos orgullosos de presentarte
                         </p>
                         <h1 class="mb-8 text-center text-4xl font-bold text-white sm:text-5xl md:mb-12 md:text-6xl">
-                            Revolutionary way to build the web</h1>
+                            Medicos</h1>
 
                         <div class="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
                             <a href="#"
-                                class="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">Start
-                                now</a>
+                                class="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">Empieza ahora</a>
 
                             <a href="#"
-                                class="inline-block rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base">Take
-                                tour</a>
+                                class="inline-block rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base">Registrate</a>
                         </div>
                     </div>
                     <!-- text end -->
@@ -36,14 +34,13 @@
         </div>
     </div>
 
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
 
     <!-- quipo de trabajo -->
     <section class="bg-white dark:bg-gray-900">
         <div class="gap-16 items-center py-8 px-4 mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
             <div class="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">We didn't reinvent
-                    the
-                    wheel
+                <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">Estamos para ayudarte
                 </h2>
                 <p class="mb-4">We are strategists, designers and developers. Innovators and problem solvers. Small
                     enough
@@ -68,11 +65,13 @@
         </div>
     </section>
 
-    <div class="bg-white py-6 sm:py-8 lg:py-12">
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+
+    <div class="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-900">
         <div class="mx-auto max-w-screen-xl px-4 md:px-8">
             <!-- text - start -->
             <div class="mb-10 md:mb-16">
-                <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl">Meet our Team</h2>
+                <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl dark:text-white">Conoce Nuestro Equipo</h2>
 
                 <p class="mx-auto max-w-screen-md text-center text-gray-500 md:text-lg">This is a section of some simple
                     filler
@@ -320,13 +319,14 @@
         </div>
     </div>
 
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
 
     <!-- galeria -->
-    <div class="bg-white py-6 sm:py-8 lg:py-12">
+    <div class="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-900">
         <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
             <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
                 <div class="flex items-center gap-12">
-                    <h2 class="text-2xl font-bold text-gray-800 lg:text-3xl">Gallery</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 lg:text-3xl dark: text-white">Galeria</h2>
 
                     <p class="hidden max-w-screen-sm text-gray-500 md:block">This is a section of some simple filler
                         text,
@@ -334,7 +334,7 @@
                 </div>
 
                 <a href="#"
-                    class="inline-block rounded-lg border bg-white px-4 py-2 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:px-8 md:py-3 md:text-base">More</a>
+                    class="inline-block rounded-lg border bg-white px-4 py-2 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:px-8 md:py-3 md:text-base">Más</a>
             </div>
 
             <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 xl:gap-8">
@@ -401,15 +401,15 @@
         </div>
     </div>
 
-    <div class="bg-white py-6 sm:py-8 lg:py-12">
+    <div class="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-900">
         <div class="mx-auto max-w-screen-xl px-4 md:px-8">
-            <h2 class="mb-8 text-center text-2xl font-bold text-gray-800 md:mb-12 lg:text-3xl">What others say about us
+            <h2 class="mb-8 text-center text-2xl font-bold text-gray-800 md:mb-12 lg:text-3xl dark:text-white">Lo que dicen acerca de nosotros
             </h2>
 
             <div class="grid gap-y-10 sm:grid-cols-2 sm:gap-y-12 lg:grid-cols-3 lg:divide-x">
                 <!-- quote - start -->
                 <div class="flex flex-col items-center gap-4 sm:px-4 md:gap-6 lg:px-8">
-                    <div class="text-center text-gray-600">“This is a section of some simple filler text, also known as
+                    <div class="text-center text-gray-600 dark:text-gray-200">“This is a section of some simple filler text, also known as
                         placeholder text.”</div>
 
                     <div class="flex flex-col items-center gap-2 sm:flex-row md:gap-3">
@@ -430,7 +430,7 @@
 
                 <!-- quote - start -->
                 <div class="flex flex-col items-center gap-4 sm:px-4 md:gap-6 lg:px-8">
-                    <div class="text-center text-gray-600">“This is a section of some simple filler text, also known as
+                    <div class="text-center text-gray-600 dark:text-gray-200">“This is a section of some simple filler text, also known as
                         placeholder text.”</div>
 
                     <div class="flex flex-col items-center gap-2 sm:flex-row md:gap-3">
@@ -452,7 +452,7 @@
 
                 <!-- quote - start -->
                 <div class="flex flex-col items-center gap-4 sm:px-4 md:gap-6 lg:px-8">
-                    <div class="text-center text-gray-600">“This is a section of some simple filler text, also known as
+                    <div class="text-center text-gray-600 dark:text-gray-200">“This is a section of some simple filler text, also known as
                         placeholder text.”</div>
 
                     <div class="flex flex-col items-center gap-2 sm:flex-row md:gap-3">
@@ -473,4 +473,5 @@
             </div>
         </div>
     </div>
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
 </main>

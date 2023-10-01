@@ -28,16 +28,19 @@ class ActiveRecord
         //insertar en la base de datos
         $query = "INSERT INTO " . static::$tabla . " ( ";
         $query .= join(", ", array_keys($atributos));
-        $query .= " ) VALUES (' ";
+        $query .= " ) VALUES ('";
         $query .= join("', '", array_values($atributos));
         $query .= "');";
 
+
         $resultado = self::$db->query($query);
 
-        if ($resultado) {
-            //redireccionar al usuario
-            header("location:/public/admin/" . static::$tabla . "/administrar?resultado=1");
-        }
+        return $resultado;
+
+        // if ($resultado) {
+        //     //redireccionar al usuario
+        //     header("location:/public/admin/" . static::$tabla . "/administrar?resultado=1");
+        // }
     }
 
 
@@ -49,9 +52,11 @@ class ActiveRecord
         $query = "DELETE FROM " . static::$tabla . " WHERE id= " . self::$db->escape_string($this->id) . " LIMIT 1";
         $resultado = self::$db->query($query);
 
-        if ($resultado) {
-            header("location:/public/admin/" . static::$tabla . "/administrar?resultado=3");
-        }
+        // if ($resultado) {
+        //     header("location:/public/admin/" . static::$tabla . "/administrar?resultado=3");
+        // }
+
+        return $resultado;
     }
 
     public function actualizar()
@@ -71,10 +76,11 @@ class ActiveRecord
 
         $resultado = self::$db->query($query);
 
-        if ($resultado) {
-            //redireccionar al usuario
-            header("location:/public/admin/" . static::$tabla . "/administrar?resultado=2");
-        }
+        // if ($resultado) {
+        //     //redireccionar al usuario
+        //     header("location:/public/admin/" . static::$tabla . "/administrar?resultado=2");
+        // }
+        return $resultado;
     }
 
 
@@ -110,6 +116,10 @@ class ActiveRecord
     }
 
     //Validacion
+    public static function setErrores($mensaje)
+    {
+        static::$errores[] = $mensaje;
+    }
     public static function getErrores()
     {
         return static::$errores;
@@ -184,5 +194,12 @@ class ActiveRecord
         $resultado = self::consultarSQL($query);
 
         return $resultado;
+    }
+
+    public static function where($columna, $valor)
+    {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
+        $resultado = self::consultarSQL($query);
+        return array_shift($resultado);
     }
 }

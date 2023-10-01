@@ -39,6 +39,32 @@ class PaginasController
     {
         $router->render("paginas/juridico");
     }
+    public static function encuesta(Router $router)
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Inicializa la variable para almacenar la suma
+            $suma = 0;
+
+            // Itera a través de los 15 campos de entrada y los suma
+            for ($i = 1; $i <= 15; $i++) {
+                // Supongamos que los campos de entrada se llaman "rango1", "rango2", ..., "rango15"
+                // Debes ajustar los nombres de los campos según tu formulario
+                $campo = "step-range-" . $i;
+
+                // Verifica si el campo está presente en la solicitud POST y es un número válido
+                if (isset($_POST[$campo]) && is_numeric($_POST[$campo])) {
+                    // Suma el valor del campo al total
+                    $suma += $_POST[$campo];
+                    debuguear($suma);
+                }
+            }
+            
+            // Imprime el resultado
+            echo "La suma de los 15 rangos es: " . $suma;
+        }
+        $router->render("paginas/encuesta");
+
+    }
     public static function contacto(Router $router)
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {

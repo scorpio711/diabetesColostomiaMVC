@@ -175,7 +175,7 @@
                             Añadir Publicacion
                         </button>
                         <div class="flex items-center space-x-3 w-full  md:w-auto">
-                            <a class="w-full" href="/admin/index.php">
+                            <a class="w-full" href="/public/admin/index">
                                 <button type="button"
                                     class="py-2 px-5 w-full  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Volver</button>
                             </a>
@@ -387,7 +387,7 @@
                 <?php endforeach; ?>
                 <!--cierre alerta -->
                 <!-- Modal body -->
-                <form method="POST"  enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data">
                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
                             <label for="titulo"
@@ -432,10 +432,10 @@
                                     </svg>
                                     <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span
                                             class="font-semibold">Click to upload</span> or drag and drop</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX.
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG or JPG(MAX.
                                         800x400px)</p>
                                 </div>
-                                <input id="imagen" name="imagen" type="file" class="hidden" />
+                                <input id="imagen" name="imagen" type="file" class="hidden" accept="image/*" />
                             </label>
                         </div>
                     </div>
@@ -496,7 +496,7 @@
                         </div>
                     <?php endforeach; ?>
                     <!--cierre alerta -->
-                    <form method="POST"  enctype="multipart/form-data">
+                    <form method="POST" enctype="multipart/form-data">
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <input type="number" name="investigacion[id]" class="hidden"
                                 value="<?php echo $investigacion->id; ?>">
@@ -564,21 +564,21 @@
                                             800x400px)</p>
                                     </div>
                                     <input id="imagen<?php echo $investigacion->id; ?>" name="investigacion[imagen]"
-                                        type="file" class="hidden" />
+                                        type="file" class="hidden" accept="image/*" />
                                 </label>
                             </div>
                         </div>
                         <div class="flex items-center space-x-4">
                             <button type="submit" name="actualizar"
-                                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Update
-                                product</button>
+                                class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            Actualizar</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     <?php endforeach; ?>
- 
+
     <!-- Delete modal -->
     <?php foreach ($investigaciones as $investigacion): ?>
         <div id="deleteModal<?php echo $investigacion->id; ?>" tabindex="-1" aria-hidden="true"
@@ -603,18 +603,18 @@
                             d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                             clip-rule="evenodd" />
                     </svg>
-                    <p class="mb-4 text-gray-500 dark:text-gray-300">Are you sure you want to delete this item?</p>
+                    <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estas seguro de borrar esta Investigacion?</p>
                     <div class="flex justify-center align-center items-center space-x-4">
                         <button data-modal-toggle="deleteModal<?php echo $investigacion->id; ?>" type="button"
                             class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No,
-                            cancel</button>
+                            cancelar</button>
                         <form method="POST" class="m-0""
-                            enctype="multipart/form-data">
+                            enctype=" multipart/form-data">
                             <input type="number" name="id" class="hidden" value="<?php echo $investigacion->id; ?>">
                             <input type="text" name="tipo" class="hidden" value="investigacion">
                             <button type="submit" name="borrar"
-                                class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Yes,
-                                I'm sure</button>
+                                class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Si,
+                                Si estoy seguro</button>
                         </form>
                     </div>
                 </div>

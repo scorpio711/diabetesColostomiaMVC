@@ -14,7 +14,6 @@ $auth = $_SESSION["login"] ?? false;
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CareFullnes</title>
-    <script src="/build/js/bundle.min.js"></script>
     <link rel="stylesheet" href="../../../public/build/css/output.css" />
 </head>
 
@@ -107,8 +106,8 @@ $auth = $_SESSION["login"] ?? false;
                                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
                                                 aria-labelledby="doubleDropdownButton">
                                                 <li>
-                                                    <a href="#"
-                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Overview</a>
+                                                    <a href="/public/encuesta"
+                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Encuesta</a>
                                                 </li>
                                                 <li>
                                                     <a href="#"
@@ -145,6 +144,10 @@ $auth = $_SESSION["login"] ?? false;
     </header>
 
     <?php echo $contenido; ?>
+
+    <?php echo $script ?? ''; ?>
+
+
 
     <footer>
 
@@ -183,5 +186,6 @@ $auth = $_SESSION["login"] ?? false;
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/datepicker.min.js"></script>
 
 </html>

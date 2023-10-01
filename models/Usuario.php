@@ -5,27 +5,32 @@ namespace Model;
 class Usuario extends ActiveRecord
 {
     protected static $tabla = "usuarios";
-    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "imagen"];
+    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "imagen", "admin", "confirmado", "token"];
 
     public $id;
     public $email;
     public $password;
     public $nombre;
-    public $apellido;
+
     public $fecha_nacimiento;
     public $imagen;
+    public $admin;
+    public $confirmado;
+    public $token;
 
     public function __construct($args = [])
     {
         $this->id = $args["id"] ?? null;
-        $this->email = $args["email"] ?? null;
-        $this->password = $args["password"] ?? null;
-        $this->nombre = $args["nombre"] ?? null;
-        $this->apellido = $args["apellido"] ?? null;
-        $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? null;
-        $this->imagen = $args["imagen"] ?? null;
+        $this->email = $args["email"] ?? "";
+        $this->password = $args["password"] ?? "";
+        $this->nombre = $args["nombre"] ?? "";
+        $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? "";
+        $this->imagen = $args["imagen"] ?? "";
+        $this->admin = $args["admin"] ?? 0;
+        $this->confirmado = $args["confirmado"] ?? 0;
+        $this->token = $args["token"] ?? "";
     }
-    public function validar()
+    public function validarNuevaCuenta()
     {
         if (!$this->email) {
             self::$errores[] = "Debes añadir un email";
@@ -37,11 +42,82 @@ class Usuario extends ActiveRecord
             self::$errores[] = "Debes añadir tu fecha de nacimiento";
         }
         if (!$this->password) {
-            self::$errores[] = "Debes añadir un password";
+            self::$errores[] = "Debes añadir una contraseña";
         }
-        if (!$this->imagen) {
-            self::$errores[] = "Debes añadir una imagen";
+        if (strlen($this->password) <= 8) {
+            self::$errores[] = "la constraseña debe tener al menos 8 caracteres";
         }
         return self::$errores;
+    }
+
+    //Validar login
+    public function validarLogin()
+    {
+        if (!$this->email) {
+            self::$errores[] = "El email es Obligatorio";
+        }
+        if (!$this->password) {
+            self::$errores[] = "El password es Obligatorio";
+        }
+
+        return self::$errores;
+    }
+    public function validarEmail()
+    {
+        if (!$this->email) {
+            self::$errores[] = 'El email es Obligatorio';
+        }
+        return self::$errores;
+    }
+
+
+    //Validar password
+    public function validarPassword(){
+        if(!$this->password){
+            self::$errores[] = "El password es obligatorio";
+        }
+        if(strlen($this->password) < 6){
+            self::$errores[] = "El password debe tener almenos 6 caracteres";
+        }
+
+        return self::$errores;
+    }
+
+    //Revisa si el usuario ya existe
+
+    public function existeUsuario()
+    {
+        $query = "SELECT * FROM " . self::$tabla . " WHERE email = '" . $this->email . "' LIMIT 1";
+
+        $resultado = self::$db->query($query);
+
+        if ($resultado->num_rows) {
+            self::$errores[] = "El usuario ya esta registrado";
+        }
+
+        return $resultado;
+    }
+
+    public function hashPassword()
+    {
+        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+    }
+
+    public function crearToken()
+    {
+        $this->token = uniqid();
+    }
+
+    public function comprobarPasswordAndVerificado($password)
+    {
+        $resultado = password_verify($password, $this->password);
+
+        if ($this->confirmado === "0") {
+            self::$errores[] = "El usuario no esta confirmado";
+        } elseif (!$resultado) {
+            self::$errores[] = "El Password es incorrecto";
+        } else {
+            return true;
+        }
     }
 }

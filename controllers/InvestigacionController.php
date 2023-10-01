@@ -51,7 +51,11 @@ class InvestigacionController
                     $image->save(CARPETA_IMAGENES_INVESTIGACIONES . $nombreImagen);
 
                     //guarda en la base de datos
-                    $investigacionC->crear();
+                    $resultado = $investigacionC->crear();
+
+                    if ($resultado) {
+                        header("location:/public/admin/investigaciones/administrar?resultado=1");
+                    }
 
                 }
             } elseif (isset($_POST['actualizar'])) {
@@ -62,7 +66,7 @@ class InvestigacionController
                 $args = $_POST["investigacion"];
 
                 //Subida de archivos
-
+                
                 //generar nombre unico
                 $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
                 $imagenPrevia = $_POST["imagenPrevia"];
@@ -101,16 +105,23 @@ class InvestigacionController
                         $image->save(CARPETA_IMAGENES_INVESTIGACIONES . $nombreImagen);
                     }
 
-                    $investigacion->actualizar();
+                    $resultado = $investigacion->actualizar();
+                    if ($resultado) {
+                        header("location:/public/admin/investigaciones/administrar?resultado=2");
+                    }
 
                 }
             } elseif (isset($_POST['borrar'])) {
 
                 $id = $_POST["id"];
                 $investigacion = Investigacion::find($id);
-                $investigacion->eleminar();
+                $resultado = $investigacion->eleminar();
 
                 unlink(CARPETA_IMAGENES_INVESTIGACIONES . $investigacion->imagen);
+
+                if ($resultado) {
+                    header("location:/public/admin/investigaciones/administrar?resultado=3");
+                }
             }
         }
         $router->render("/admin/investigaciones/administrar", [

@@ -7,36 +7,52 @@ class Router
     public $rutasGet = [];
     public $rutasPost = [];
 
-    public function get($url, $fn) {
+    public function get($url, $fn)
+    {
         $this->rutasGet[$url] = $fn;
     }
-    public function post($url, $fn) {
+    public function post($url, $fn)
+    {
         $this->rutasPost[$url] = $fn;
     }
     public function comprobarRutas()
     {
-        $urlActual = $_SERVER["PATH_INFO"] ?? "/";
-   
-        $metodo = $_SERVER["REQUEST_METHOD"];
+        session_start();
         
-        if($metodo === "GET"){
+        $auth = $_SESSION["login"] ?? null;
+        
+        //Arreglo de rutas protegidas
+        $rutas_protegidas = ["/admin/usuarios/administrar", "/admin/investigaciones/administrar", "/admin/index"];
+
+        $urlActual = $_SERVER["PATH_INFO"] ?? "/";
+
+        $metodo = $_SERVER["REQUEST_METHOD"];
+
+        if ($metodo === "GET") {
             $fn = $this->rutasGet[$urlActual] ?? null;
-        }else{
+        } else {
             $fn = $this->rutasGet[$urlActual] ?? null;
         }
 
-        if($fn){
+        //Proteger rutas
+        if (in_array($urlActual, $rutas_protegidas) && !$auth) {
+            header("location: /public");
+        }
+
+
+        if ($fn) {
             // La URL existe y hay una funcion asociada
             call_user_func($fn, $this);
-        }else{
+        } else {
             echo "pagina no encontrada";
         }
     }
 
     //muestra la vista
-    Public function render($view, $datos =[]) {
+    public function render($view, $datos = [])
+    {
 
-        foreach($datos as $key => $value) {
+        foreach ($datos as $key => $value) {
             $$key = $value;
         }
 

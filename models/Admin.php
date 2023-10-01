@@ -6,7 +6,7 @@ class Admin extends ActiveRecord
 {
     //base de datos
     protected static $tabla = "usuarios";
-    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "imagen"];
+    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "imagen", "admin", "confirmado", "token"];
 
     public $id;
     public $email;
@@ -14,15 +14,21 @@ class Admin extends ActiveRecord
     public $nombre;
     public $fecha_nacimiento;
     public $imagen;
+    public $admin;
+    public $confirmado;
+    public $token;
 
     public function __construct($args = [])
     {
         $this->id = $args["id"] ?? null;
         $this->email = $args["email"] ?? "";
         $this->password = $args["password"] ?? "";
-        $this->nombre = $args["nombre"] ?? null;
-        $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? null;
-        $this->imagen = $args["imagen"] ?? null;
+        $this->nombre = $args["nombre"] ?? "";
+        $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? "";
+        $this->imagen = $args["imagen"] ?? "";
+        $this->admin = $args["admin"] ?? 0;
+        $this->confirmado = $args["confirmado"] ?? 0;
+        $this->token = $args["token"] ?? "";
     }
 
     public function validar()
@@ -52,19 +58,23 @@ class Admin extends ActiveRecord
         return $resultado;
     }
 
-    public function comprobarPassword($resultado)
+    public function comprobarPasswordandConfirmado($resultado)
     {
         $usuario = $resultado->fetch_object();
-
+        
         $autenticado = password_verify($this->password, $usuario->password);
-
-        if (!$autenticado) {
-            self::$errores[] = "El password es incorrecto";
+        debuguear($this);
+    
+        if (!$autenticado || intval($this->confirmado) === 0){
+            
+            self::$errores[] = "El usuario no esta autenticado o la contraseña es incorrecta";
+        }else{
+            return true;
         }
-        return $autenticado;
     }
 
-    public function autenticar() {
+    public function autenticar()
+    {
         session_start();
 
         //llenar el arreglo de sesion

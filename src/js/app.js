@@ -1,19 +1,19 @@
-// set the modal menu element
-const $targetEl = document.getElementById('createProductModal');
+document.addEventListener("DOMContentloaded", function () {
+  iniciarApp();
+});
 
-// options with default values
-const options = {
-  placement: 'bottom-right',
-  backdrop: 'dynamic',
-  backdropClasses: 'bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40',
-  closable: true,
-  onHide: () => {
-      console.log('modal is hidden');
-  },
-  onShow: () => {
-      console.log('modal is shown');
-  },
-  onToggle: () => {
-      console.log('modal has been toggled');
+function iniciarApp(){
+    consultarApi();
+}
+async function consultarApi() {
+  try {
+    const url = "http://localhost:3000/public/api/servicios";
+    const resultado = await fetch(url);
+
+    console.log(resultado);
+  } catch (error) {
+    console.log(error);
   }
-};
+}
+
+// Consulta la API en el backend de PHP

@@ -1,22 +1,23 @@
 {
-    "name": "andres_felipe/proyecto_colostomia_diabetes",
-    "description": "Creando un proyecto para el apoyo de la colostomia y la diabetes",
-    "type": "project",
-    "authors": [
-        {
-            "name": "scorpio711",
-            "email": "122323389+scorpio711@users.noreply.github.com"
-        }
-    ],
-    "require": {
-        "intervention/image": "^2.7",
-        "phpmailer/phpmailer": "^6.8"
-    },
-    "autoload": {
-        "psr-4": {
-            "Model\\": "./models",
-            "MVC\\": "./",
-            "Controllers\\": "./controllers"
-        }
+  "name": "andres_felipe/proyecto_colostomia_diabetes",
+  "description": "Creando un proyecto para el apoyo de la colostomia y la diabetes",
+  "type": "project",
+  "authors": [
+    {
+      "name": "scorpio711",
+      "email": "122323389+scorpio711@users.noreply.github.com"
     }
+  ],
+  "require": {
+    "intervention/image": "^2.7",
+    "phpmailer/phpmailer": "^6.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "Model\\": "./models",
+      "MVC\\": "./",
+      "Controllers\\": "./controllers",
+      "Classes\\": "./classes"
+    }
+  }
 }

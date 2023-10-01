@@ -51,7 +51,11 @@ class UsuariosController
                     $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
 
                     //guarda en la base de datos
-                    $usuariosC->crear();
+                    $resultado = $usuariosC->crear();
+                    if ($resultado) {
+                        //redireccionar al usuario
+                        header("location:/public/admin/usuarios/administrar?resultado=1");
+                    }
 
                 }
             } elseif (isset($_POST['actualizar'])) {
@@ -99,18 +103,22 @@ class UsuariosController
                         $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
                     }
 
-                    $usuario->actualizar();
-
+                    $resultado = $usuario->actualizar();
+                    if ($resultado) {
+                        //redireccionar al usuario
+                        header("location:/public/admin/usuarios/administrar?resultado=2");
+                    }
                 }
             } elseif (isset($_POST['borrar'])) {
-                $tipo = $_POST["tipo"];
-                if (validarTipoContenido($tipo)) {
-                    $id = $_POST["id"];
-                    $usuario = Usuario::find($id);
-                    $usuario->eleminar();
-                }
+                $id = $_POST["id"];
+                $usuario = Usuario::find($id);
+                $resultado = $usuario->eleminar();
 
                 unlink(CARPETA_IMAGENES_USUARIOS . $usuario->imagen);
+
+                if ($resultado) {
+                    header("location:/public/admin/usuarios/administrar?resultado=3");
+                }
             }
         }
         $router->render("/admin/usuarios/administrar", [
