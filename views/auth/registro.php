@@ -1,4 +1,10 @@
-<section class="bg-gray-50 dark:bg-gray-90 py-32">
+<?php
+
+$script = "<script src ='/public/build/js/app.js'></script>";
+
+?>
+
+<section class="bg-gray-50 dark:bg-gray-90 dark:bg-gray-900 py-32">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
             <img class="w-8 h-8 mr-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo">
@@ -25,6 +31,50 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Nombre Completo" value="<?php echo s($usuario->nombre) ?>">
                     </div>
+
+                    <div class="w-full">
+                        <label for="sexo"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sexo</label>
+                        <select name="sexo"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option selected value="">Escoge tu sexo</option>
+                            <option value="masculino" <?php echo $usuario->sexo === "masculino" ? "selected" : '' ?>>
+                                Masculino</option>
+                            <option value="femenino" <?php echo $usuario->sexo === "femenino" ? "selected" : '' ?>>
+                                Femenino</option>
+                        </select>
+                    </div>
+
+                    <!-- <div>
+                        <label for="rol"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rol</label>
+                        <select id="opciones" onchange="mostrarOpcionSeleccionada()" name="rol"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">Escoge tu rol</option>
+                            <option value="paciente">Paciente</option>
+                            <option value="cuidador">Cuidador</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                    </div> -->
+
+                    <div id="resultado" style="display: none;">
+                        <h3>Has seleccionado:</h3>
+                        <p id="opcionSeleccionada"></p>
+                    </div>
+
+                    <!-- En caso de que sea paciente -->
+                    <div id="opcionPaciente" style="display: none;">
+                        <label for="enfermedad"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enfermedad</label>
+                        <select id="countries" name="enfermedad"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="">Selecciona tu enfermedad</option>
+                            <option value="diabetes">Diabetes</option>
+                            <option value="colostomia">Colostomia</option>
+                            <option value="ambas">Diabetes y colostomia</option>
+                        </select>
+                    </div>
+
                     <div>
                         <label for="Fecha-nacimiento"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha
@@ -71,7 +121,8 @@
                         </div>
                     </div>
                     <button type="submit" name="crear"
-                        class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Crear una cuenta</button>
+                        class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Crear
+                        una cuenta</button>
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                         ¿Ya tienes una Cuenta? <a href="#"
                             class="font-medium text-primary-600 hover:underline dark:text-primary-500">Inicia Sesion
@@ -82,5 +133,3 @@
         </div>
     </div>
 </section>
-
-

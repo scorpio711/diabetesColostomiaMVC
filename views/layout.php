@@ -4,6 +4,7 @@ if (!isset($_SESSION)) {
 }
 
 $auth = $_SESSION["login"] ?? false;
+
 ?>
 
 <!DOCTYPE html>
@@ -27,11 +28,61 @@ $auth = $_SESSION["login"] ?? false;
                         class="self-center text-2xl hidden sm:block font-semibold whitespace-nowrap dark:text-white">StomaDiaHelp</span>
                 </a>
                 <?php if ($auth): ?>
-                    <a href="/public/logout" class="md:order-2">
-                        <button type="button"
-                            class="  text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Cerrar
-                            Sesion</button>
-                    </a>
+                    <div class="md:order-2">
+                        <?php if (intval($_SESSION["actualizado"]) ==  1): ?>
+                            <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown"
+                                data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer"
+                                src="/public/imagenesUsuarios/<?php echo "$_SESSION[imagen]" ?>" alt="User dropdown">
+                        <?php endif; ?>
+
+                        <?php if (intval($_SESSION["actualizado"] == 0)): ?>
+                            <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown"
+                                data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer"
+                                src="/public/build/img/avatar.webp" alt="User dropdown">
+                        <?php endif; ?>
+
+                        <!-- Dropdown menu -->
+                        <div id="userDropdown"
+                            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                            <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                                <div>
+                                    <?php echo "$_SESSION[nombre]" ?>
+                                </div>
+                                <div class="font-medium truncate">
+                                    <?php echo "$_SESSION[email]" ?>
+                                </div>
+                            </div>
+                            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                                </li>
+                                <li>
+                                    <div class="flex">
+                                        <a href="/public/perfil">
+                                            <button id="defaultModalButton" data-modal-toggle="defaultModal"
+                                                class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                type="button">
+                                                Actualizar
+                                            </button>
+                                        </a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                                </li>
+                            </ul>
+                            <div>
+                                <a href="/public/logout" class="md:order-2">
+                                    <button type="button"
+                                        class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cerrar
+                                        Sesion</button>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
                 <?php endif; ?>
                 <?php if (!$auth): ?>
                     <a href="/public/login" class="md:order-2">
@@ -146,6 +197,8 @@ $auth = $_SESSION["login"] ?? false;
     <?php echo $contenido; ?>
 
     <?php echo $script ?? ''; ?>
+
+
 
 
 

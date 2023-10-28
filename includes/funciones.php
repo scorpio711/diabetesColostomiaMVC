@@ -21,6 +21,13 @@ function estaAutenticado()
 
 }
 
+function isAdmin() : void
+{
+    if (!isset($_SESSION["admin"])) {
+        header("location: /public/");
+    }
+}
+
 function debuguear($variable)
 {
     echo "<pre>";

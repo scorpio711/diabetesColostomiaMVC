@@ -19,11 +19,11 @@ class ActiveRecord
         self::$db = $database;
     }
 
-    public function crear()
+    public function crear($incluirId)
     {
 
         //Sanitizar los datos
-        $atributos = $this->sanitizarAtributos();
+        $atributos = $this->sanitizarAtributos($incluirId);
 
         //insertar en la base de datos
         $query = "INSERT INTO " . static::$tabla . " ( ";
@@ -31,10 +31,9 @@ class ActiveRecord
         $query .= " ) VALUES ('";
         $query .= join("', '", array_values($atributos));
         $query .= "');";
-
-
+    
         $resultado = self::$db->query($query);
-
+       
         return $resultado;
 
         // if ($resultado) {
@@ -59,10 +58,10 @@ class ActiveRecord
         return $resultado;
     }
 
-    public function actualizar()
+    public function actualizar($incluirId)
     {
         //Sanitizar los datos
-        $atributos = $this->sanitizarAtributos();
+        $atributos = $this->sanitizarAtributos($incluirId);
 
         $valores = [];
         foreach ($atributos as $key => $value) {
@@ -74,6 +73,7 @@ class ActiveRecord
         $query .= "WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= "LIMIT 1;";
 
+        
         $resultado = self::$db->query($query);
 
         // if ($resultado) {
@@ -86,19 +86,24 @@ class ActiveRecord
 
 
     // Identificar y unir los atributos de la BD
-    public function atributos()
+    public function atributos($includeId = false)
     {
         $atributos = [];
+
         foreach (static::$columnasDB as $columna) {
-            if ($columna === "id")
+            if (!$includeId && $columna === "id") {
                 continue;
+            }
             $atributos[$columna] = $this->$columna;
         }
+
         return $atributos;
     }
-    public function sanitizarAtributos()
+
+
+    public function sanitizarAtributos($incluirId)
     {
-        $atributos = $this->atributos();
+        $atributos = $this->atributos($incluirId);
         $sanitizado = [];
 
         foreach ($atributos as $key => $value) {

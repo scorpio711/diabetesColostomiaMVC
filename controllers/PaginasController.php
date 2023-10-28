@@ -24,6 +24,10 @@ class PaginasController
     }
     public static function indexAdmin(Router $router)
     {
+        session_start();
+
+        isAdmin();
+
         $router->render("/admin/index");
     }
 
@@ -58,7 +62,7 @@ class PaginasController
                     debuguear($suma);
                 }
             }
-            
+
             // Imprime el resultado
             echo "La suma de los 15 rangos es: " . $suma;
         }

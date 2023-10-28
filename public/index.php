@@ -9,6 +9,7 @@ use Controllers\InvestigacionController;
 use Controllers\UsuariosController;
 Use Controllers\PaginasController;
 Use Controllers\LoginController;
+use Controllers\PacientesController;
 
 $router = new Router();
 
@@ -25,6 +26,12 @@ $router->get("/admin/usuarios/administrar", [UsuariosController::class, "adminis
 $router->post("/admin/usuarios/administrar", [UsuariosController::class, "crear"]);
 $router->post("/admin/usuarios/administrar", [UsuariosController::class, "actualizar"]);
 $router->post("/admin/usuarios/administrar", [UsuariosController::class, "borrar"]);
+$router->get("/perfil",[UsuariosController::class, "perfil"] );
+$router->get("/rol",[LoginController::class, "rol"] );
+
+//Crud pacientes
+$router->get("/admin/pacientes/administrar", [PacientesController::class, "administrarPacientes"]);
+
 
 //paginas
 $router->get("/", [PaginasController::class, "index"]);
@@ -43,6 +50,7 @@ $router->get("/olvide-password",[LoginController::class, "olvidePassword"] );
 $router->get("/cambio-password",[LoginController::class, "cambioPassword"] );
 $router->get("/registro",[LoginController::class, "registro"] );
 $router->post("/registro/crear",[LoginController::class, "crear"] );
+
 
 //Confirmar cuenta
 $router->get("/confirmar-cuenta",[LoginController::class, "confirmarCuenta"] );

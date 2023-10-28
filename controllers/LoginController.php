@@ -4,6 +4,7 @@ namespace Controllers;
 
 use MVC\Router;
 use Model\Usuario;
+use Model\Paciente;
 use Classes\Email;
 
 
@@ -29,10 +30,16 @@ class LoginController
                     if ($usuario->comprobarPasswordAndVerificado($auth->password)) {
                         //Autenticar el usuario
                         session_start();
-
-                        $_SESSION["id"] = $usuario->id;
+                        $id = $usuario->id;
+                        $paciente = Paciente::find($id);
+                        
+                        $_SESSION["id"] = $id;
                         $_SESSION["nombre"] = $usuario->nombre;
                         $_SESSION["email"] = $usuario->email;
+                        $_SESSION["imagen"] = $paciente->imagen;
+                        $_SESSION["sexo"] = $usuario->sexo;
+                        $_SESSION["fecha_nacimiento"] = $usuario->fecha_nacimiento;
+                        $_SESSION["actualizado"] = $usuario->actualizado;
                         $_SESSION["login"] = true;
 
                         //redireccionamiento
@@ -40,10 +47,10 @@ class LoginController
                             $_SESSION["admin"] = $usuario->admin ?? 0;
                             header("location: /public/admin/index");
                         } else {
-                            debuguear("es cliente");
+                            header('Location: /public/cita');
                         }
 
-                        debuguear($_SESSION);
+                  
                     }
                 } else {
                     Usuario::setErrores("El usuario no existe");
@@ -73,15 +80,15 @@ class LoginController
         $errores = [];
         $resultado = $_GET["resultado"];
 
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $auth = new Usuario($_POST);
             $auth->validarEmail();
 
-            if(empty($errores)){
+            if (empty($errores)) {
                 $usuario = Usuario::Where("email", $auth->email);
-                
-                if($usuario && $usuario->confirmado === "1"){
-                    
+
+                if ($usuario && $usuario->confirmado === "1") {
+
                     //Generar un token
                     $usuario->crearToken();
                     $usuario->actualizar();
@@ -93,14 +100,14 @@ class LoginController
                     //Alerta de exito
                     header("location:/public/olvide-password?resultado=1");
 
-                }else{
+                } else {
                     Usuario::setErrores("El usuario no esta confirmado o no existe");
                     $errores = Usuario::getErrores();
                 }
             }
         }
 
-        $router->render("/auth/olvide-password",[
+        $router->render("/auth/olvide-password", [
             "errores" => $errores,
             "resultado" => $resultado
         ]);
@@ -116,17 +123,17 @@ class LoginController
 
         $usuario = Usuario::where("token", $token);
 
-        if(empty($usuario)){
+        if (empty($usuario)) {
             Usuario::setErrores("token no valido");
             $noToken = true;
         }
 
-        if($_SERVER["REQUEST_METHOD"] == "POST"){
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
             //Leer el nuevo password y guardarlo
             $password = new Usuario($_POST);
             $errores = $password->validarPassword();
 
-            if(empty($errores)){
+            if (empty($errores)) {
                 $usuario->password = null;
 
                 $usuario->password = $password->password;
@@ -134,15 +141,15 @@ class LoginController
                 $usuario->token = null;
 
                 $resultado = $usuario->actualizar();
-                
-                if($resultado){
+
+                if ($resultado) {
                     header("location:/public/login");
                 }
             }
         }
 
         $errores = Usuario::getErrores();
-        $router->render("/auth/cambio-password",[
+        $router->render("/auth/cambio-password", [
             "noToken" => $noToken,
             "errores" => $errores
         ]);
@@ -150,19 +157,20 @@ class LoginController
     public static function registro($router)
     {
         $usuario = new Usuario($_POST);
-
+        
         //Alertas Vacias
         $errores = [];
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+            
             $usuario->sincronizar($_POST);
+            
             $errores = $usuario->validarNuevaCuenta();
 
             //Revisar que alertas este vacio
             if (empty($errores)) {
                 //Verificar que el usuario no este registrado
                 $resultado = $usuario->existeUsuario();
-
+                
                 if ($resultado->num_rows) {
                     $errores = Usuario::getErrores();
                 } else {
@@ -176,9 +184,9 @@ class LoginController
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
 
                     $email->enviarConfirmacion();
-
+                    
                     //Crear el usuario
-                    $resultado = $usuario->crear();
+                    $resultado = $usuario->crear(false);
 
                     if ($resultado) {
                         header("Location:/public/login?resultado=1");
@@ -191,6 +199,12 @@ class LoginController
             "errores" => $errores
         ]);
     }
+
+    public static function rol($router)
+    {
+        $router->render("/auth/rol",[]);
+    }
+   
 
     public static function confirmarCuenta($router)
     {
@@ -207,7 +221,7 @@ class LoginController
 
             $usuario->confirmado = "1";
             $usuario->token = null;
-            $usuario->actualizar();
+            $usuario->actualizar(false);
             header("Location:/public/login?resultado=2");
         }
         //obetener errores

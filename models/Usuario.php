@@ -5,18 +5,19 @@ namespace Model;
 class Usuario extends ActiveRecord
 {
     protected static $tabla = "usuarios";
-    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "imagen", "admin", "confirmado", "token"];
+    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "admin", "confirmado", "token", "enfermedad", "sexo", "actualizado"];
 
     public $id;
     public $email;
     public $password;
     public $nombre;
-
     public $fecha_nacimiento;
-    public $imagen;
+    public $enfermedad;
+    public $sexo;
     public $admin;
     public $confirmado;
     public $token;
+    public $actualizado;
 
     public function __construct($args = [])
     {
@@ -25,10 +26,12 @@ class Usuario extends ActiveRecord
         $this->password = $args["password"] ?? "";
         $this->nombre = $args["nombre"] ?? "";
         $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? "";
-        $this->imagen = $args["imagen"] ?? "";
+        $this->enfermedad = $args["enfermedad"] ?? "";
+        $this->sexo = $args["sexo"] ?? null;
         $this->admin = $args["admin"] ?? 0;
         $this->confirmado = $args["confirmado"] ?? 0;
         $this->token = $args["token"] ?? "";
+        $this->actualizado = $args["actualizado"] ?? 0;
     }
     public function validarNuevaCuenta()
     {
@@ -37,6 +40,9 @@ class Usuario extends ActiveRecord
         }
         if (!$this->nombre) {
             self::$errores[] = "Debes añadir un nombre";
+        }
+        if (!$this->sexo) {
+            self::$errores[] = "Debes añadir tu sexo";
         }
         if (!$this->fecha_nacimiento) {
             self::$errores[] = "Debes añadir tu fecha de nacimiento";
@@ -72,11 +78,12 @@ class Usuario extends ActiveRecord
 
 
     //Validar password
-    public function validarPassword(){
-        if(!$this->password){
+    public function validarPassword()
+    {
+        if (!$this->password) {
             self::$errores[] = "El password es obligatorio";
         }
-        if(strlen($this->password) < 6){
+        if (strlen($this->password) < 6) {
             self::$errores[] = "El password debe tener almenos 6 caracteres";
         }
 
