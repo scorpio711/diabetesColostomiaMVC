@@ -1,7 +1,9 @@
 <?php
 
-$script = "<script src ='/public/build/js/app.js'></script>";
-
+$script = "
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+<script src ='/public/build/js/app.js'></script>
+";
 ?>
 
 <div class="bg-white dark:bg-gray-900 py-20 mx-auto max-w-screen-xl px-4 md:px-8">
@@ -21,8 +23,8 @@ $script = "<script src ='/public/build/js/app.js'></script>";
             <li class="mr-2" role="presentation">
                 <button
                     class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                    id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings"
-                    aria-selected="false">Resumen</button>
+                    id="resumen-tab" data-tabs-target="#resumen" type="button" role="tab" aria-controls="resumen"
+                    onclick="mostrarResumen()" aria-selected="false">Resumen</button>
             </li>
         </ul>
     </div>
@@ -35,38 +37,41 @@ $script = "<script src ='/public/build/js/app.js'></script>";
         </div>
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel"
             aria-labelledby="dashboard-tab">
+            <div id="alertas"></div>
             <form>
-                <div class="mb-6">
-                    <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tu
-                        Nombre</label>
-                    <input type="text" id="nombre"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Tu nombre" required>
+                <input type="text" id="id" name="id" class="hidden" value="<?php echo $id ?>">
+
+                <div class="w-full mb-2">
+                    <label for="escolaridad"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
+                    <input type="text" id="nombre" aria-label="disabled input" name="escolaridad"
+                        class=" bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        value="<?php echo $nombre ?>" disabled>
                 </div>
 
-                <label for="date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Selecciona
-                    una</label>
-
-                <div class="relative">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
-                        </svg>
+                <div class="grid md:gap-6 mb-4 md:grid-cols-2">
+                    <div>
+                        <label for="fecha"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha</label>
+                        <input type="date" id="fecha" min="<?php echo date("Y-m-d", strtotime("+1 day")) ?>"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Doe" required>
                     </div>
-                    <input datepicker datepicker-title="Flowbite datepicker" type="text"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Select date">
+                    <div>
+                        <label for="hora" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Escoge
+                            una Hora</label>
+                        <input type="time" id="hora" step="3600" 
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            required>
+                    </div>
+
                 </div>
             </form>
         </div>
-        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel"
-            aria-labelledby="settings-tab">
-            <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong
-                    class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>.
-                Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps
-                classes to control the content visibility and styling.</p>
+
+        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="resumen" role="tabpanel"
+            aria-labelledby="resumen-tab">
+            <div id="alertaResumen"></div>
         </div>
     </div>
 </div>

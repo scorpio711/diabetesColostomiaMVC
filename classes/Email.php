@@ -23,11 +23,11 @@ class Email
         //crear el objeto de email
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->Host = 'sandbox.smtp.mailtrap.io';
+        $mail->Host = $_ENV["EMAIL_HOST"];
         $mail->SMTPAuth = true;
-        $mail->Port = 2525;
-        $mail->Username = '7e93aa0480d472';
-        $mail->Password = '33d2f4b8179530';
+        $mail->Port = $_ENV["EMAIL_PORT"];
+        $mail->Username = $_ENV["EMAIL_USER"];
+        $mail->Password = $_ENV["EMAIL_PASS"];
 
         //Quien lo envia
         $mail->setFrom("stomadiahelp@carefullnes.com");
@@ -40,7 +40,7 @@ class Email
 
         $contenido = '<html>';
         $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> Has Creado tu cuenta en App Salón, solo debes confirmarla presionando el siguiente enlace</p>";
-        $contenido .= "<p>Presiona aquí: <a href='http://localhost:3000/public/confirmar-cuenta?token=" . $this->token . "'>Confirmar Cuenta</a>";
+        $contenido .= "<p>Presiona aquí: <a href='" . $_ENV['APP_URL'] . "/public/confirmar-cuenta?token=" . $this->token . "'>Confirmar Cuenta</a>";
         $contenido .= "<p>Si tu no solicitaste este cambio, puedes ignorar el mensaje</p>";
         $contenido .= '</html>';
 
@@ -56,11 +56,11 @@ class Email
         //crear el objeto de email
         $mail = new PHPMailer();
         $mail->isSMTP();
-        $mail->Host = 'sandbox.smtp.mailtrap.io';
+        $mail->Host = $_ENV["EMAIL_HOST"];
         $mail->SMTPAuth = true;
-        $mail->Port = 2525;
-        $mail->Username = '7e93aa0480d472';
-        $mail->Password = '33d2f4b8179530';
+        $mail->Port = $_ENV["EMAIL_PORT"];
+        $mail->Username = $_ENV["EMAIL_USER"];
+        $mail->Password = $_ENV["EMAIL_PASS"];
 
         //Quien lo envia
         $mail->setFrom("stomadiahelp@carefullnes.com");
@@ -73,7 +73,7 @@ class Email
 
         $contenido = '<html>';
         $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> Has solicitado restablecer tu password, sigue el siquiente enlace para hacerlo</p>";
-        $contenido .= "<p>Presiona aquí: <a href='http://localhost:3000/public/cambio-password?token=" . $this->token . "'>Restablecer Password</a>";
+        $contenido .= "<p>Presiona aquí: <a href='" . $_ENV['APP_URL'] . "/public/cambio-password?token=" . $this->token . "'>Restablecer Password</a>";
         $contenido .= "<p>Si tu no solicitaste este cambio, puedes ignorar el mensaje</p>";
         $contenido .= '</html>';
 

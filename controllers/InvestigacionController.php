@@ -56,7 +56,7 @@ class InvestigacionController
                     $image->save(CARPETA_IMAGENES_INVESTIGACIONES . $nombreImagen);
 
                     //guarda en la base de datos
-                    $resultado = $investigacionC->crear(false);
+                    $resultado = $investigacionC->crear();
 
                     if ($resultado) {
                         header("location:/public/admin/investigaciones/administrar?resultado=1");
@@ -110,7 +110,7 @@ class InvestigacionController
                         $image->save(CARPETA_IMAGENES_INVESTIGACIONES . $nombreImagen);
                     }
 
-                    $resultado = $investigacion->actualizar(false);
+                    $resultado = $investigacion->actualizar();
                     if ($resultado) {
                         header("location:/public/admin/investigaciones/administrar?resultado=2");
                     }

@@ -51,7 +51,7 @@ class Usuario extends ActiveRecord
             self::$errores[] = "Debes añadir una contraseña";
         }
         if (strlen($this->password) <= 8) {
-            self::$errores[] = "la constraseña debe tener al menos 8 caracteres";
+            self::$errores[] = "la constraseña debe tener mas de 8 caracteres";
         }
         return self::$errores;
     }

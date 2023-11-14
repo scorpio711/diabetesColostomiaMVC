@@ -1,17 +1,27 @@
 <section class="bg-white pt-12 dark:bg-gray-900">
     <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
         <?php foreach ($errores as $error): ?>
-            <div class="p-4 mb-4 text-sm mt-4 text-red-800 w-96 text-center rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                role="alert">
-                <span class="font-medium">¡Cuidado!</span>
-                <?php echo $error; ?>
+            <div class="flex justify-center align-center">
+                <div class="p-4 mb-4 text-sm mt-4 text-red-800 w-96 text-center rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert">
+                    <span class="font-medium">¡Cuidado!</span>
+                    <?php echo $error; ?>
+                </div>
             </div>
+
         <?php endforeach; ?>
         <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Perfil</h2>
-        <div class="flex justify-center">
-            <img class="rounded w-36 h-36" src="/public/imagenesUsuarios/<?php echo $_SESSION["imagen"] ?>"
-                alt="Extra large avatar">
-        </div>
+        <?php if (intval($_SESSION["actualizado"]) == 1): ?>
+            <div class="flex justify-center">
+                <img class="rounded w-36 h-36" src="/public/imagenesUsuarios/<?php echo $_SESSION["imagen"] ?>"
+                    alt="Extra large avatar">
+            </div>
+        <?php endif; ?>
+        <?php if (intval($_SESSION["actualizado"]) == 0): ?>
+            <div class="flex justify-center">
+                <img class="rounded w-36 h-36" src="/public/build/img/avatar.webp" alt="Extra large avatar">
+            </div>
+        <?php endif; ?>
         <?php if ($usuario->actualizado === "0"): ?>
             <form enctype="multipart/form-data" method="POST">
                 <!-- <input type="number" name="id" class="hidden" value="<?php echo $usuario->id; ?>"> -->
@@ -287,8 +297,7 @@
                     <div class="w-full">
                         <label for="apoyo"
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Apoyo</label>
-                        <input type="text" id="disabled-input" aria-label="disabled input" name="apoyo"
-                            class=" bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg
+                        <input type="text" id="disabled-input" aria-label="disabled input" name="apoyo" class=" bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg
                             focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700
                             dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500
                             dark:focus:border-blue-500" value="<?php echo $pacienteActualizado->apoyo ?>" disabled>
@@ -311,11 +320,11 @@
                             value="<?php echo $pacienteActualizado->tiempo_enfermedad ?>" disabled>
                     </div>
                     <div class="flex items-center space-x-4">
-                    <button type="submit" name="actulizarImagen"
-                        class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        Acutalizar Imagen
-                    </button>
-                </div>
+                        <button type="submit" name="actulizarImagen"
+                            class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                            Acutalizar Imagen
+                        </button>
+                    </div>
             </form>
         <?php endif ?>
     </div>

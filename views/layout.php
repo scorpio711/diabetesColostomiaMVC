@@ -12,13 +12,14 @@ $auth = $_SESSION["login"] ?? false;
 
 <head>
     <meta charset="UTF-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CareFullnes</title>
     <link rel="stylesheet" href="../../../public/build/css/output.css" />
 </head>
 
-<body class="dark:bg-gray-900">
+<body class="dark:bg-gray-900 container mx-auto">
     <header>
         <nav class=" bg-white fixed w-full z-20 top-0 left-0 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -68,9 +69,15 @@ $auth = $_SESSION["login"] ?? false;
                                         </a>
                                     </div>
                                 </li>
+                                <?php if($_SESSION["admin"]): ?>
                                 <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                                    <a href="/public/admin/index"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Administrar</a>
+                                </li>
+                                <?php endif; ?>
+                                <li>
+                                    <a href="/public/misCitas"
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mis citas</a>
                                 </li>
                             </ul>
                             <div>
@@ -161,9 +168,8 @@ $auth = $_SESSION["login"] ?? false;
                                                         class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Encuesta</a>
                                                 </li>
                                                 <li>
-                                                    <a href="#"
-                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">My
-                                                        downloads</a>
+                                                    <a href="/public/cita"
+                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Citas</a>
                                                 </li>
                                                 <li>
                                                     <a href="#"
@@ -183,10 +189,6 @@ $auth = $_SESSION["login"] ?? false;
                             <a href="/public/investigaciones"
                                 class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Investigaciones</a>
                         </li>
-                        <li>
-                            <a href="#"
-                                class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Nosotros</a>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -197,10 +199,6 @@ $auth = $_SESSION["login"] ?? false;
     <?php echo $contenido; ?>
 
     <?php echo $script ?? ''; ?>
-
-
-
-
 
     <footer>
 
@@ -235,7 +233,6 @@ $auth = $_SESSION["login"] ?? false;
             </div>
         </footer>
     </footer>
-
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>

@@ -5,6 +5,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "dev": "gulp",
+    "build": "gulp build",
     "sass": "sass --watch src/scss:build/css",
     "build:css": "tailwindcss -i ./src/input.css -o ./public/build/css/output.css --watch"
   },

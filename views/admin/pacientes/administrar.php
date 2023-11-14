@@ -166,7 +166,7 @@
                     </div>
                     <div
                         class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                        <button type="button" id="createProductModalButton" data-modal-target="createProductModal"
+                        <!-- <button type="button" id="createProductModalButton" data-modal-target="createProductModal"
                             data-modal-toggle="createProductModal"
                             class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
@@ -175,7 +175,7 @@
                                     d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                             </svg>
                             Añadir Usuario
-                        </button>
+                        </button> -->
                         <div class="flex items-center space-x-3 w-full  md:w-auto">
                             <a class="w-full" href="/public/admin/index">
                                 <button type="button"
@@ -189,8 +189,8 @@
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-4 py-4">Id</th>
+                                <th scope="col" class="px-4 py-4">PacienteId</th>
                                 <th scope="col" class="px-4 py-4">Nombre</th>
-
                                 <th scope="col" class="px-4 py-3">edad</th>
                                 <th scope="col" class="px-4 py-3">sexo</th>
                                 <th scope="col" class="px-4 py-3">escolaridad</th>
@@ -201,9 +201,9 @@
                                 <th scope="col" class="px-4 py-3">afiliacion</th>
                                 <th scope="col" class="px-4 py-3">T.Enfermedad</th>
                                 <th scope="col" class="px-4 py-3">Imagen</th>
-                                <th scope="col" class="px-4 py-3">
+                                <!-- <th scope="col" class="px-4 py-3">
                                     <span class="sr-only">Actions</span>
-                                </th>
+                                </th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -211,6 +211,9 @@
                                 <tr class="border-b dark:border-gray-700">
                                     <td class="px-4 py-3">
                                         <?php echo $paciente->id; ?>
+                                    </td>
+                                    <td class="px-4 py-3">
+                                        <?php echo $paciente->pacienteId; ?>
                                     </td>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -265,7 +268,7 @@
                                             <div data-popper-arrow></div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 flex items-center justify-end">
+                                    <!-- <td class="px-4 py-3 flex items-center justify-end">
                                         <button id="apple-imac-27-dropdown-button<?php echo $paciente->id; ?>"
                                             data-dropdown-toggle="apple-imac-27-dropdown<?php echo $paciente->id; ?>"
                                             class="inline-flex items-center text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 dark:hover-bg-gray-800 text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
@@ -310,7 +313,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

@@ -2,9 +2,10 @@
 module.exports = {
   content: [
     "./src/**/*.{html,js}", // Archivos HTML y JS en la carpeta src
-    "./node_modules/**/*.js}", // Archivos HTML y JS en la carpeta src
+    "./node_modules/**/*.js", // Archivos HTML y JS en la carpeta src
     "./admin/**/*.php", // Archivos PHP en la carpeta de administración
-    "./views/**/*.php", // Archivos PHP en la carpeta de administración
+    "/views/**/*.php", // Archivos PHP en la carpeta de administración
+    "./views/*.php", // Archivos PHP en la carpeta de administración
     "./includes/templates/*.php", // Archivos PHP en la carpeta de administración
     "./**/*.php", // Archivos PHP en la raíz del proyecto
     "./node_modules/flowbite/**/*.js",

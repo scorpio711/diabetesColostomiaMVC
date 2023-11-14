@@ -4,9 +4,11 @@ namespace Controllers;
 
 use Intervention\Image\ImageManagerStatic as Image;
 use Model\Paciente;
+use Model\Cita;
 use MVC\Router;
 use Model\Usuario;
 use Classes\Email;
+use Model\CitaServicios;
 
 class UsuariosController
 {
@@ -51,47 +53,52 @@ class UsuariosController
                 //Validar
                 $errores = $usuariosC->validarNuevaCuenta();
 
+                $existeUsuario = $usuariosC->existeUsuario();
+
+                if ($existeUsuario->num_rows) {
+                    $errores = Usuario::getErrores();
+                }
+
+
 
                 //revisar que errores este vacio
                 if (empty($errores)) {
+                    //hashear el password
+                    $usuariosC->hashPassword();
 
-                    $resultado = $usuariosC->existeUsuario();
+                    //Generar un token unico
+                    $usuariosC->crearToken();
 
-                    if ($resultado->num_rows) {
-                        $errores = Usuario::getErrores();
-                    } else {
-                        //hashear el password
-                        $usuariosC->hashPassword();
 
-                        //Generar un token unico
-                        $usuariosC->crearToken();
+                    //Enviar el email
+                    $email = new Email($usuariosC->email, $usuariosC->nombre, $usuariosC->token);
 
-                        
-                        //Enviar el email
-                        $email = new Email($usuariosC->email, $usuariosC->nombre, $usuariosC->token);
+                    $email->enviarConfirmacion();
 
-                        $email->enviarConfirmacion();
+                    //Crear el usuario
+                    $resultado = $usuariosC->crear();
+                    //Guarda la imagen en el servidor
+                    // $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
 
-                        
-                        //Crear el usuario
-                        $resultado = $usuariosC->crear(false);
-                        //Guarda la imagen en el servidor
-                        // $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
-
-                        if ($resultado) {
-                            //redireccionar al usuario
-                            header("location:/public/admin/usuarios/administrar?resultado=1");
-                        }
+                    if ($resultado) {
+                        //redireccionar al usuario
+                        header("location:/public/admin/usuarios/administrar?resultado=1");
                     }
 
                 }
             } elseif (isset($_POST['actualizar'])) {
 
                 $usuario = new Usuario($_POST["usuario"]);
+                $infoPreviaUsuario = Usuario::find($usuario->id);
+
                 //asignar los atributos
                 $args = $_POST["usuario"];
 
                 //Subida de archivos
+                if (!is_dir(CARPETA_IMAGENES_USUARIOS)) {
+                    mkdir(CARPETA_IMAGENES_USUARIOS);
+                }
+
                 //generar nombre unico
                 $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
                 $imagenPrevia = $_POST["imagenPrevia"];
@@ -114,23 +121,37 @@ class UsuariosController
                     $bool = false;
                 }
 
+                //Verificar si el password esta vacio
+                if ($_POST["usuario"]["password"] === "") {
+                    $password = $infoPreviaUsuario->password;
+                    $usuario->password = $password;
+                } else {
+                    //hashear nuevo password
+                    $password = $args["usuario"];
+                    $usuario->hashPassword($password);
+                }
+
                 $usuario->sincronizar($args);
 
                 //Validacion
-                $erroresActualizacion = $usuario->validar();
+                $erroresActualizacion = $usuario->validarNuevaCuenta();
 
                 //revisar que erroresAc$erroresActualizacion este vacio
                 if (empty($erroresActualizacion)) {
 
-                    if (!is_dir(CARPETA_IMAGENES_USUARIOS)) {
-                        mkdir(CARPETA_IMAGENES_USUARIOS);
-                    }
+                    //Datos previos del usuario
+                    $confirmado = $infoPreviaUsuario->confirmado;
+                    $actualizado = $infoPreviaUsuario->actualizado;
+
+                    $usuario->confirmado = $confirmado;
+                    $usuario->actualizado = $actualizado;
+
                     //Almacenar la imagen
                     if ($bool) {
                         $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
                     }
 
-                    $resultado = $usuario->actualizar(false);
+                    $resultado = $usuario->actualizar();
                     if ($resultado) {
                         //redireccionar al usuario
                         header("location:/public/admin/usuarios/administrar?resultado=2");
@@ -138,6 +159,7 @@ class UsuariosController
                 }
             } elseif (isset($_POST['borrar'])) {
                 $id = $_POST["id"];
+
                 $usuario = Usuario::find($id);
                 $resultado = $usuario->eleminar();
 
@@ -150,6 +172,7 @@ class UsuariosController
         }
         $router->render("/admin/usuarios/administrar", [
             "usuarios" => $usuarios,
+            "usuariosC" => $usuariosC,
             "usuario" => $usuario,
             "resultado" => $resultado,
             "errores" => $errores,
@@ -160,16 +183,21 @@ class UsuariosController
     public static function perfil($router)
     {
         session_start();
+        //obtener datos de la sesion
         $id = $_SESSION["id"];
         $nombre = $_SESSION["nombre"];
         $sexo = $_SESSION["sexo"];
 
-
         $usuario = Usuario::find($id);
-        $pacienteActualizado = Paciente::find($id);
+        $usuarioId = $usuario->id;
+
+        
+        $query = "SELECT * FROM pacientes WHERE pacienteId = " . $usuarioId . ";";
+
+        $datosPacienteActualizado = Paciente::SQL($query);
+        $pacienteActualizado = $datosPacienteActualizado[0];
 
         $paciente = new Paciente($_POST);
-
 
         // debuguear($usuario);
         $errores = [];
@@ -202,7 +230,7 @@ class UsuariosController
                 if (empty($errores)) {
 
                     //variables del servidor
-                    $paciente->id = $id;
+                    $paciente->pacienteId = $id;
                     $paciente->nombre = $nombre;
                     $paciente->sexo = $sexo;
 
@@ -225,12 +253,12 @@ class UsuariosController
                     $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
 
                     //actualizar el usuario y su perfil de
-                    $usuario->actualizar(false);
+                    $usuario->actualizar();
 
                     $_SESSION["imagen"] = $paciente->imagen;
                     $_SESSION["actualizado"] = 1;
 
-                    $resultado = $paciente->crear(true);
+                    $resultado = $paciente->crear();
 
                     if ($resultado) {
                         header("location:/public/");
@@ -238,7 +266,7 @@ class UsuariosController
                     }
                 }
             } elseif (isset($_POST['actulizarImagen'])) {
-                $paciente = Paciente::find($id);
+                $paciente = Paciente::SQL($query)[0];
 
                 //generar nombre unico
                 $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
@@ -280,7 +308,7 @@ class UsuariosController
                         $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
                     }
                     $_SESSION["imagen"] = $paciente->imagen;
-                    $resultado = $paciente->actualizar(true);
+                    $resultado = $paciente->actualizar();
 
                     if ($resultado) {
                         header("location:/public/");

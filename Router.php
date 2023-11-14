@@ -16,27 +16,15 @@ class Router
         $this->rutasPost[$url] = $fn;
     }
     public function comprobarRutas()
-    {
-        session_start();
-        
-        $auth = $_SESSION["login"] ?? null;
-        
-        //Arreglo de rutas protegidas
-        $rutas_protegidas = ["/admin/usuarios/administrar", "/admin/investigaciones/administrar", "/admin/index"];
-
+    {   
         $urlActual = $_SERVER["PATH_INFO"] ?? "/";
-
+       
         $metodo = $_SERVER["REQUEST_METHOD"];
 
         if ($metodo === "GET") {
             $fn = $this->rutasGet[$urlActual] ?? null;
         } else {
-            $fn = $this->rutasGet[$urlActual] ?? null;
-        }
-
-        //Proteger rutas
-        if (in_array($urlActual, $rutas_protegidas) && !$auth) {
-            header("location: /public");
+            $fn = $this->rutasPost[$urlActual] ?? null;
         }
 
 

@@ -5,9 +5,10 @@ namespace Model;
 class Paciente extends ActiveRecord
 {
     protected static $tabla = "pacientes";
-    protected static $columnasDB = ["id", "edad", "sexo", "escolaridad", "estrato_socioeconomico", "lugar_de_residencia", "ocupacion", "apoyo", "afiliacion", "tiempo_enfermedad", "nombre", "imagen"];
+    protected static $columnasDB = ["id", "pacienteId", "edad", "sexo", "escolaridad", "estrato_socioeconomico", "lugar_de_residencia", "ocupacion", "apoyo", "afiliacion", "tiempo_enfermedad", "nombre", "imagen"];
 
     public $id;
+    public $pacienteId;
     public $edad;
     public $sexo;
     public $escolaridad;
@@ -23,7 +24,8 @@ class Paciente extends ActiveRecord
     public function __construct($args = [])
     {
         $this->id = $args["id"] ?? null;
-        $this->sexo = $args["Sexo"] ?? "";
+        $this->pacienteId = $args["pacienteId"] ?? "";
+        $this->sexo = $args["sexo"] ?? "";
         $this->escolaridad = $args["escolaridad"] ?? "";
         $this->estrato_socioeconomico = $args["estrato_socioeconomico"] ?? "";
         $this->lugar_de_residencia = $args["lugar_de_residencia"] ?? "";

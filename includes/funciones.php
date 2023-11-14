@@ -16,7 +16,7 @@ function estaAutenticado()
     session_start();
 
     if (!$_SESSION["login"]) {
-        header("location: /");
+        header("location: /public");
     }
 
 }
@@ -27,6 +27,7 @@ function isAdmin() : void
         header("location: /public/");
     }
 }
+
 
 function debuguear($variable)
 {

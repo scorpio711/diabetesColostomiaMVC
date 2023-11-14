@@ -19,22 +19,29 @@ class ActiveRecord
         self::$db = $database;
     }
 
-    public function crear($incluirId)
+    public function crear()
     {
 
         //Sanitizar los datos
-        $atributos = $this->sanitizarAtributos($incluirId);
-
+        $atributos = $this->sanitizarAtributos();
+        
         //insertar en la base de datos
         $query = "INSERT INTO " . static::$tabla . " ( ";
         $query .= join(", ", array_keys($atributos));
         $query .= " ) VALUES ('";
         $query .= join("', '", array_values($atributos));
         $query .= "');";
-    
+
+        // return json_encode(["query" => $query]);
+
         $resultado = self::$db->query($query);
-       
-        return $resultado;
+
+        // debuguear($query);
+
+        return [
+            "resultado" => $resultado,
+            "id" => self::$db->insert_id
+        ];
 
         // if ($resultado) {
         //     //redireccionar al usuario
@@ -48,20 +55,17 @@ class ActiveRecord
     {
 
         //Eliminar el registro
-        $query = "DELETE FROM " . static::$tabla . " WHERE id= " . self::$db->escape_string($this->id) . " LIMIT 1";
-        $resultado = self::$db->query($query);
+        $query = "DELETE FROM " . static::$tabla . " WHERE id= " . self::$db->escape_string($this->id) . " LIMIT 1;";
 
-        // if ($resultado) {
-        //     header("location:/public/admin/" . static::$tabla . "/administrar?resultado=3");
-        // }
+        $resultado = self::$db->query($query);
 
         return $resultado;
     }
 
-    public function actualizar($incluirId)
+    public function actualizar()
     {
         //Sanitizar los datos
-        $atributos = $this->sanitizarAtributos($incluirId);
+        $atributos = $this->sanitizarAtributos();
 
         $valores = [];
         foreach ($atributos as $key => $value) {
@@ -73,7 +77,6 @@ class ActiveRecord
         $query .= "WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= "LIMIT 1;";
 
-        
         $resultado = self::$db->query($query);
 
         // if ($resultado) {
@@ -86,24 +89,22 @@ class ActiveRecord
 
 
     // Identificar y unir los atributos de la BD
-    public function atributos($includeId = false)
+    public function atributos()
     {
         $atributos = [];
-
         foreach (static::$columnasDB as $columna) {
-            if (!$includeId && $columna === "id") {
+            if ($columna === 'id')
                 continue;
-            }
             $atributos[$columna] = $this->$columna;
         }
-
+       
         return $atributos;
     }
 
 
-    public function sanitizarAtributos($incluirId)
+    public function sanitizarAtributos()
     {
-        $atributos = $this->atributos($incluirId);
+        $atributos = $this->atributos();
         $sanitizado = [];
 
         foreach ($atributos as $key => $value) {
@@ -146,7 +147,8 @@ class ActiveRecord
     //busca un registro por su id
     public static function find($id)
     {
-        $query = "SELECT * FROM " . static::$tabla . " WHERE id = ${id}";
+        $query = "SELECT * FROM " . static::$tabla . " WHERE id = ${id};";
+        
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
 
@@ -186,7 +188,6 @@ class ActiveRecord
         foreach ($args as $key => $value) {
             if (property_exists($this, $key) && is_null($value)) {
                 $this->$key = $value;
-                debuguear($value);
             }
         }
     }
@@ -207,4 +208,14 @@ class ActiveRecord
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
     }
+
+    //Consulta Plana de SQL usar cuando los metodos del modelo no son suficientes
+    public static function SQL($consulta)
+    {
+        $query = $consulta;
+        
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+
 }
