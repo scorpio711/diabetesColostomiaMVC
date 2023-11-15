@@ -16,7 +16,7 @@ $auth = $_SESSION["login"] ?? false;
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CareFullnes</title>
-    <link rel="stylesheet" href="../../../public/build/css/output.css" />
+    <link rel="stylesheet" href="/public/build/css/output.css" />
     <link rel="icon" href="/public/build/img/zyro-image.png" type="image/png">
 </head>
 
