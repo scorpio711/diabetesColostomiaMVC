@@ -34,6 +34,7 @@ class Router
             call_user_func($fn, $this);
         } else {
             echo "pagina no encontrada";
+            header("location: /public");
         }
     }
 
