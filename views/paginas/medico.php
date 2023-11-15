@@ -5,7 +5,7 @@
                 <section
                     class="min-h-96 relative flex flex-1 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-100 py-16 shadow-lg md:py-20 xl:py-48">
                     <!-- image - start -->
-                    <img src="/src/img/neom-0rvKw0fDiHk-unsplash (3).jpg"
+                    <img src="/public/build/img/mountain-7970232.webp"
                         loading="lazy" alt="Photo by Fakurian Design"
                         class="absolute inset-0 h-full w-full object-cover object-center" />
                     <!-- image - end -->
@@ -22,10 +22,10 @@
                             Medicos</h1>
 
                         <div class="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
-                            <a href="#"
+                            <a href="/public/login"
                                 class="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">Empieza ahora</a>
 
-                            <a href="#"
+                            <a href="/public/registro"
                                 class="inline-block rounded-lg bg-gray-200 px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-300 focus-visible:ring active:text-gray-700 md:text-base">Registrate</a>
                         </div>
                     </div>
@@ -56,10 +56,10 @@
             </div>
             <div class="grid grid-cols-2 gap-4 mt-8">
                 <img class="w-full rounded-lg"
-                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-2.png"
+                    src="/public/build/img/medico1.webp"
                     alt="office content 1">
                 <img class="mt-4 w-full lg:mt-10 rounded-lg"
-                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-1.png"
+                    src="/public/build/img/medico2.webp"
                     alt="office content 2">
             </div>
         </div>
@@ -341,7 +341,7 @@
                 <!-- image - start -->
                 <a href="#"
                     class="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-80">
-                    <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&q=75&fit=crop&w=600"
+                    <img src="/public/build/img/doctor-563428_1920.webp"
                         loading="lazy" alt="Photo by Minh Pham"
                         class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
 
@@ -356,7 +356,7 @@
                 <!-- image - start -->
                 <a href="#"
                     class="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:col-span-2 md:h-80">
-                    <img src="https://images.unsplash.com/photo-1542759564-7ccbb6ac450a?auto=format&q=75&fit=crop&w=1000"
+                    <img src="/public/build/img/consulting-3031678_1920.webp"
                         loading="lazy" alt="Photo by Magicle"
                         class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
 
@@ -371,7 +371,7 @@
                 <!-- image - start -->
                 <a href="#"
                     class="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:col-span-2 md:h-80">
-                    <img src="https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000"
+                    <img src="/public/build/img/hands-1327811_1920.webp"
                         loading="lazy" alt="Photo by Martin Sanchez"
                         class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
 
@@ -386,7 +386,7 @@
                 <!-- image - start -->
                 <a href="#"
                     class="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-80">
-                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&q=75&fit=crop&w=600"
+                    <img src="/public/build/img/yoga-2587066_1920.webp"
                         loading="lazy" alt="Photo by Lorenzo Herrera"
                         class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
 

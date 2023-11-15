@@ -107,7 +107,7 @@ class LoginController
 
                     // Enviar el email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
-                    $email->enviarIntrucciones();
+                    $email->enviarIntrucciones($usuario->email);
 
                     //Alerta de exito
                     header("location:/public/olvide-password?resultado=1");
@@ -203,7 +203,7 @@ class LoginController
                     //Enviar el email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
 
-                    $email->enviarConfirmacion();
+                    $email->enviarConfirmacion($usuario->email);
 
                     //Crear el usuario
                     $resultado = $usuario->crear();

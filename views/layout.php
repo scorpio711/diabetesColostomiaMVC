@@ -17,20 +17,24 @@ $auth = $_SESSION["login"] ?? false;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CareFullnes</title>
     <link rel="stylesheet" href="../../../public/build/css/output.css" />
+    <link rel="icon" href="/public/build/img/zyro-image.png" type="image/png">
 </head>
 
+
+
 <body class="dark:bg-gray-900 container mx-auto">
+
     <header>
         <nav class=" bg-white fixed w-full z-20 top-0 left-0 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/public" class="flex items-center">
-                    <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
+                    <img src="/public/build/img/zyro-image.webp" class="h-8 mr-3" alt="Flowbite Logo" />
                     <span
                         class="self-center text-2xl hidden sm:block font-semibold whitespace-nowrap dark:text-white">StomaDiaHelp</span>
                 </a>
                 <?php if ($auth): ?>
                     <div class="md:order-2">
-                        <?php if (intval($_SESSION["actualizado"]) ==  1): ?>
+                        <?php if (intval($_SESSION["actualizado"]) == 1): ?>
                             <img id="avatarButton" type="button" data-dropdown-toggle="userDropdown"
                                 data-dropdown-placement="bottom-start" class="w-10 h-10 rounded-full cursor-pointer"
                                 src="/public/imagenesUsuarios/<?php echo "$_SESSION[imagen]" ?>" alt="User dropdown">
@@ -54,30 +58,28 @@ $auth = $_SESSION["login"] ?? false;
                                 </div>
                             </div>
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
-                                <li>
-                                    <a href="#"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
-                                </li>
+
                                 <li>
                                     <div class="flex">
                                         <a href="/public/perfil">
                                             <button id="defaultModalButton" data-modal-toggle="defaultModal"
                                                 class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                                 type="button">
-                                                Actualizar
+                                                Perfil
                                             </button>
                                         </a>
                                     </div>
                                 </li>
-                                <?php if($_SESSION["admin"]): ?>
-                                <li>
-                                    <a href="/public/admin/index"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Administrar</a>
-                                </li>
+                                <?php if ($_SESSION["admin"]): ?>
+                                    <li>
+                                        <a href="/public/admin/index"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Administrar</a>
+                                    </li>
                                 <?php endif; ?>
                                 <li>
                                     <a href="/public/misCitas"
-                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mis citas</a>
+                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Mis
+                                        citas</a>
                                 </li>
                             </ul>
                             <div>
@@ -145,10 +147,7 @@ $auth = $_SESSION["login"] ?? false;
                                         <a href="/public/psicologico"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Psicologico</a>
                                     </li>
-                                    <li>
-                                        <a href="/public/contacto"
-                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Contacto</a>
-                                    </li>
+
                                     <li aria-labelledby="dropdownNavbarLink">
                                         <button id="doubleDropdownButton" data-dropdown-toggle="doubleDropdown"
                                             data-dropdown-placement="right-start" type="button"
@@ -169,22 +168,25 @@ $auth = $_SESSION["login"] ?? false;
                                                 </li>
                                                 <li>
                                                     <a href="/public/cita"
-                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Citas</a>
+                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Nosotros</a>
                                                 </li>
                                                 <li>
-                                                    <a href="#"
-                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Billing</a>
+                                                    <a href="/public/contacto"
+                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Contacto</a>
                                                 </li>
-                                                <li>
-                                                    <a href="#"
-                                                        class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-400 dark:hover:text-white">Rewards</a>
-                                                </li>
+
                                             </ul>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </li>
+                        <?php if ($auth): ?>
+                            <li>
+                                <a href="/public/cita"
+                                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Citas</a>
+                            </li>
+                        <?php endif; ?>
                         <li>
                             <a href="/public/investigaciones"
                                 class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Investigaciones</a>
@@ -205,8 +207,8 @@ $auth = $_SESSION["login"] ?? false;
         <footer class="bg-white rounded-lg shadow dark:bg-gray-900 m-4">
             <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
                 <div class="sm:flex sm:items-center sm:justify-between">
-                    <a href="https://flowbite.com/" class="flex items-center mb-4 sm:mb-0">
-                        <img src="https://flowbite.com/docs/images/logo.svg" class="h-8 mr-3" alt="Flowbite Logo" />
+                    <a href="/public" class="flex items-center mb-4 sm:mb-0">
+                        <img src="/public/build/img/zyro-image.webp" class="h-8 mr-3" alt="Flowbite Logo" />
                         <span
                             class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">StomaDiaHelp</span>
                     </a>

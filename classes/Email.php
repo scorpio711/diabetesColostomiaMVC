@@ -18,7 +18,7 @@ class Email
         $this->token = $token;
     }
 
-    public function enviarConfirmacion()
+    public function enviarConfirmacion($destinatario)
     {
         //crear el objeto de email
         $mail = new PHPMailer();
@@ -30,28 +30,43 @@ class Email
         $mail->Password = $_ENV["EMAIL_PASS"];
 
         //Quien lo envia
-        $mail->setFrom("stomadiahelp@carefullnes.com");
-        $mail->addAddress("stomadiahelp@carefullnes.com", "stomadiahelp.com");
+        $mail->setFrom("stomadiahelp@gmail.com", "stomadiahelp");
+
+        //Quien recibe
+        $mail->addAddress($destinatario);
         $mail->Subject = "Confirma tu cuenta";
 
         //Set HTML
         $mail->isHTML(TRUE);
         $mail->CharSet = 'UTF-8';
 
-        $contenido = '<html>';
-        $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> Has Creado tu cuenta en App Salón, solo debes confirmarla presionando el siguiente enlace</p>";
-        $contenido .= "<p>Presiona aquí: <a href='" . $_ENV['APP_URL'] . "/public/confirmar-cuenta?token=" . $this->token . "'>Confirmar Cuenta</a>";
-        $contenido .= "<p>Si tu no solicitaste este cambio, puedes ignorar el mensaje</p>";
-        $contenido .= '</html>';
 
-        $mail->Body = $contenido;
+        $rutaArchivo = "../views/correos/confirmarCorreo.php";
+
+        // Lee el contenido del archivo
+        $contenido = file_get_contents($rutaArchivo);
+
+        // Agrega nuevas variables o contenido al principio
+        // Define la variable $nombre
+        $nombre = $this->nombre;
+        $url = $_ENV['APP_URL'] . "/public/confirmar-cuenta?token=" . $this->token;
+
+        // Reemplaza la variable en el contenido del archivo
+        $contenidoModificado = str_replace(["<?php echo \$nombre; ?>", "<?php echo \$url; ?>"], [$nombre, $url], $contenido);
+
+        // Guarda el contenido modificado en el archivo
+        file_put_contents($rutaArchivo, $contenidoModificado);
+        $mail->Body = $contenidoModificado;
 
         //Enviar el mail
         $mail->Send();
 
+        // Después de enviar el correo, restablece el contenido original
+        file_put_contents($rutaArchivo, $contenido);
+
     }
 
-    public function enviarIntrucciones()
+    public function enviarIntrucciones($destinatario)
     {
         //crear el objeto de email
         $mail = new PHPMailer();
@@ -63,23 +78,38 @@ class Email
         $mail->Password = $_ENV["EMAIL_PASS"];
 
         //Quien lo envia
-        $mail->setFrom("stomadiahelp@carefullnes.com");
-        $mail->addAddress("stomadiahelp@carefullnes.com", "stomadiahelp.com");
+        $mail->setFrom("stomadiahelp@gmail.com", "stomadiahelp");
+
+        //Quien recibe
+        $mail->addAddress($destinatario);
         $mail->Subject = "Restablece tu password";
 
         //Set HTML
         $mail->isHTML(TRUE);
         $mail->CharSet = 'UTF-8';
 
-        $contenido = '<html>';
-        $contenido .= "<p><strong>Hola " . $this->nombre . "</strong> Has solicitado restablecer tu password, sigue el siquiente enlace para hacerlo</p>";
-        $contenido .= "<p>Presiona aquí: <a href='" . $_ENV['APP_URL'] . "/public/cambio-password?token=" . $this->token . "'>Restablecer Password</a>";
-        $contenido .= "<p>Si tu no solicitaste este cambio, puedes ignorar el mensaje</p>";
-        $contenido .= '</html>';
+        $rutaArchivo = "../views/correos/olvidarContraseña.php";
 
-        $mail->Body = $contenido;
+        // Lee el contenido del archivo
+        $contenido = file_get_contents($rutaArchivo);
+
+        // Agrega nuevas variables o contenido al principio
+        // Define la variable $nombre
+        $nombre = $this->nombre;
+        $url = $_ENV['APP_URL'] . "/public/cambio-password?token=" . $this->token;
+
+        // Reemplaza la variable en el contenido del archivo
+        $contenidoModificado = str_replace(["<?php echo \$nombre; ?>", "<?php echo \$url; ?>"], [$nombre, $url], $contenido);
+
+
+        // Guarda el contenido modificado en el archivo
+        file_put_contents($rutaArchivo, $contenidoModificado);
+        $mail->Body = $contenidoModificado;
 
         //Enviar el mail
         $mail->Send();
+
+        // Después de enviar el correo, restablece el contenido original
+        file_put_contents($rutaArchivo, $contenido);
     }
 }

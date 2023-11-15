@@ -11,9 +11,8 @@ class CitaController
 {
     public static function index(Router $router)
     {
-
-        estaAutenticado();
         session_start();
+        estaAutenticado();
 
         $router->render("cita/index", [
             "nombre" => $_SESSION["nombre"],
@@ -23,8 +22,10 @@ class CitaController
 
     public static function misCitas(Router $router)
     {
-        estaAutenticado();
+        
         session_start();
+        estaAutenticado();
+
         $id = $_SESSION["id"];
         
         $resultado = $_GET["resultado"];
@@ -70,8 +71,8 @@ class CitaController
 
     public static function administrarCitas(Router $router)
     {
-        isAdmin();
         session_start();
+        isAdmin();
 
         $fecha = $_GET["fecha"] ?? date("Y-m-d", strtotime("-0 day"));
 

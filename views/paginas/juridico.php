@@ -5,7 +5,7 @@
                 <section
                     class="min-h-96 relative flex flex-1 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-gray-100 py-16 shadow-lg md:py-20 xl:py-48">
                     <!-- image - start -->
-                    <img src="/src/img/neom-0rvKw0fDiHk-unsplash (3).jpg"
+                    <img src="/public/build/img/architecture-3536005_1920.webp"
                         loading="lazy" alt="Photo by Fakurian Design"
                         class="absolute inset-0 h-full w-full object-cover object-center" />
                     <!-- image - end -->
@@ -56,10 +56,10 @@
             </div>
             <div class="grid grid-cols-2 gap-4 mt-8">
                 <img class="w-full rounded-lg"
-                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-2.png"
+                    src="/public/build/img/piramide 1.webp"
                     alt="office content 1">
                 <img class="mt-4 w-full lg:mt-10 rounded-lg"
-                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/content/office-long-1.png"
+                    src="/public/build/img/piramide 2.webp"
                     alt="office content 2">
             </div>
         </div>
@@ -326,7 +326,7 @@
         <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
             <div class="mb-4 flex items-center justify-between gap-8 sm:mb-8 md:mb-12">
                 <div class="flex items-center gap-12">
-                    <h2 class="text-2xl font-bold text-gray-800 lg:text-3xl dark: text-white">Galeria</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 lg:text-3xl dark: text-black dark:text-white">Galeria</h2>
 
                     <p class="hidden max-w-screen-sm text-gray-500 md:block">This is a section of some simple filler
                         text,
@@ -341,7 +341,7 @@
                 <!-- image - start -->
                 <a href="#"
                     class="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-80">
-                    <img src="https://images.unsplash.com/photo-1593508512255-86ab42a8e620?auto=format&q=75&fit=crop&w=600"
+                    <img src="/public/build/img/george-peabody-library-1629308_1920.webp"
                         loading="lazy" alt="Photo by Minh Pham"
                         class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
 
@@ -356,7 +356,7 @@
                 <!-- image - start -->
                 <a href="#"
                     class="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:col-span-2 md:h-80">
-                    <img src="https://images.unsplash.com/photo-1542759564-7ccbb6ac450a?auto=format&q=75&fit=crop&w=1000"
+                    <img src="/public/build/img/justice-2060093_1920.webp"
                         loading="lazy" alt="Photo by Magicle"
                         class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
 
@@ -371,7 +371,7 @@
                 <!-- image - start -->
                 <a href="#"
                     class="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:col-span-2 md:h-80">
-                    <img src="https://images.unsplash.com/photo-1610465299996-30f240ac2b1c?auto=format&q=75&fit=crop&w=1000"
+                    <img src="/public/build/img/edificio.webp"
                         loading="lazy" alt="Photo by Martin Sanchez"
                         class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
 
@@ -386,7 +386,7 @@
                 <!-- image - start -->
                 <a href="#"
                     class="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-80">
-                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&q=75&fit=crop&w=600"
+                    <img src="/public/build/img/books-4305459_1920.webp"
                         loading="lazy" alt="Photo by Lorenzo Herrera"
                         class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
 

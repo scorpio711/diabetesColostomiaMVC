@@ -59,10 +59,9 @@ class PaginasController
                 if (isset($_POST[$campo]) && is_numeric($_POST[$campo])) {
                     // Suma el valor del campo al total
                     $suma += $_POST[$campo];
-                    debuguear($suma);
                 }
             }
-
+            
             // Imprime el resultado
             echo "La suma de los 15 rangos es: " . $suma;
         }

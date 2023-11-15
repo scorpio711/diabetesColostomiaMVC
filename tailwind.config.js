@@ -64,7 +64,7 @@ module.exports = {
         "Segoe UI Symbol",
         "Noto Color Emoji",
       ],
-    },
+    }
   },
   plugins: [require("flowbite/plugin")],
 };

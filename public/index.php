@@ -14,63 +14,64 @@ use Controllers\ServiciosController;
 
 $router = new Router();
 
-$router->get("/admin/index", [PaginasController::class, "indexAdmin"]);
+$router->get("/public/admin/index", [PaginasController::class, "indexAdmin"]);
 
 //Crud investigaciones
-$router->get("/admin/investigaciones/administrar", [InvestigacionController::class, "administrarInvestigaciones"]);
-$router->post("/admin/investigaciones/administrar", [InvestigacionController::class, "administrarInvestigaciones"]);
+$router->get("/public/admin/investigaciones/administrar", [InvestigacionController::class, "administrarInvestigaciones"]);
+$router->post("/public/admin/investigaciones/administrar", [InvestigacionController::class, "administrarInvestigaciones"]);
 
 //Crud usuarios
-$router->get("/admin/usuarios/administrar", [UsuariosController::class, "administrarUsuarios"]);
-$router->post("/admin/usuarios/administrar", [UsuariosController::class, "administrarUsuarios"]);
-$router->get("/perfil",[UsuariosController::class, "perfil"] );
-$router->post("/perfil",[UsuariosController::class, "perfil"] );
+$router->get("/public/admin/usuarios/administrar", [UsuariosController::class, "administrarUsuarios"]);
+$router->post("/public/admin/usuarios/administrar", [UsuariosController::class, "administrarUsuarios"]);
+$router->get("/public/perfil",[UsuariosController::class, "perfil"] );
+$router->post("/public/perfil",[UsuariosController::class, "perfil"] );
 
 //Crud pacientes
-$router->get("/admin/pacientes/administrar", [PacientesController::class, "administrarPacientes"]);
+$router->get("/public/admin/pacientes/administrar", [PacientesController::class, "administrarPacientes"]);
 
 //Crud citas
-$router->get("/admin/citas/administrar", [CitaController::class, "administrarCitas"]);
+$router->get("/public/admin/citas/administrar", [CitaController::class, "administrarCitas"]);
 
 //Crud srvicios
-$router->get("/admin/servicios/administrar", [ServiciosController::class, "administrarServicios"]);
-$router->post("/admin/servicios/administrar", [ServiciosController::class, "administrarServicios"]);
+$router->get("/public/admin/servicios/administrar", [ServiciosController::class, "administrarServicios"]);
+$router->post("/public/admin/servicios/administrar", [ServiciosController::class, "administrarServicios"]);
 
 
 //paginas
-$router->get("/", [PaginasController::class, "index"]);
-$router->get("/investigaciones", [PaginasController::class, "investigaciones"]);
-$router->get("/juridico", [PaginasController::class, "juridico"]);
-$router->get("/medico", [PaginasController::class, "medico"]);
-$router->get("/psicologico", [PaginasController::class, "psicologico"]);
-$router->get("/contacto", [PaginasController::class, "contacto"]);
-$router->get("/encuesta", [PaginasController::class, "encuesta"]);
+$router->get("/public", [PaginasController::class, "index"]);
+$router->get("/public/investigaciones", [PaginasController::class, "investigaciones"]);
+$router->get("/public/juridico", [PaginasController::class, "juridico"]);
+$router->get("/public/medico", [PaginasController::class, "medico"]);
+$router->get("/public/psicologico", [PaginasController::class, "psicologico"]);
+$router->get("/public/contacto", [PaginasController::class, "contacto"]);
+$router->get("/public/encuesta", [PaginasController::class, "encuesta"]);
+$router->post("/public/encuesta", [PaginasController::class, "encuesta"]);
 
 //Login y Autenticacion
-$router->get("/login",[LoginController::class, "login"] );
-$router->post("/login",[LoginController::class, "login"] );
-$router->get("/logout",[LoginController::class, "logout"] );
-$router->get("/olvide-password",[LoginController::class, "olvidePassword"] );
-$router->post("/olvide-password",[LoginController::class, "olvidePassword"] );
-$router->get("/cambio-password",[LoginController::class, "cambioPassword"] );
-$router->post("/cambio-password",[LoginController::class, "cambioPassword"] );
-$router->get("/registro",[LoginController::class, "registro"] );
-$router->post("/registro",[LoginController::class, "registro"] );
+$router->get("/public/login",[LoginController::class, "login"] );
+$router->post("/public/login",[LoginController::class, "login"] );
+$router->get("/public/logout",[LoginController::class, "logout"] );
+$router->get("/public/olvide-password",[LoginController::class, "olvidePassword"] );
+$router->post("/public/olvide-password",[LoginController::class, "olvidePassword"] );
+$router->get("/public/cambio-password",[LoginController::class, "cambioPassword"] );
+$router->post("/public/cambio-password",[LoginController::class, "cambioPassword"] );
+$router->get("/public/registro",[LoginController::class, "registro"] );
+$router->post("/public/registro",[LoginController::class, "registro"] );
 
 
 //Confirmar cuenta
-$router->get("/confirmar-cuenta",[LoginController::class, "confirmarCuenta"] );
-$router->get("/mensaje",[LoginController::class, "mensaje"] );
+$router->get("/public/confirmar-cuenta",[LoginController::class, "confirmarCuenta"] );
+$router->get("/public/mensaje",[LoginController::class, "mensaje"] );
 
 
 //Area Privada
-$router->get("/cita", [CitaController::class, "index"]);
-$router->get("/misCitas", [CitaController::class, "misCitas"]);
-$router->post("/misCitas", [CitaController::class, "misCitas"]);
+$router->get("/public/cita", [CitaController::class, "index"]);
+$router->get("/public/misCitas", [CitaController::class, "misCitas"]);
+$router->post("/public/misCitas", [CitaController::class, "misCitas"]);
 
 //API de citas
-$router->get("/api/servicios", [APIController::class, "index"]);
-$router->post("/api/cita", [APIController::class, "guardar"]);
-$router->post("/api/eliminar", [APIController::class, "eliminar"]);
+$router->get("/public/api/servicios", [APIController::class, "index"]);
+$router->post("/public/api/cita", [APIController::class, "guardar"]);
+$router->post("/public/api/eliminar", [APIController::class, "eliminar"]);
 
 $router->comprobarRutas();

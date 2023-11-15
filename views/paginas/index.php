@@ -1,27 +1,36 @@
-<div class="container mx-auto p-4 md:py-12 mt-10">
+<div class="container mx-auto p-4 md:py-12 mt-10 ">
     <!--parte rincipal -->
     <section class="flex flex-col items-center">
         <div class="flex max-w-xl flex-col items-center pt-8 pb-0 text-center sm:pb-16 lg:pt-32 lg:pb-32">
             <p class="mb-4 font-semibold text-indigo-500 md:mb-6 md:text-lg xl:text-xl">Estamos orgullosos de
                 presentarte</p>
-
-            <h1 class="text-black-800 mb-8 text-4xl font-bold sm:text-5xl md:mb-12 md:text-6xl dark:text-white">Una
-                Plataforma para
-                la Diabetes y la Colostomía</h1>
+            <h1 class="text-black-800 mb-8 text-4xl font-bold sm:text-5xl md:mb-12 md:text-6xl dark:text-white"><span
+                    class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-blue-500">Una
+                    Plataforma para
+                    la Diabetes y la Colostomía</span></h1>
 
             <p class="mb-8 leading-relaxed text-gray-500 md:mb-12 xl:text-lg">"Uniendo fuerzas para vivir con pasión
                 y superar los desafíos juntos"</p>
 
             <div class="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
-                <a href="#"
-                    class="inline-block rounded-lg bg-indigo-500 px-8 py-3 text-center text-sm font-semibold text-white outline-none ring-indigo-300 transition duration-100 hover:bg-indigo-600 focus-visible:ring active:bg-indigo-700 md:text-base">Comienza
-                    ahora</a>
-
-                <a href="#"
-                    class="inline-block rounded-lg border bg-white px-8 py-3 text-center text-sm font-semibold text-gray-500 outline-none ring-indigo-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base">Aprende</a>
+                <a href="/public/registro">
+                    <button type="button"
+                        class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-base px-6 py-3.5 text-center me-2 mb-2">Registrate</button>
+                </a>
+                <a href="/public/login">
+                    <button
+                        class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-base font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
+                        <span
+                            class="relative px-6 py-3 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                            Inicia Sesion
+                        </span>
+                    </button>
+                </a>
             </div>
         </div>
     </section>
+
+    <!-- fin del gradiente -->
     <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
     <!-- sobre nosotros -->
     <div class="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-900">
