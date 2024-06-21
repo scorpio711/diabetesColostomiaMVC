@@ -153,6 +153,13 @@ class ActiveRecord
         return array_shift($resultado);
 
     }
+
+    public static function findEmail($email)
+    {
+        $query = "SELECT * FROM " . static::$tabla . " WHERE email = '${email}';";
+        $resultado = self::consultarSQL($query);
+        return array_shift($resultado);
+    }
     public static function consultarSQL($query)
     {
         //consultar la base de datos
@@ -213,7 +220,6 @@ class ActiveRecord
     public static function SQL($consulta)
     {
         $query = $consulta;
-        
         $resultado = self::consultarSQL($query);
         return $resultado;
     }

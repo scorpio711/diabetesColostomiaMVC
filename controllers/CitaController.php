@@ -72,7 +72,8 @@ class CitaController
     public static function administrarCitas(Router $router)
     {
         session_start();
-        isAdmin();
+        esFuncionario();
+        $rol = $_SESSION["rol"];
 
         $fecha = $_GET["fecha"] ?? date("Y-m-d", strtotime("-0 day"));
 
@@ -95,6 +96,7 @@ class CitaController
         $router->render("/admin/citas/administrar", [
             "citas" => $citas,
             "fecha" => $fecha,
+            "rol" => $rol
         ]);
     }
 

@@ -41,13 +41,13 @@ function mostrarServicios(servicios) {
     divElement.href = "#";
     divElement.classList.add(
       "max-w-sm",
-      "p-8",
-      "bg-white",
+      "p-6",
       "border",
       "border-gray-200",
       "rounded-lg",
       "shadow",
-      "hover:border-indigo-300",
+      "hover:bg-gray-100",
+      "dark:hover:bg-gray-700",
       "dark:bg-gray-800",
       "dark:border-gray-700"
     );
@@ -98,16 +98,23 @@ function seleccionarServicio(servicio) {
 
   //identificar al elemento al que se le da click
   const divServicio = document.querySelector(`[data-id-servicio = "${id}"]`);
-
+  const hElement = divServicio.querySelector('h5');
+  console.log(hElement);
   //Comprobar si un servicio ya fue agregado o quitarlo
   if (servicios.some((agregado) => agregado.id === id)) {
     //Eliminarlo
     cita.servicios = servicios.filter((agreado) => agreado.id !== id);
-    divServicio.classList.remove("border-indigo-300");
+    hElement.classList.add("text-gray-900"); 
+    divServicio.classList.add("border-gray-200"); 
+    hElement.classList.remove("text-purple-600");
+    divServicio.classList.remove("border-purple-600");
   } else {
     //agregarlo
     cita.servicios = [...servicios, servicio];
-    divServicio.classList.add("border-indigo-300");
+    hElement.classList.remove("text-gray-900");
+    divServicio.classList.remove("border-gray-200"); 
+    hElement.classList.add("text-purple-600");
+    divServicio.classList.add("border-purple-600");
   }
 
   // console.log(cita);

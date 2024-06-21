@@ -16,21 +16,23 @@ $auth = $_SESSION["login"] ?? false;
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CareFullnes</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/public/build/css/output.css" />
     <link rel="icon" href="/public/build/img/zyro-image.png" type="image/png">
 </head>
 
 
-
-<body class="dark:bg-gray-900 container mx-auto">
-
+<body
+    class="dark:bg-gray-900  container mx-auto bg-fixed bg-cover bg-center  selection:bg-green-500 selection:text-white dark:selection:bg-white dark:selection:text-black"" >
+    <div  id="loader" class=" fixed bg-green-haze-50 z-[100] h-screen  w-screen top-0 left-0 flex items-center justify-center">
+    <l-cardio size="124" stroke="4" speed="2" color="green"></l-cardio>
+    </div>
     <header>
         <nav class=" bg-white fixed w-full z-20 top-0 left-0 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/public" class="flex items-center">
                     <img src="/public/build/img/zyro-image.webp" class="h-8 mr-3" alt="Flowbite Logo" />
                     <span
-                        class="self-center text-2xl hidden sm:block font-semibold whitespace-nowrap dark:text-white">StomaDiaHelp</span>
+                        class="self-center text-2xl hidden sm:block font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-blue-800 dark:from-green-400 dark:to-lime-500">StomaDiaHelp</span>
                 </a>
                 <?php if ($auth): ?>
                     <div class="md:order-2">
@@ -59,20 +61,53 @@ $auth = $_SESSION["login"] ?? false;
                             </div>
                             <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
 
-                                <li>
-                                    <div class="flex">
-                                        <a href="/public/perfil">
-                                            <button id="defaultModalButton" data-modal-toggle="defaultModal"
-                                                class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                                                type="button">
-                                                Perfil
-                                            </button>
-                                        </a>
-                                    </div>
-                                </li>
+                                <?php if ($_SESSION["rol"] == "paciente"): ?>
+                                    <li>
+                                        <div class="flex">
+                                            <a href="/public/perfil">
+                                                <button id="defaultModalButton" data-modal-toggle="defaultModal"
+                                                    class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                    type="button">
+                                                    Perfil
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </li>
+                                <?php endif ?>
+                                <?php if (isset($_SESSION['rol']) && ($_SESSION['rol'] == 'abogado' || $_SESSION['rol'] == 'enfermero' || $_SESSION['rol'] == 'psicologo')): ?>
+                                    <li>
+                                        <div class="flex">
+                                            <a href="/public/perfil/profesionales">
+                                                <button id="defaultModalButton" data-modal-toggle="defaultModal"
+                                                    class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                    type="button">
+                                                    Perfil
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </li>
+                                <?php endif ?>
                                 <?php if ($_SESSION["admin"]): ?>
                                     <li>
                                         <a href="/public/admin/index"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Administrar</a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if ($_SESSION["rol"] == "abogado"): ?>
+                                    <li>
+                                        <a href="/public/admin/abogados"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Administrar</a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if ($_SESSION["rol"] == "psicologo"): ?>
+                                    <li>
+                                        <a href="/public/admin/psicologos"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Administrar</a>
+                                    </li>
+                                <?php endif; ?>
+                                <?php if ($_SESSION["rol"] == "enfermero"): ?>
+                                    <li>
+                                        <a href="/public/admin/enfermeros"
                                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Administrar</a>
                                     </li>
                                 <?php endif; ?>
@@ -96,7 +131,7 @@ $auth = $_SESSION["login"] ?? false;
                 <?php if (!$auth): ?>
                     <a href="/public/login" class="md:order-2">
                         <button type="button"
-                            class="  text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Inicia
+                            class="  text-white bg-gradient-to-br from-green-400 to-blue-800  dark:to-lime-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Inicia
                             Sesion</button>
                     </a>
                 <?php endif ?>
@@ -118,12 +153,12 @@ $auth = $_SESSION["login"] ?? false;
 
                         <li>
                             <a href="/public"
-                                class="block  text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                                class="block text-green-500 dark:text-lime-500 rounded md:bg-transparen md:p-0  md:dark:bg-transparent"
                                 aria-current="page">Home</a>
                         </li>
                         <li>
                             <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
-                                class="flex items-center justify-between w-full py-2 pl-3 pr-4  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Servicios
+                                class="flex items-center justify-between w-full py-2 pl-3 pr-4  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 hover:text-green-500 dark:hover:text-lime-500 md:p-0 md:w-auto dark:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Servicios
                                 <svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -183,13 +218,13 @@ $auth = $_SESSION["login"] ?? false;
                         </li>
                         <?php if ($auth): ?>
                             <li>
-                                <a href="/public/cita"
-                                    class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Citas</a>
+                                <a href="/public/citas"
+                                    class="block py-2 pl-3 pr-4 text-gray-900 rounded  md:hover:bg-transparent md:border-0 md:p-0 dark:text-white hover:text-green-500 dark:hover:text-lime-500 dark:hover:bg-gray-700  md:dark:hover:bg-transparent">Citas</a>
                             </li>
                         <?php endif; ?>
                         <li>
                             <a href="/public/investigaciones"
-                                class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Investigaciones</a>
+                                class="block py-2 pl-3 pr-4 text-gray-900 rounded md:border-0 hover:text-green-500 dark:hover:text-lime-500 md:p-0 dark:text-white md:dark:hover:bg-transparent">Investigaciones</a>
                         </li>
                     </ul>
                 </div>
@@ -198,9 +233,15 @@ $auth = $_SESSION["login"] ?? false;
 
     </header>
 
+
+    <!-- alertas -->
+
+
     <?php echo $contenido; ?>
 
     <?php echo $script ?? ''; ?>
+
+
 
     <footer>
 
@@ -210,21 +251,21 @@ $auth = $_SESSION["login"] ?? false;
                     <a href="/public" class="flex items-center mb-4 sm:mb-0">
                         <img src="/public/build/img/zyro-image.webp" class="h-8 mr-3" alt="Flowbite Logo" />
                         <span
-                            class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">StomaDiaHelp</span>
+                            class="self-center text-2xl font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-blue-800 dark:from-green-500 dark:to-lime-500">StomaDiaHelp</span>
                     </a>
                     <ul
                         class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                         <li>
-                            <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
+                            <a href="#" class="mr-4 hover:underline md:mr-6 ">Nosotros</a>
                         </li>
                         <li>
-                            <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+                            <a href="#" class="mr-4 hover:underline md:mr-6">Politicas de privacidad</a>
                         </li>
                         <li>
-                            <a href="#" class="mr-4 hover:underline md:mr-6 ">Licensing</a>
+                            <a href="#" class="mr-4 hover:underline md:mr-6 ">Licencia</a>
                         </li>
                         <li>
-                            <a href="#" class="hover:underline">Contact</a>
+                            <a href="#" class="hover:underline">Contacto</a>
                         </li>
                     </ul>
                 </div>
@@ -237,7 +278,28 @@ $auth = $_SESSION["login"] ?? false;
     </footer>
 
 </body>
+<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '665f3fa423cdafbec1181793' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.6/flowbite.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/datepicker.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/ldrs/dist/auto/cardio.js"></script>
+<script>
+    var loader = document.getElementById("loader");
+    window.addEventListener("load", function(){
+        loader.style.display= "none";
+    })
+</script>
+
 
 </html>

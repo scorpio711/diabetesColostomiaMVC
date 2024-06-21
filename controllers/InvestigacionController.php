@@ -13,7 +13,8 @@ class InvestigacionController
     {
         session_start();
        
-        isAdmin();
+        esFuncionario();
+        $rol = $_SESSION["rol"];
 
         $investigaciones = Investigacion::all();
         $investigacion = new Investigacion();
@@ -134,7 +135,8 @@ class InvestigacionController
             "investigacion" => $investigacion,
             "resultado" => $resultado,
             "errores" => $errores,
-            "erroresActualizacion" => $erroresActualizacion
+            "erroresActualizacion" => $erroresActualizacion,
+            "rol" => $rol
         ]);
     }
 }

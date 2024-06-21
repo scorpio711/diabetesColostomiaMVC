@@ -1,6 +1,6 @@
 <main class="contenedor ">
     <!-- Start block -->
-    <section class="bg-gray-50 mt-24 dark:bg-gray-900 p-3 sm:p-5 antialiased">
+    <section class="mt-24 p-3 sm:p-5 antialiased">
         <!-- alerta de investigacion creada-->
         <?php if (intval($resultado) === 1): ?>
             <div id="alert-2"
@@ -175,7 +175,16 @@
                             Añadir Publicacion
                         </button>
                         <div class="flex items-center space-x-3 w-full  md:w-auto">
-                            <a class="w-full" href="/public/admin/index">
+
+                            <a class="w-full" href="/public/admin/<?php if ($rol == 'abogado') {
+                                echo "abogados";
+                            } elseif ($rol == 'enfermero') {
+                                echo "enfermeros";
+                            } elseif ($rol == 'psicologo') {
+                                echo "psicologos";
+                            } else {
+                                echo "index";
+                            } ?>">
                                 <button type="button"
                                     class="py-2 px-5 w-full  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Volver</button>
                             </a>
@@ -225,7 +234,8 @@
                                             class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
                                             <div
                                                 class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                                                <h3 class="font-semibold text-center text-gray-900 dark:text-white">imagen
+                                                <h3 class="font-semibold text-center text-gray-900 dark:text-white">
+                                                    imagen
                                                 </h3>
                                             </div>
                                             <div class="px-3 py-2 flex align-center justify-center">
@@ -571,7 +581,7 @@
                         <div class="flex items-center space-x-4">
                             <button type="submit" name="actualizar"
                                 class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            Actualizar</button>
+                                Actualizar</button>
                         </div>
                     </form>
                 </div>

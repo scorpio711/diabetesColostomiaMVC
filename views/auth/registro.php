@@ -4,7 +4,7 @@ $script = "<script src ='/public/build/js/app.js'></script>";
 
 ?>
 
-<section class="bg-gray-50 dark:bg-gray-90 dark:bg-gray-900 py-40">
+<section class="dark:bg-gray-90 dark:bg-gray-900 py-40">
     <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
             <img class="w-8 h-8 mr-2" src="../../public/build/img/zyro-image.webp" alt="logo">
@@ -21,7 +21,7 @@ $script = "<script src ='/public/build/js/app.js'></script>";
             class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                    Crea una Cuenta
+                    Crea tu Cuenta
                 </h1>
                 <form class="space-y-4 md:space-y-6" enctype="multipart/form-data" method="POST">
                     <div class="mb-6">
@@ -45,33 +45,14 @@ $script = "<script src ='/public/build/js/app.js'></script>";
                         </select>
                     </div>
 
-                    <!-- <div>
-                        <label for="rol"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rol</label>
-                        <select id="opciones" onchange="mostrarOpcionSeleccionada()" name="rol"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">Escoge tu rol</option>
-                            <option value="paciente">Paciente</option>
-                            <option value="cuidador">Cuidador</option>
-                            <option value="otro">Otro</option>
-                        </select>
-                    </div> -->
-
-                    <div id="resultado" style="display: none;">
-                        <h3>Has seleccionado:</h3>
-                        <p id="opcionSeleccionada"></p>
-                    </div>
-
-                    <!-- En caso de que sea paciente -->
-                    <div id="opcionPaciente" style="display: none;">
+                    <div id="opcionPaciente">
                         <label for="enfermedad"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Enfermedad</label>
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Condición</label>
                         <select id="countries" name="enfermedad"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="">Selecciona tu enfermedad</option>
-                            <option value="diabetes">Diabetes</option>
-                            <option value="colostomia">Colostomia</option>
-                            <option value="ambas">Diabetes y colostomia</option>
+                            <option value="">Selecciona tu condición</option>
+                            <option value="diabetes" <?php echo $usuario->enfermedad == "diabetes" ? "selected" : ""?>>Diabetes</option>
+                            <option value="colostomia" <?php echo $usuario->enfermedad == "colostomia" ? "selected" : ""?>>Colostomia</option>
                         </select>
                     </div>
 
@@ -121,8 +102,8 @@ $script = "<script src ='/public/build/js/app.js'></script>";
                         </div>
                     </div>
                     <button type="submit" name="crear"
-                        class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Crear
-                        una cuenta</button>
+                        class="text-white bg-gradient-to-br  from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-base px-6 py-3.5 text-center me-2 mb-2 w-full">Crear
+                        tu cuenta</button>
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                         ¿Ya tienes una Cuenta? <a href="/public/login"
                             class="font-medium text-primary-600 hover:underline dark:text-primary-500">Inicia Sesion

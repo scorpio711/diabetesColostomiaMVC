@@ -13,8 +13,10 @@ class PacientesController
     public static function administrarPacientes(Router $router)
     {
         session_start();
+        // debuguear($_SESSION);
+        $rol = $_SESSION["rol"];
 
-        isAdmin();
+        esFuncionario();
         $pacientes = Paciente::all();
         $resultado = "";
         $errores = [];
@@ -22,7 +24,8 @@ class PacientesController
         $router->render("/admin/pacientes/administrar", [
             "pacientes" => $pacientes,
             "resultado"=> $resultado,
-            "errores" => $errores
+            "errores" => $errores,
+            "rol" => $rol
         ]);
 
     }

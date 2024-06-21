@@ -5,7 +5,7 @@ namespace Model;
 class Usuario extends ActiveRecord
 {
     protected static $tabla = "usuarios";
-    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "admin", "confirmado", "token", "enfermedad", "sexo", "actualizado"];
+    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "imagen", "admin", "confirmado", "token", "enfermedad", "sexo", "actualizado", "rol"];
 
     public $id;
     public $email;
@@ -14,10 +14,12 @@ class Usuario extends ActiveRecord
     public $fecha_nacimiento;
     public $enfermedad;
     public $sexo;
+    public $imagen;
     public $admin;
     public $confirmado;
     public $token;
     public $actualizado;
+    public $rol;
 
     public function __construct($args = [])
     {
@@ -25,13 +27,15 @@ class Usuario extends ActiveRecord
         $this->email = $args["email"] ?? "";
         $this->password = $args["password"] ?? "";
         $this->nombre = $args["nombre"] ?? "";
-        $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? "";
+        $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? 0;
+        $this->imagen = $args["imagen"] ?? "";
         $this->enfermedad = $args["enfermedad"] ?? "";
         $this->sexo = $args["sexo"] ?? null;
         $this->admin = $args["admin"] ?? 0;
         $this->confirmado = $args["confirmado"] ?? 0;
         $this->token = $args["token"] ?? "";
         $this->actualizado = $args["actualizado"] ?? 0;
+        $this->rol = $args["rol"] ?? "";
     }
     public function validarNuevaCuenta()
     {
@@ -53,9 +57,28 @@ class Usuario extends ActiveRecord
         if (strlen($this->password) <= 8) {
             self::$errores[] = "la constraseña debe tener mas de 8 caracteres";
         }
+
         return self::$errores;
     }
 
+    //Validar cuenta profesional
+
+    public function validarProfesional()
+    {
+        if (!$this->sexo) {
+            self::$errores[] = "Debes añadir tu sexo";
+        }
+        if (!$this->fecha_nacimiento) {
+            self::$errores[] = "Debes añadir tu fecha de nacimiento";
+        }
+        return self::$errores;
+    }
+    public function validarImagen(){
+        if(!$this->imagen) {
+            self::$errores[] = "Debes añadir una imagen en tu perfil";
+        }
+        return self::$errores;
+    }
     //Validar login
     public function validarLogin()
     {

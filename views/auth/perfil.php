@@ -1,5 +1,5 @@
-<section class="bg-white pt-12 dark:bg-gray-900">
-    <div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
+<section class="pt-24">
+    <div class="bg-white dark:bg-gray-900 max-w-2xl px-6 py-6 mx-auto rounded-md ">
         <?php foreach ($errores as $error): ?>
             <div class="flex justify-center align-center">
                 <div class="p-4 mb-4 text-sm mt-4 text-red-800 w-96 text-center rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
@@ -10,7 +10,7 @@
             </div>
 
         <?php endforeach; ?>
-        <h2 class="mb-4 text-xl font-bold text-gray-900 dark:text-white">Perfil</h2>
+        
         <?php if (intval($_SESSION["actualizado"]) == 1): ?>
             <div class="flex justify-center">
                 <img class="rounded w-36 h-36" src="/public/imagenesUsuarios/<?php echo $_SESSION["imagen"] ?>"
@@ -25,7 +25,7 @@
         <?php if ($usuario->actualizado === "0"): ?>
             <form enctype="multipart/form-data" method="POST">
                 <!-- <input type="number" name="id" class="hidden" value="<?php echo $usuario->id; ?>"> -->
-                <input type="text" name="imagenPrevia" class="hidden" value="<?php echo $paciente->imagen; ?>">
+                <input type="text" name="imagenPrevia" class="hidden" value="<?php echo $usuario->imagen; ?>">
 
                 <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                     <div class="sm:col-span-2">
@@ -219,7 +219,7 @@
         <?php if ($usuario->actualizado === "1"): ?>
             <form enctype="multipart/form-data" method="POST">
 
-                <input type="text" name="imagenPrevia" class="hidden" value="<?php echo $pacienteActualizado->imagen; ?>">
+                <input type="text" name="imagenPrevia" class="hidden" value="<?php echo $usuario->imagen; ?>">
 
                 <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                     <div class="sm:col-span-2">

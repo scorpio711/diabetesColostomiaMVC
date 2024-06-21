@@ -1,20 +1,20 @@
 <!-- Investigaciones -->
-<div class="bg-white py-6 sm:py-8 lg:py-12 dark:bg-gray-900">
-    <div class="mx-auto max-w-screen-2xl px-4 md:px-8">
+<div class=" py-6 sm:py-8 lg:py-12">
+    <div class="mx-auto max-w-screen-xl px-4 md:px-8">
         <!-- text - start -->
         <div class="mb-10 md:mb-16">
             <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl dark:text-white">Nuestras
                 Investigaciones
             </h2>
 
-            <p class="mx-auto max-w-screen-md text-center text-gray-500 md:text-lg">Nuestras investigaciones se centran
+            <p class="mx-auto max-w-screen-md text-center text-gray-700 dark:text-gray-200 md:text-lg">Nuestras investigaciones se centran
                 en avanzar en la comprensión de la diabetes y la colostomía, así como en mejorar los tratamientos y la
                 calidad de vida de las personas afectadas. A través de rigurosos estudios científicos, buscamos
                 descubrir nuevos enfoques médicos, terapéuticos y tecnológicos para el manejo de estas condiciones. </p>
         </div>
         <!-- text - end -->
 
-        <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-8">
+        <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-3 xl:gap-8">
             <?php foreach ($investigaciones as $investigacion): ?>
                 <!-- article - start -->
                 <div class="flex flex-col overflow-hidden rounded-lg border bg-white dark:bg-gray-900 dark:border-blue-700">
@@ -30,7 +30,7 @@
                             </a>
                         </h2>
 
-                        <p class="mb-8 text-gray-500 ">
+                        <p class="mb-8 text-gray-700 dark:text-gray-200">
                             <?php echo $investigacion->resumen ?>
                         </p>
 

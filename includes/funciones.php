@@ -21,13 +21,60 @@ function estaAutenticado()
 
 }
 
-function isAdmin() : void
+function isAdmin(): void
 {
     if (!isset($_SESSION["admin"])) {
         header("location: /public");
     }
 }
 
+function esAbogado()
+{
+    if ($_SESSION["rol"] !== "abogado") {
+        header("location: /public");
+    }
+}
+function esEnfermero()
+{
+    if ($_SESSION["rol"] !== "enfermero") {
+        header("location: /public");
+    }
+}
+function esPsicologo()
+{
+    if ($_SESSION["rol"] !== "psicologo") {
+        header("location: /public");
+    }
+}
+
+function esFuncionario()
+{
+    if ($_SESSION["rol"] == "abogado") {
+        esAbogado();
+    } elseif ($_SESSION["admin"] == "1") {
+        isAdmin();
+    } elseif ($_SESSION["rol"] == "enfermero") {
+        esEnfermero();
+    } elseif ($_SESSION["rol"] == "psicologo") {
+        esPsicologo();
+    } else {
+        header("Location:/public");
+    }
+}
+
+function esColostomia()
+{
+    if ($_SESSION["enfermedad"] !== "colostomia") {
+        header("location: /public");
+    }
+}
+
+function esDiabetes()
+{
+    if ($_SESSION["enfermedad"] !== "diabetes") {
+        header("location: /public");
+    }
+}
 
 function debuguear($variable)
 {
@@ -46,16 +93,18 @@ function s($html): string
 }
 
 // Validar contenido
-function validarTipoContenido($tipo){
+function validarTipoContenido($tipo)
+{
     $tipos = ["usuario", "investigacion"];
     return in_array($tipo, $tipos);
 }
 
 
 //Muestra mensajes y alertas
-function mostrarNotificacion($codigo){
+function mostrarNotificacion($codigo)
+{
     $mensaje = "";
-    switch($codigo){
+    switch ($codigo) {
         case '1':
 
     }

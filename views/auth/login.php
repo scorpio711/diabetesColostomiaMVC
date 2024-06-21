@@ -4,7 +4,7 @@
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img class="mx-auto h-10 w-auto" src="/public/build/img/zyro-image.webp"
                     alt="Your Company">
-                <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900 dark:text-white">
+                <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-blue-800 dark:text-lime-400">
                     Inicia Sesion con tu Cuenta</h2>
             </div>
             <?php foreach ($errores as $error): ?>
@@ -89,7 +89,7 @@
                                 class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">Contraseña</label>
                             <div class="text-sm">
                                 <a href="/public/olvide-password"
-                                    class="font-semibold text-indigo-600 hover:text-indigo-500">Olvidaste tu
+                                    class="font-semibold text-blue-800 hover:text-blue-900 dark:text-lime-400 dark:hover:text-lime-300">Olvidaste tu
                                     contraseña?</a>
                             </div>
                         </div>
@@ -102,14 +102,14 @@
 
                     <div>
                         <button type="submit"
-                            class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Inicia Sesion</button>
+                            class="w-full text-white bg-gradient-to-br from-green-400 to-blue-800 dark:to-lime-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-base px-6 py-2 text-center me-2 mb-2">Inicia Sesion</button>
                     </div>
                 </form>
 
                 <p class="mt-10 text-center text-sm text-gray-500">
                     ¿No estas registrado?
                     <a href="/public/registro"
-                        class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">Registrate Gratis</a>
+                        class="font-semibold leading-6 text-blue-800 hover:text-blue-900 dark:text-lime-400 dark:hover:text-lime-300">Registrate Gratis</a>
                 </p>
             </div>
         </div>

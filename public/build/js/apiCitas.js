@@ -1,0 +1,1 @@
+function iniciarApp(){consultarApi()}async function consultarApi(){try{const c="http://localhost:3000/public/api/chat";await fetch(c)}catch(c){console.log(c)}}

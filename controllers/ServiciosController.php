@@ -10,7 +10,8 @@ class ServiciosController
     public static function administrarServicios(Router $router)
     {
         session_start();
-        isAdmin();
+        esFuncionario();
+        $rol = $_SESSION["rol"];
 
         $resultado = $_GET['resultado'];
         $errores = [];
@@ -64,7 +65,8 @@ class ServiciosController
             "servicios" => $servicios,
             "servicioC" => $servicioC,
             "errores" => $errores,
-            "erroresActualizacion" => $erroresActualizacion
+            "erroresActualizacion" => $erroresActualizacion,
+            "rol" => $rol
         ]);
     }
 }

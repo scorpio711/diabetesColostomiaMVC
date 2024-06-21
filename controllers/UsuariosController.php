@@ -32,7 +32,6 @@ class UsuariosController
             if (isset($_POST['crear'])) {
                 //Crea una nueva instancia
                 $usuariosC = new Usuario($_POST);
-
                 /**SUBIDA DE ARCHIVOS**/
 
                 //  //Crear la carpeta para subir imagenes
@@ -53,13 +52,16 @@ class UsuariosController
                 //Validar
                 $errores = $usuariosC->validarNuevaCuenta();
 
+                //validar rol
+                if (!$usuariosC->enfermedad) {
+                    $errores[] = "Debes seleccionar un condicion";
+                }
+
                 $existeUsuario = $usuariosC->existeUsuario();
 
                 if ($existeUsuario->num_rows) {
                     $errores = Usuario::getErrores();
                 }
-
-
 
                 //revisar que errores este vacio
                 if (empty($errores)) {
@@ -69,11 +71,10 @@ class UsuariosController
                     //Generar un token unico
                     $usuariosC->crearToken();
 
-
                     //Enviar el email
                     $email = new Email($usuariosC->email, $usuariosC->nombre, $usuariosC->token);
 
-                    $email->enviarConfirmacion();
+                    $email->enviarConfirmacion($usuariosC->email);
 
                     //Crear el usuario
                     $resultado = $usuariosC->crear();
@@ -142,9 +143,11 @@ class UsuariosController
                     //Datos previos del usuario
                     $confirmado = $infoPreviaUsuario->confirmado;
                     $actualizado = $infoPreviaUsuario->actualizado;
+                    $rol = $infoPreviaUsuario->rol;
 
                     $usuario->confirmado = $confirmado;
                     $usuario->actualizado = $actualizado;
+                    $usuario->rol = $rol;
 
                     //Almacenar la imagen
                     if ($bool) {
@@ -191,7 +194,7 @@ class UsuariosController
         $usuario = Usuario::find($id);
         $usuarioId = $usuario->id;
 
-        
+
         $query = "SELECT * FROM pacientes WHERE pacienteId = " . $usuarioId . ";";
 
         $datosPacienteActualizado = Paciente::SQL($query);
@@ -222,10 +225,12 @@ class UsuariosController
                 //Realiza un resize a la imagen con intervention
                 if ($_FILES["imagen"]["tmp_name"]) {
                     $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(800, 600);
-                    $paciente->setImagen($nombreImagen);
+                    $usuario->setImagen($nombreImagen);
                 }
 
+                //Validar el formulario y agregar los errores a un arreglo
                 $errores = $paciente->validarActualizacionPerfil();
+                $errores= $usuario->validarImagen();
 
                 if (empty($errores)) {
 
@@ -252,10 +257,10 @@ class UsuariosController
                     //Guarda la imagen en el servidor
                     $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
 
-                    //actualizar el usuario y su perfil de
+                    //actualizar el usuario y su perfil
                     $usuario->actualizar();
 
-                    $_SESSION["imagen"] = $paciente->imagen;
+                    $_SESSION["imagen"] = $usuario->imagen;
                     $_SESSION["actualizado"] = 1;
 
                     $resultado = $paciente->crear();
@@ -266,12 +271,12 @@ class UsuariosController
                     }
                 }
             } elseif (isset($_POST['actulizarImagen'])) {
-                $paciente = Paciente::SQL($query)[0];
-
+                $usuario = Usuario::find($usuarioId);
+                
                 //generar nombre unico
                 $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
                 $imagenPrevia = $_POST["imagenPrevia"];
-
+                
                 //verificar si la carpeta esta creada
                 if (!is_dir(CARPETA_IMAGENES_USUARIOS)) {
                     mkdir(CARPETA_IMAGENES_USUARIOS);
@@ -284,22 +289,22 @@ class UsuariosController
 
                     // Guardar la imagen con el nuevo nombre
                     if ($image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen)) {
-                        $paciente->setImagen($nombreImagen);
                         if (file_exists(CARPETA_IMAGENES_USUARIOS . $imagenPrevia)) {
                             unlink(CARPETA_IMAGENES_USUARIOS . $imagenPrevia);
                         }
+                        $usuario->setImagen($nombreImagen);
                         $bool = true;
                     } else {
                         // Manejar el error al guardar la imagen
                         $bool = false;
                     }
                 } else {
-                    $paciente->setImagen($imagenPrevia);
+                    $usuario->setImagen($imagenPrevia);
                     $bool = false;
                 }
 
 
-                $errores = $paciente->validarActualizacionPerfil();
+                $errores = $usuario->validarImagen();
 
                 if (empty($errores)) {
 
@@ -307,12 +312,11 @@ class UsuariosController
                     if ($bool) {
                         $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
                     }
-                    $_SESSION["imagen"] = $paciente->imagen;
-                    $resultado = $paciente->actualizar();
+                    $_SESSION["imagen"] = $usuario->imagen;
+                    $resultado = $usuario->actualizar();
 
                     if ($resultado) {
                         header("location:/public/");
-
                     }
                 }
             }

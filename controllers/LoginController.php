@@ -4,6 +4,7 @@ namespace Controllers;
 
 use MVC\Router;
 use Model\Usuario;
+use Model\Profesionales;
 use Model\Paciente;
 use Classes\Email;
 
@@ -35,25 +36,38 @@ class LoginController
                         //Autenticar el usuario
                         session_start();
                         $usuarioId = $usuario->id;
-
+                        
                         $query = "SELECT * FROM pacientes WHERE pacienteId = " . $usuarioId . ";";
-
+                        
                         $pacienteDatos = Paciente::SQL($query);
                         $paciente = $pacienteDatos[0];
-
+                    
                         $_SESSION["id"] = $usuarioId;
                         $_SESSION["nombre"] = $usuario->nombre;
                         $_SESSION["email"] = $usuario->email;
-                        $_SESSION["imagen"] = $paciente->imagen;
+                        $_SESSION["imagen"] = $usuario->imagen;
                         $_SESSION["sexo"] = $usuario->sexo;
                         $_SESSION["fecha_nacimiento"] = $usuario->fecha_nacimiento;
                         $_SESSION["actualizado"] = $usuario->actualizado;
+                        $_SESSION["rol"] = $usuario->rol;
+                        $_SESSION["enfermedad"] = $usuario->enfermedad;
                         $_SESSION["login"] = true;
 
+                        
                         //redireccionamiento
                         if ($usuario->admin === "1") {
                             $_SESSION["admin"] = $usuario->admin ?? 0;
                             header("location: /public/admin/index");
+                        } elseif ($_SESSION["rol"] === "abogado") {
+                            header('Location: /public/admin/abogados');
+                        }elseif ($_SESSION["rol"] === "enfermero") {
+                            header('Location: /public/admin/enfermeros');
+                        }elseif ($_SESSION["rol"] === "psicologo") {
+                            header('Location: /public/admin/psicologos');
+                        }elseif ($_SESSION["enfermedad"] === "diabetes") {
+                            header('Location: /public/diabetes');
+                        }elseif ($_SESSION["enfermedad"] === "colostomia") {
+                            header('Location: /public/colostomia');
                         } else {
                             header('Location: /public/cita');
                         }
@@ -183,8 +197,14 @@ class LoginController
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $usuario->sincronizar($_POST);
-
             $errores = $usuario->validarNuevaCuenta();
+
+            //validar condición
+            if (!$usuario->enfermedad) {
+                $errores[] = "Debes seleccionar un condicion";
+            }
+
+            $usuario->rol = "paciente";
 
             //Revisar que alertas este vacio
             if (empty($errores)) {

@@ -10,7 +10,9 @@ class PaginasController
 {
     public static function index(Router $router)
     {
-        $investigaciones = Investigacion::get(4);
+        session_start();
+        // debuguear($_SESSION);
+        $investigaciones = Investigacion::get(3);
         $router->render("/paginas/index", [
             "investigaciones" => $investigaciones
         ]);

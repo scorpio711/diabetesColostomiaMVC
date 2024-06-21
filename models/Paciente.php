@@ -5,7 +5,7 @@ namespace Model;
 class Paciente extends ActiveRecord
 {
     protected static $tabla = "pacientes";
-    protected static $columnasDB = ["id", "pacienteId", "edad", "sexo", "escolaridad", "estrato_socioeconomico", "lugar_de_residencia", "ocupacion", "apoyo", "afiliacion", "tiempo_enfermedad", "nombre", "imagen"];
+    protected static $columnasDB = ["id", "pacienteId", "edad", "sexo", "escolaridad", "estrato_socioeconomico", "lugar_de_residencia", "ocupacion", "apoyo", "afiliacion", "tiempo_enfermedad", "nombre"];
 
     public $id;
     public $pacienteId;
@@ -19,7 +19,6 @@ class Paciente extends ActiveRecord
     public $afiliacion;
     public $tiempo_enfermedad;
     public $nombre;
-    public $imagen;
 
     public function __construct($args = [])
     {
@@ -34,7 +33,7 @@ class Paciente extends ActiveRecord
         $this->afiliacion = $args["afiliacion"] ?? "";
         $this->tiempo_enfermedad = $args["tiempo_enfermedad"] ?? "";
         $this->nombre = $args["nombre"] ?? 0;
-        $this->imagen = $args["imagen"] ?? null;
+        
     }
     public function validarActualizacionPerfil()
     {
@@ -59,9 +58,7 @@ class Paciente extends ActiveRecord
         if (!$this->tiempo_enfermedad) {
             self::$errores[] = "debes  esoger tu tiempo con tu enfermedad";
         }
-        if (!$this->imagen) {
-            self::$errores[] = 'La Imagen es Obligatoria';
-        }
+        
 
         return self::$errores;
     }
