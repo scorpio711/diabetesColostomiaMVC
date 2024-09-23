@@ -1,60 +1,44 @@
 <!-- Investigaciones -->
-<div class=" py-6 sm:py-8 lg:py-12">
+<div class="py-6 sm:py-8 lg:py-12">
     <div class="mx-auto max-w-screen-xl px-4 md:px-8">
         <!-- text - start -->
-        <div class="mb-10 md:mb-16">
-            <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl dark:text-white">Nuestras
-                Investigaciones
-            </h2>
-
-            <p class="mx-auto max-w-screen-md text-center text-gray-700 dark:text-gray-200 md:text-lg">Nuestras investigaciones se centran
-                en avanzar en la comprensión de la diabetes y la colostomía, así como en mejorar los tratamientos y la
-                calidad de vida de las personas afectadas. A través de rigurosos estudios científicos, buscamos
-                descubrir nuevos enfoques médicos, terapéuticos y tecnológicos para el manejo de estas condiciones. </p>
+        <div class="mx-auto max-w-screen-sm text-center">
+            <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">Articulos relacionados</h2>
+            <p class="mb-8 font-light text-black lg:mb-16 sm:text-xl dark:text-gray-400">Explore the whole
+                collection of open-source web components and elements built with the utility classes from Tailwind
+            </p>
         </div>
         <!-- text - end -->
 
-        <div class="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-3 xl:gap-8">
+        <div
+            class="grid gap-4 sm:grid-cols-2 md:gap-6  xl:grid-cols-4 xl:gap-8 justify-center items-center justify-items-center">
             <?php foreach ($investigaciones as $investigacion): ?>
                 <!-- article - start -->
-                <div class="flex flex-col overflow-hidden rounded-lg border bg-white dark:bg-gray-900 dark:border-blue-700">
-                    <a href="#" class="group relative block h-48 overflow-hidden bg-gray-100 md:h-64">
-                        <img src="/public/imagenesInvestigaciones/<?php echo $investigacion->imagen ?>" loading="lazy" alt="Photo by Minh Pham"
-                            class="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
+
+                <div
+                    class="max-w-sm bg-green-50 border border-blue-300 shadow-md shadow-green-500/20  rounded-lg  dark:bg-gray-800 dark:border-gray-700" style="backdrop-filter: blur(20px);">
+                    <a href="#">
+                        <img class="rounded-t-lg" src="/public/imagenesInvestigaciones/<?php echo $investigacion->imagen ?>"
+                            alt="imagen investigación" />
                     </a>
-
-                    <div class="flex flex-1 flex-col p-4 sm:p-6 ">
-                        <h2 class="mb-2 text-lg font-semibold text-gray-800 dark:text-white">
-                            <a href="#" class="transition duration-100 hover:text-indigo-500 active:text-indigo-600">
+                    <div class="p-5 text-center">
+                        <a href="#">
+                            <h5 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
                                 <?php echo $investigacion->titulo ?>
-                            </a>
-                        </h2>
-
-                        <p class="mb-8 text-gray-700 dark:text-gray-200">
-                            <?php echo $investigacion->resumen ?>
+                            </h5>
+                        </a>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                            <?php echo substr($investigacion->resumen, 0, 90); ?>...
                         </p>
-
-                        <div class="mt-auto flex items-end justify-between">
-                            <div class="flex items-center gap-2">
-                                <div class="h-10 w-10 shrink-0 overflow-hidden rounded-full bg-gray-100">
-                                    <img src="https://images.unsplash.com/photo-1611898872015-0571a9e38375?auto=format&q=75&fit=crop&w=64"
-                                        loading="lazy" alt="Photo by Brock Wegner"
-                                        class="h-full w-full object-cover object-center" />
-                                </div>
-
-                                <div>
-                                    <span class="block text-indigo-500">
-                                        <?php echo $investigacion->autor ?>
-                                    </span>
-                                    <span class="block text-sm text-gray-400">
-                                        <?php echo $fechaFormateada = date("d/m/Y", strtotime($investigacion->fecha_publicacion)); ?>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <span
-                                class="rounded border px-2 py-1 text-sm text-gray-500 dark:border-blue-700 dark:text-gray-200">Article</span>
-                        </div>
+                        <a href="/public/blog"
+                            class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Leer más
+                            <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M1 5h12m0 0L9 1m4 4L9 9" />
+                            </svg>
+                        </a>
                     </div>
                 </div>
                 <!-- article - end -->

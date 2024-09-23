@@ -176,6 +176,8 @@
                             </svg>
                             Añadir Usuario
                         </button> -->
+                        <button type="button" id="exportExcel"
+                            class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Excel</button>
                         <div class="flex items-center space-x-3 w-full  md:w-auto">
                             <a class="w-full" href="/public/admin/<?php if ($rol == 'abogado') {
                                 echo "abogados";
@@ -186,8 +188,9 @@
                             } else {
                                 echo "index";
                             } ?>">
+
                                 <button type="button"
-                                    class="py-2 px-5 w-full  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Volver</button>
+                                    class="py-2 px-5 w-full  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Volver</button>
                             </a>
                         </div>
                     </div>
@@ -197,8 +200,9 @@
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-4 py-4">Id</th>
-                                <th scope="col" class="px-4 py-4">PacienteId</th>
                                 <th scope="col" class="px-4 py-4">Nombre</th>
+                                <th scope="col" class="px-4 py-4">Correo</th>
+                                <th scope="col" class="px-4 py-4">Telefono</th>
                                 <th scope="col" class="px-4 py-3">edad</th>
                                 <th scope="col" class="px-4 py-3">sexo</th>
                                 <th scope="col" class="px-4 py-3">escolaridad</th>
@@ -217,9 +221,7 @@
                         <tbody>
                             <?php foreach ($pacientes as $paciente): ?>
                                 <tr class="border-b dark:border-gray-700">
-                                    <td class="px-4 py-3">
-                                        <?php echo $paciente->id; ?>
-                                    </td>
+
                                     <td class="px-4 py-3">
                                         <?php echo $paciente->pacienteId; ?>
                                     </td>
@@ -227,7 +229,14 @@
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <?php echo $paciente->nombre; ?>
                                     </th>
-
+                                    <th scope="row"
+                                        class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <?php echo $paciente->email; ?>
+                                    </th>
+                                    <th scope="row"
+                                        class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        <?php echo $paciente->telefono; ?>
+                                    </th>
                                     <td class="px-4 py-3 max-w-[12rem] truncate">
                                         <?php echo $paciente->edad; ?>
                                     </td>
@@ -258,10 +267,10 @@
                                         <?php echo $paciente->tiempo_enfermedad; ?>
                                     </td>
                                     <td class="px-4 py-3">
-                                        <button data-popover-target="popover-default<?php echo $usuario->id; ?>"
+                                        <button data-popover-target="popover-default<?php echo $paciente->pacienteId; ?>"
                                             type="button"
                                             class="text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-emerald-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">ver</button>
-                                        <div data-popover id="popover-default<?php echo $usuario->id; ?>" role="tooltip"
+                                        <div data-popover id="popover-default<?php echo $paciente->pacienteId; ?>" role="tooltip"
                                             class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
                                             <div
                                                 class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
@@ -270,7 +279,7 @@
                                             </div>
                                             <div class="px-3 py-2 flex align-center justify-center">
                                                 <img class="w-32 h-auto rounded-2"
-                                                    src="../../../public/imagenesUsuarios/<?php echo $usuario->imagen; ?>">
+                                                    src="../../../public/imagenesUsuarios/<?php echo $paciente->imagen; ?>">
                                             </div>
                                             <div data-popper-arrow></div>
                                         </div>
@@ -641,3 +650,16 @@
         </div>
     <?php endforeach ?>
 </main>
+<!-- js para exportar en excel -->
+<script>
+    document.getElementById('exportExcel').addEventListener('click', function () {
+        // Selecciona la tabla (ajusta el selector según tu HTML)
+        var table = document.querySelector('table');
+
+        // Convierte la tabla HTML a una hoja de cálculo
+        var wb = XLSX.utils.table_to_book(table);
+
+        // Guarda el archivo
+        XLSX.writeFile(wb, 'tabla_exportada.xlsx');
+    });
+</script>

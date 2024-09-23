@@ -12,7 +12,7 @@ class PaginasController
     {
         session_start();
         // debuguear($_SESSION);
-        $investigaciones = Investigacion::get(3);
+        $investigaciones = Investigacion::get(4);
         $router->render("/paginas/index", [
             "investigaciones" => $investigaciones
         ]);
@@ -37,6 +37,7 @@ class PaginasController
     {
         $router->render("paginas/medico");
     }
+    
     public static function psicologico(Router $router)
     {
         $router->render("paginas/psicologico");
@@ -44,6 +45,10 @@ class PaginasController
     public static function juridico(Router $router)
     {
         $router->render("paginas/juridico");
+    }
+    public static function blog(Router $router)
+    {
+        $router->render("paginas/blog");
     }
     public static function encuesta(Router $router)
     {

@@ -1,11 +1,12 @@
 <?php
 
 $script = "
-<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+
 <script src ='/public/build/js/app.js'></script>
 ";
 ?>
 
+<div class="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40"></div>
 
 <div class="py-20 mx-auto max-w-screen-xl px-4 md:px-8">
     <div class="py-8">

@@ -17,7 +17,8 @@ class PacientesController
         $rol = $_SESSION["rol"];
 
         esFuncionario();
-        $pacientes = Paciente::all();
+        $query = "SELECT pacientes.*,usuarios.email,usuarios.telefono,usuarios.imagen FROM pacientes LEFT JOIN usuarios ON pacientes.pacienteId = usuarios.id;";
+        $pacientes = Paciente::SQL($query);
         $resultado = "";
         $errores = [];
 

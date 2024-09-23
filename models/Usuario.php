@@ -5,10 +5,11 @@ namespace Model;
 class Usuario extends ActiveRecord
 {
     protected static $tabla = "usuarios";
-    protected static $columnasDB = ["id", "email", "password", "nombre", "fecha_nacimiento", "imagen", "admin", "confirmado", "token", "enfermedad", "sexo", "actualizado", "rol"];
+    protected static $columnasDB = ["id", "email", "telefono", "password", "nombre", "fecha_nacimiento", "imagen", "admin", "confirmado", "token", "enfermedad", "sexo", "actualizado", "rol"];
 
     public $id;
     public $email;
+    public $telefono;
     public $password;
     public $nombre;
     public $fecha_nacimiento;
@@ -25,6 +26,7 @@ class Usuario extends ActiveRecord
     {
         $this->id = $args["id"] ?? null;
         $this->email = $args["email"] ?? "";
+        $this->telefono = $args["telefono"] ?? "";
         $this->password = $args["password"] ?? "";
         $this->nombre = $args["nombre"] ?? "";
         $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? 0;
@@ -41,6 +43,9 @@ class Usuario extends ActiveRecord
     {
         if (!$this->email) {
             self::$errores[] = "Debes añadir un email";
+        }
+        if (!$this->telefono) {
+            self::$errores[] = "Debes añadir un numero de telefono";
         }
         if (!$this->nombre) {
             self::$errores[] = "Debes añadir un nombre";
@@ -73,9 +78,10 @@ class Usuario extends ActiveRecord
         }
         return self::$errores;
     }
-    public function validarImagen(){
-        if(!$this->imagen) {
-            self::$errores[] = "Debes añadir una imagen en tu perfil";
+    public function validarImagen()
+    {
+        if (empty($_FILES['imagen']['name'])) {
+            self::$errores[] = 'La imagen es obligatoria';
         }
         return self::$errores;
     }

@@ -1,9 +1,8 @@
-
 <?php
 if (!$_SESSION["login"]):
     ?>
     <div id="sticky-banner" tabindex="-1"
-        class="fixed top-0 start-0 z-50 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+        class="fixed top-0 start-0 z-50 flex justify-between w-full p-4 border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
         <div class="flex items-center mx-auto">
             <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
                 <span
@@ -16,7 +15,7 @@ if (!$_SESSION["login"]):
                     <span class="sr-only">Light bulb</span>
                 </span>
                 <span>Registrate para acceder a más servicios <a href="/public/registro"
-                        class="inline font-medium text-blue-600 underline dark:text-blue-500 underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">Registrate
+                        class="inline font-medium text-green-500 underline dark:text-blue-500 underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">Registrate
                         aquí</a></span>
             </p>
         </div>
@@ -31,23 +30,23 @@ if (!$_SESSION["login"]):
             </button>
         </div>
     </div>
-<?php
+    <?php
 endif;
 ?>
 
 <div class="container mx-auto p-4 md:py-12 mt-10 ">
+
     <!--parte rincipal -->
     <section class="flex flex-col items-center">
         <div class="flex max-w-xl flex-col items-center pt-8 pb-0 text-center sm:pb-16 lg:pt-32 lg:pb-32">
-            <p class="mb-4 font-semibold text-blue-800 dark:text-white  md:mb-6 md:text-lg xl:text-xl">Estamos
-                orgullosos de
-                presentarte</p>
+            <p id="animacion1" class="mb-4 font-semibold text-teal-900 dark:text-white  md:mb-6 md:text-lg xl:text-xl">
+            </p>
             <h1 class="text-black-800 mb-8 text-4xl font-bold sm:text-5xl md:mb-12 md:text-6xl dark:text-white"><span
-                    class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-blue-800 dark:to-lime-500 dark:from-green-400">Una
-                    Plataforma para
-                    la Diabetes y la Colostomía</span></h1>
+                    id="animacion2"
+                    class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:to-lime-500 dark:from-green-400"></span>
+            </h1>
 
-            <p class="mb-8 leading-relaxed text-blue-800 dark:text-white md:mb-12 xl:text-lg">"Uniendo fuerzas para
+            <p class="mb-8 leading-relaxed text-black dark:text-white md:mb-12 xl:text-lg">"Uniendo fuerzas para
                 vivir con pasión
                 y superar los desafíos juntos"</p>
 
@@ -58,10 +57,11 @@ endif;
                 </a>
                 <a href="/public/login">
                     <button
-                        class="text-white bg-gradient-to-r from-green-400 to-blue-800 dark:to-lime-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-16 py-4 text-center me-2 mb-2">
-
-                        Inicia Sesion
-
+                        class="relative inline-flex items-center leading-7 justify-center p-0.5 mb-2 me-2 overflow-hidden text-base font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                        <span
+                            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                            Iniciar Sesión
+                        </span>
                     </button>
                 </a>
             </div>
@@ -69,152 +69,266 @@ endif;
     </section>
 
     <!-- fin del gradiente -->
-    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+    <hr class="h-px my-8 bg-blue-200 border-0 dark:bg-gray-700">
+    <!-- bento grid -->
+    <div>
+        <!-- component -->
+        <section>
+            <div class="p-8 mx-auto px-6 max-w-7xl">
 
-    <!-- sobre nosotros -->
-    <div class=" py-6 sm:py-8 lg:py-12">
-        <div class="mx-auto max-w-screen-xl px-4 md:px-8">
-            <div class="grid gap-8 md:grid-cols-2 lg:gap-12">
-                <div>
-                    <div class="h-64 overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-auto">
-                        <img src="../public/build/img/jared-rice-NTyBbu66_SI-unsplash (1).webp" loading="lazy"
-                            alt="Photo by Martin Sanchez" class="h-full w-full object-cover object-center" />
+                <div class="relative">
+                    <div class="relative z-10 grid gap-3 grid-cols-6">
+
+                        <a href="#"
+                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 xl:col-span-3 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900">
+
+                            <div class="grid sm:grid-cols-2">
+                                <div class="flex flex-col justify-between relative z-10 space-y-12 lg:space-y-6">
+                                    <div
+                                        class="relative aspect-square rounded-full size-12 flex border dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border-green-300 border-blue-300 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
+                                        <img src="/public/build/img/sun-dynamic-premium.png" alt="">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <h2
+                                            class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white">
+                                            Sobre Nosotros</h2>
+                                        <p class="dark:text-gray-300 text-gray-700">Provident fugit vero voluptate.
+                                            Voluptates a sapiente inventore nisi.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="overflow-hidden relative mt-6 sm:mt-auto h-fit -mb-[34px] -mr-[34px] sm:ml-6 py-6 p-6 border border-blue-300 rounded-tl-lg dark:bg-white/5 dark:border-white/10">
+                                    <img class="rounded-lg" src="/public/build/img/hands-1327811_1920.jpg" alt="">
+                                </div>
+                            </div>
+                        </a>
+
+                        </a>
+                        <a href="#"
+                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 xl:col-span-3 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900">
+                            <div class="h-full grid sm:grid-cols-2">
+                                <div class="flex flex-col justify-between relative z-10 space-y-12 lg:space-y-6">
+                                    <div
+                                        class="relative aspect-square rounded-full size-12 flex border dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
+                                        <img src="/public/build/img/boy-dynamic-premium.png" alt="">
+                                    </div>
+                                    <div class="space-y-2">
+                                        <h2
+                                            class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white">
+                                            Conosca a nuestros Profesionales</h2>
+                                        <p class="dark:text-gray-300 text-gray-700">Voluptate. magnam magni
+                                            doloribus dolores voluptates a sapiente inventore nisi.</p>
+                                    </div>
+                                </div>
+                                <div
+                                    class="flex -space-x-4 rtl:space-x-reverse justify-center items-center pt-10 sm:pt-0">
+                                    <img class="size-16 sm:size-20 border-2 border-white rounded-full dark:border-gray-800"
+                                        src="/public/build/img/perfil1.jpg" alt="">
+                                    <img class="size-16 sm:size-20 border-2 border-white rounded-full dark:border-gray-800"
+                                        src="/public/build/img/perfil2.jpg" alt="">
+                                    <img class="size-16 sm:size-20 border-2 border-white rounded-full dark:border-gray-800"
+                                        src="/public/build/img/perfil3.jpg" alt="">
+                                    <img class="size-16 sm:size-20 border-2 border-white rounded-full dark:border-gray-800"
+                                        src="/public/build/img/perfil4.jpg" alt="">
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="#"
+                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900 ">
+                            <div>
+                                <div
+                                    class="relative aspect-square rounded-full size-32 flex border mx-auto dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
+                                    <img src="/public/build/img/notebook-dynamic-premium.webp" alt="imagen">
+                                </div>
+                                <div class="mt-6 text-center relative z-10 space-y-2">
+                                    <h2
+                                        class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white ">
+                                        Ayuda Juridica</h2>
+                                    <p class="dark:text-gray-300 text-gray-700">Provident fugit and vero voluptate.
+                                        magnam magni doloribus dolores voluptates a sapiente nisi.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#"
+                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900 ">
+                            <div>
+                                <div
+                                    class="relative aspect-square rounded-full size-32 flex border mx-auto dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
+                                    <img src="/public/build/img/heart-dynamic-premium.png" alt="imagen">
+                                </div>
+                                <div class="mt-6 text-center relative z-10 space-y-2">
+                                    <h2
+                                        class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white ">
+                                        Atención Médica</h2>
+                                    <p class="dark:text-gray-300 text-gray-700">Provident fugit and vero voluptate.
+                                        magnam magni doloribus dolores voluptates a sapiente nisi.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#"
+                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 lg:col-span-2 overflow-hidden flex relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900">
+                            <div>
+                                <div
+                                    class="relative aspect-square rounded-full size-32 flex border mx-auto dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
+                                    <img src="/public/build/img/star-dynamic-premium.png" alt="imagen">
+                                </div>
+                                <div class="mt-6 text-center relative z-10 space-y-2">
+                                    <h2
+                                        class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white ">
+                                        Apoyo Emocional</h2>
+                                    <p class="dark:text-gray-300 text-gray-700">Provident fugit and vero voluptate.
+                                        magnam magni doloribus dolores voluptates a sapiente nisi.</p>
+                                </div>
+                            </div>
+                        </a>
+
                     </div>
                 </div>
-
-                <div class="md:pt-8">
-                    <p class="text-center font-bold text-blue-800 dark:text-lime-500 md:text-left">¿Quienes somos nosotros?</p>
-
-                    <h1
-                        class="mb-4 text-center text-2xl font-bold text-gray-800 sm:text-3xl md:mb-6 md:text-left dark:text-white">
-                        Cuidando Juntos la Diabetes y la Colostomía</h1>
-
-                    <p class="mb-6 text-gray-700 dark:text-gray-200 sm:text-lg md:mb-8">
-                        Nuestra misión es proporcionar apoyo integral y empoderamiento a las personas con diabetes y
-                        colostomía, brindándoles información, recursos y una comunidad solidaria. Nos esforzamos por
-                        mejorar la calidad de vida de nuestros usuarios al fomentar la educación, el auto-cuidado y
-                        la conexión entre pares.<br /><br />
-                        Buscamos romper barreras, eliminar el estigma y promover la inclusión, permitiendo que cada
-                        individuo viva una vida plena y saludable, sin importar los desafíos que enfrenten. <a href="#"
-                            class="text-blue-800 dark:text-lime-500 underline transition duration-100 dark:hover:text-lime-600 hover:text-blue-600">Mas
-                            sobre nosotros</a>
-                    </p>
-
-                    <h2
-                        class="mb-2 text-center text-xl font-semibold text-gray-900 sm:text-2xl md:mb-4 md:text-left dark:text-white">
-                        Sobre Nosotros</h2>
-
-                    <p class="mb-6 text-gray-700 dark:text-gray-200 sm:text-lg md:mb-8">En el Equipo de Apoyo D-Care, estamos
-                        comprometidos en brindar un apoyo incondicional a las personas que viven con diabetes y
-                        colostomía. Somos un grupo de profesionales altamente capacitados y apasionados, dedicados a
-                        ofrecer un espacio seguro y comprensivo para aquellos que enfrentan estos desafíos diarios.
-                    </p>
-                </div>
             </div>
-        </div>
     </div>
-    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700 ">
-
-    <!-- Nuestros servicios -->
-    <div class="py-6 sm:py-8 lg:py-12">
-        <div class="mx-auto max-w-screen-xl px-4 md:px-8">
-            <!-- text - start -->
-            <div class="mb-10 md:mb-16">
-                <h2 class="mb-4 text-center text-2xl font-bold text-gray-800 md:mb-6 lg:text-3xl dark:text-white">
-                    Nuestros Servicios
-                </h2>
-
-                <p class="mx-auto max-w-screen-md text-center text-gray- dark:text-gray-200 md:text-lg">Nuestros servicios abarcan
-                    asesoramiento legal, apoyo psicológico y atención médica especializada, proporcionando un
-                    enfoque integral para aquellos que viven con diabetes y colostomía.</p>
+    <hr class="h-[0.1px] my-8 bg-blue-200 border-0 dark:bg-gray-700">
+    <!-- Testimonios -->
+    <section class="bg-white dark:bg-gray-900">
+        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
+            <div class="mx-auto max-w-screen-sm">
+                <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">Testimonios</h2>
+                <p class="mb-8 font-light text-black lg:mb-16 sm:text-xl dark:text-gray-400">Explore the whole
+                    collection of open-source web components and elements built with the utility classes from Tailwind
+                </p>
             </div>
-            <!-- text - end -->
-
-            <div class="grid gap-x-4 gap-y-8 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-3">
-                <!-- product - start -->
-                <div>
-                    <a href="/public/juridico"
-                        class="group relative mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
-                        <img src="/public/build/img/clarisse-meyer-jKU2NneZAbI-unsplash.webp" loading="lazy"
-                            alt="Photo by Austin Wade"
-                            class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
-                    </a>
-
-                    <div class="flex items-start justify-between gap-2 px-2">
-                        <div class="flex flex-col">
-                            <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                <a href="#"
-                                    class="transition duration-100 hover:text-indigo-500 active:text-indigo-600">Ayuda
-                                    Juridica</a>
-                            </h2>
-
-                            <p class="mb-8 text-gray-700 dark:text-gray-200">Brindamos asesoramiento legal especializado, guiando a las
-                                personas con diabetes y colostomía en la protección de sus derechos, beneficios y
-                                recursos legales para asegurar su bienestar y calidad de vida.</p>
+            <div class="grid mb-8 lg:mb-12 lg:grid-cols-2 border border-blue-300 rounded-lg shadow-md shadow-green-500/20">
+                <figure
+                    class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-b border-blue-300 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Speechless with how easy this
+                            was to integrate</h3>
+                        <p class="my-4">"I recently got my hands on Flowbite Pro, and holy crap, I'm speechless with how
+                            easy this was to integrate within my application. Most templates are a pain, code is
+                            scattered, and near impossible to theme.</p>
+                        <p class="my-4">Flowbite has code in one place and I'm not joking when I say it took me a matter
+                            of minutes to copy the code, customise it and integrate within a Laravel + Vue application.
+                        </p>
+                        <p class="my-4">If you care for your time, I hands down would go with this."</p>
+                    </blockquote>
+                    <figcaption class="flex justify-center items-center space-x-3">
+                        <img class="w-9 h-9 rounded-full"
+                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/karen-nelson.png"
+                            alt="profile picture">
+                        <div class="space-y-0.5 font-medium dark:text-white text-left">
+                            <div>Bonnie Green</div>
+                            <div class="text-sm font-light text-gray-500 dark:text-gray-400">Developer at Open AI</div>
                         </div>
-                    </div>
-                </div>
-                <!-- product - end -->
-
-
-                <!-- product - start -->
-                <div>
-                    <a href="/public/psicologico"
-                        class="group relative mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
-                        <img src="../public/build/img/roman-kraft-0EVKn3-5JSU-unsplash.webp" loading="lazy"
-                            alt="Photo by Austin Wade"
-                            class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
-                    </a>
-
-                    <div class="flex items-start justify-between gap-2 px-2">
-                        <div class="flex flex-col">
-                            <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                <a href="/public/psicologico"
-                                    class="transition duration-100 hover:text-indigo-500 active:text-indigo-600">Apoyo
-                                    Psicológico</a>
-                            </h2>
-
-                            <p class="mb-8 text-gray-700 dark:text-gray-200">Nuestro equipo de psicólogos capacitados ofrece un espacio
-                                seguro y confidencial para el apoyo emocional, ayudando a las personas con diabetes
-                                y colostomía a enfrentar los desafíos psicológicos, manejar el estrés y fortalecer
-                                su resiliencia.</p>
+                    </figcaption>
+                </figure>
+                <figure
+                    class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-b border-blue-300 md:p-12 dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Solid foundation for any project
+                        </h3>
+                        <p class="my-4">"FlowBite provides a robust set of design tokens and components based on the
+                            popular Tailwind CSS framework. From the most used UI components like forms and navigation
+                            bars to the whole app screens designed both for desktop and mobile, this UI kit provides a
+                            solid foundation for any project.</p>
+                        <p class="my-4">Designing with Figma components that can be easily translated to the utility
+                            classes of Tailwind CSS is a huge timesaver!"</p>
+                    </blockquote>
+                    <figcaption class="flex justify-center items-center space-x-3">
+                        <img class="w-9 h-9 rounded-full"
+                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png"
+                            alt="profile picture">
+                        <div class="space-y-0.5 font-medium dark:text-white text-left">
+                            <div>Roberta Casas</div>
+                            <div class="text-sm font-light text-gray-500 dark:text-gray-400">Lead designer at Dropbox
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <!-- product - end -->
-
-                <!-- product - start -->
-                <div>
-                    <a href="/public/medico"
-                        class="group relative mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3">
-                        <img src="../public/build/img/patty-brito-Y-3Dt0us7e0-unsplash.webp" loading="lazy"
-                            alt="Photo by Vladimir Fedotov"
-                            class="h-full w-full object-cover object-center transition duration-200 group-hover:scale-110" />
-                    </a>
-
-                    <div class="flex items-start justify-between gap-2 px-2">
-                        <div class="flex flex-col">
-                            <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
-                                <a href="/public/medico"
-                                    class="transition duration-100 hover:text-indigo-500 active:text-indigo-600">Atención
-                                    Médica</a>
-                            </h2>
-
-                            <p class="mb-8 text-gray-700 dark:text-gray-200">Proporcionamos atención médica personalizada y
-                                especializada, trabajando en colaboración con médicos expertos en diabetes y
-                                colostomía para ofrecer un enfoque integral en el cuidado de la salud física, el
-                                manejo de la enfermedad y la promoción del bienestar general.</p>
+                    </figcaption>
+                </figure>
+                <figure
+                    class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-b border-blue-300 lg:border-b-0 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Mindblowing workflow and
+                            variants</h3>
+                        <p class="my-4">"As someone who mainly designs in the browser, I've been a casual user of Figma,
+                            but as soon as I saw and started playing with FlowBite my mind was 🤯.</p>
+                        <p class="my-4">Everything is so well structured and simple to use (I've learnt so much about
+                            Figma by just using the toolkit).</p>
+                        <p class="my-4">Aesthetically, the well designed components are beautiful and will undoubtedly
+                            level up your next application."</p>
+                    </blockquote>
+                    <figcaption class="flex justify-center items-center space-x-3">
+                        <img class="w-9 h-9 rounded-full"
+                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
+                            alt="profile picture">
+                        <div class="space-y-0.5 font-medium dark:text-white text-left">
+                            <div>Jese Leos</div>
+                            <div class="text-sm font-light text-gray-500 dark:text-gray-400">Software Engineer at
+                                Facebook</div>
                         </div>
-                    </div>
-                </div>
-                <!-- product - end -->
+                    </figcaption>
+                </figure>
+                <figure
+                    class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-blue-300 md:p-12 dark:bg-gray-800 dark:border-gray-700">
+                    <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Efficient Collaborating</h3>
+                        <p class="my-4">"This is a very complex and beautiful set of elements. Under the hood it comes
+                            with the best things from 2 different worlds: Figma and Tailwind.</p>
+                        <p class="my-4">You have many examples that can be used to create a fast prototype for your
+                            team."</p>
+                    </blockquote>
+                    <figcaption class="flex justify-center items-center space-x-3">
+                        <img class="w-9 h-9 rounded-full"
+                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
+                            alt="profile picture">
+                        <div class="space-y-0.5 font-medium dark:text-white text-left">
+                            <div>Joseph McFall</div>
+                            <div class="text-sm font-light text-gray-500 dark:text-gray-400">CTO at Google</div>
+                        </div>
+                    </figcaption>
+                </figure>
             </div>
-        </div>
-    </div>
-    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+            <!-- <div class="text-center">
+                <a href="#"
+                    class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Show
+                    more...</a>
+            </div> -->
+    </section>
+
+    <hr class="h-[0.1px] my-8 bg-blue-200 border-0 dark:bg-gray-700">
+    </section>
+    <!-- fin bento grid -->
+
     <!-- investigaciones -->
+
     <?php
     require "listadoInvestigaciones.php";
     ?>
+
+
+</div>
+
+
+
+
 </div>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+        gsap.registerPlugin(TextPlugin);
+
+        // Definir la primera animación
+        gsap.to(animacion1, {
+            duration: 1,
+            text: "Estamos orgullosos de presentarte una plataforma",
+            ease: "none",
+            onComplete: () => {
+                // Definir la segunda animación dentro de la función onComplete de la primera
+                gsap.to(animacion2, {
+                    duration: 1,
+                    text: "Para personas con Diabetes y Ostomizados",
+                    ease: "none"
+                });
+            }
+        });
+    });
+</script>

@@ -1,14 +1,11 @@
 <body class="dark:bg-black">
-    <main class="contenedor">
-        <div class="flex min-h-full flex-col items-center my-24 justify-center px-6 pb-12 lg:px-8">
+    <main class="contenedor py-28">
+        <div class="flex min-h-full flex-col items-center mt-24 justify-center px-6 pb-12 lg:px-8">
             <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img class="mx-auto h-10 w-auto" src="/public/build/img/zyro-image.webp"
-                    alt="Your Company">
-                <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-blue-800 dark:text-lime-400">
-                    Inicia Sesion con tu Cuenta</h2>
+                <img class="mx-auto h-14 w-auto" src="/public/build/img/Logo CAREFULNESS.svg" alt="Your Company">
             </div>
             <?php foreach ($errores as $error): ?>
-                <div class="p-4 text-sm mt-4 text-red-800 w-96 text-center rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                <div class="p-4 text-sm mt-4 text-red-800 text-center rounded-lg w-80 bg-red-50 dark:bg-gray-800 dark:text-red-400"
                     role="alert">
                     <span class="font-medium">¡Cuidado!</span>
                     <?php echo $error; ?>
@@ -71,47 +68,55 @@
                 </div>
             <?php endif; ?>
 
-            <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+            <div
+                class="sm:mx-auto mt-6 sm:w-full sm:max-w-sm p-4 sm:p-8 border border-blue-300 shadow-green-500/20 rounded-lg shadow-md dark:border-gray-800">
+                <h1
+                    class="text-xl font-bold pb-4 leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                    Inicia Sesión</h1>
                 <form method="POST" class="space-y-6" action="#" method="POST">
-                    <div>
+                    <div class="w-72 sm:w-full">
                         <label for="email"
                             class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">Correo
                             Electronico</label>
                         <div class="mt-2">
                             <input id="email" name="email" type="email" autocomplete="email" required
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6">
                         </div>
                     </div>
 
-                    <div>
+                    <div class="w-72 sm:w-full">
                         <div class="flex items-center justify-between">
                             <label for="password"
                                 class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">Contraseña</label>
                             <div class="text-sm">
                                 <a href="/public/olvide-password"
-                                    class="font-semibold text-blue-800 hover:text-blue-900 dark:text-lime-400 dark:hover:text-lime-300">Olvidaste tu
+                                    class="font-semibold text-green-500 hover:decoration-1 dark:text-lime-400 dark:hover:text-lime-300">Olvidaste
+                                    tu
                                     contraseña?</a>
                             </div>
                         </div>
                         <div class="mt-2">
                             <input id="password" name="password" type="password" autocomplete="current-password"
                                 required
-                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-green-500 sm:text-sm sm:leading-6">
                         </div>
                     </div>
 
                     <div>
                         <button type="submit"
-                            class="w-full text-white bg-gradient-to-br from-green-400 to-blue-800 dark:to-lime-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-base px-6 py-2 text-center me-2 mb-2">Inicia Sesion</button>
+                            class="w-full text-white bg-gradient-to-br from-green-400 to-blue-600 dark:to-lime-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-base px-6 py-2 text-center me-2 mb-2">Inicia
+                            Sesion</button>
                     </div>
                 </form>
-
-                <p class="mt-10 text-center text-sm text-gray-500">
+                <p class="mt-4 text-center text-sm text-black dark:text-white">
                     ¿No estas registrado?
                     <a href="/public/registro"
-                        class="font-semibold leading-6 text-blue-800 hover:text-blue-900 dark:text-lime-400 dark:hover:text-lime-300">Registrate Gratis</a>
+                        class="font-semibold leading-6 text-green-500 hover:decoration-1 dark:text-lime-400 dark:hover:text-lime-300">Registrate
+                        Gratis</a>
                 </p>
             </div>
+
+
         </div>
     </main>
 </body>

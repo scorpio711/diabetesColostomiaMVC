@@ -103,7 +103,7 @@ class ProfesionalesController
         esfuncionario();
         //obtener datos de la sesion
         $id = $_SESSION["id"];
-
+        
         $usuario = Usuario::find($id);
 
         //buscar el profesional
@@ -117,7 +117,7 @@ class ProfesionalesController
         $errores = [];
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-
+            
             if (isset($_POST['actualizar'])) {
 
                 //sincronizar los datos
@@ -126,6 +126,7 @@ class ProfesionalesController
                 $profesional->especializacion = $profesionalC->especializacion;
                 $profesional->descripcion = $profesionalC->descripcion;
 
+                //cambio de nombre
                 /**SUBIDA DE ARCHIVOS**/
 
                 //verificar si la carpeta esta creada
@@ -135,12 +136,12 @@ class ProfesionalesController
 
                 //generar un nombre unico
                 $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-
+                
                 //Setear la imagen
                 //Realiza un resize a la imagen con intervention
                 if ($_FILES["imagen"]["tmp_name"]) {
 
-                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(800, 600);
+                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(400, 400);
                     $usuario->setImagen($nombreImagen);
 
                 }
@@ -150,16 +151,22 @@ class ProfesionalesController
                 $errores = $usuario->validarImagen();
 
                 if (empty($errores)) {
+                    
                     //agregar actualizado al usuario
                     $usuario->actualizado = "1";
 
-                    //Guarda la imagen en el servidor
-                    $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
+                    //Actualizar el nombre
+                    $usuario->nombre = $_POST["nombre"];
 
+                    //Guarda la imagen en el servidor
+                    
+                    $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
+                    
                     //actualizar el usuario y su perfil
-                    // $usuario->actualizar();
+                    $usuario->actualizar();
 
                     $_SESSION["imagen"] = $usuario->imagen;
+                    $_SESSION["nombre"] = $usuario->nombre;
                     $_SESSION["actualizado"] = 1;
 
                     $resultado = $profesional->actualizar();
@@ -183,7 +190,7 @@ class ProfesionalesController
                 if (isset($_FILES["imagen"]["tmp_name"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
 
                     // Verificar que el archivo se envió correctamente y no hubo errores
-                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(800, 600);
+                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(400, 400);
 
                     // Guardar la imagen con el nuevo nombre
                     if ($image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen)) {
@@ -221,7 +228,7 @@ class ProfesionalesController
 
         }
 
-        $router->render("/abogados/perfil", [
+        $router->render("/admin/profesionales/perfil", [
             "usuario" => $usuario,
             "profesional" => $profesional,
             "profesionalC" => $profesionalC,

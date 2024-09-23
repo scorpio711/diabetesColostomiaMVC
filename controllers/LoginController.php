@@ -195,7 +195,7 @@ class LoginController
         //Alertas Vacias
         $errores = [];
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
+           
             $usuario->sincronizar($_POST);
             $errores = $usuario->validarNuevaCuenta();
 

@@ -224,7 +224,7 @@ class UsuariosController
                 //Setear la imagen
                 //Realiza un resize a la imagen con intervention
                 if ($_FILES["imagen"]["tmp_name"]) {
-                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(800, 600);
+                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(400, 400);
                     $usuario->setImagen($nombreImagen);
                 }
 
@@ -233,6 +233,7 @@ class UsuariosController
                 $errores= $usuario->validarImagen();
 
                 if (empty($errores)) {
+                    
 
                     //variables del servidor
                     $paciente->pacienteId = $id;
@@ -253,10 +254,9 @@ class UsuariosController
 
                     //agregar actualizado al usuario
                     $usuario->actualizado = "1";
-
+                    
                     //Guarda la imagen en el servidor
                     $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
-
                     //actualizar el usuario y su perfil
                     $usuario->actualizar();
 

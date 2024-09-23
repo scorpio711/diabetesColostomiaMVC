@@ -5,7 +5,7 @@ namespace Model;
 class Paciente extends ActiveRecord
 {
     protected static $tabla = "pacientes";
-    protected static $columnasDB = ["id", "pacienteId", "edad", "sexo", "escolaridad", "estrato_socioeconomico", "lugar_de_residencia", "ocupacion", "apoyo", "afiliacion", "tiempo_enfermedad", "nombre"];
+    protected static $columnasDB = ["id", "pacienteId", "edad", "sexo", "escolaridad", "estrato_socioeconomico", "lugar_de_residencia", "ocupacion", "apoyo", "afiliacion", "tiempo_enfermedad", "nombre", "email", "telefono", "imagen"];
 
     public $id;
     public $pacienteId;
@@ -19,6 +19,9 @@ class Paciente extends ActiveRecord
     public $afiliacion;
     public $tiempo_enfermedad;
     public $nombre;
+    public $telefono;
+    public $email;
+    public $imagen;
 
     public function __construct($args = [])
     {
@@ -32,7 +35,10 @@ class Paciente extends ActiveRecord
         $this->apoyo = $args["apoyo"] ?? "";
         $this->afiliacion = $args["afiliacion"] ?? "";
         $this->tiempo_enfermedad = $args["tiempo_enfermedad"] ?? "";
-        $this->nombre = $args["nombre"] ?? 0;
+        $this->nombre = $args["nombre"] ?? "";
+        $this->email = $args["email"] ?? "";
+        $this->telefono = $args["nombre"] ?? 0;
+        $this->telefono = $args["imagen"] ?? "";
         
     }
     public function validarActualizacionPerfil()
@@ -72,9 +78,10 @@ class Paciente extends ActiveRecord
 
     public function validarImagen()
     {
-        if (!$this->imagen) {
-            self::$errores[] = 'La Imagen es Obligatoria';
+        if (empty($_FILES['imagen']['name'])) {
+            self::$errores[] = 'La imagen es obligatoria';
         }
+        return self::$errores;
     }
 
 }

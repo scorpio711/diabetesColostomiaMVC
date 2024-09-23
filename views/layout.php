@@ -15,9 +15,10 @@ $auth = $_SESSION["login"] ?? false;
     <meta content="width=device-width, initial-scale=1" name="viewport">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CareFullnes</title>
+    <title>CAREFULNESS</title>
     <link rel="stylesheet" href="/public/build/css/output.css" />
-    <link rel="icon" href="/public/build/img/zyro-image.png" type="image/png">
+    <link rel="icon" href="/public/build/img/Logo CAREFULNESS.svg" type="image/png">
+    
 </head>
 
 
@@ -27,12 +28,12 @@ $auth = $_SESSION["login"] ?? false;
     <l-cardio size="124" stroke="4" speed="2" color="green"></l-cardio>
     </div>
     <header>
-        <nav class=" bg-white fixed w-full z-20 top-0 left-0 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+        <nav class=" bg-white fixed w-full z-[40] top-0 left-0 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/public" class="flex items-center">
-                    <img src="/public/build/img/zyro-image.webp" class="h-8 mr-3" alt="Flowbite Logo" />
+                    <img src="/public/build/img/Logo CAREFULNESS.svg" class="h-10" alt="Flowbite Logo" />
                     <span
-                        class="self-center text-2xl hidden sm:block font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-blue-800 dark:from-green-400 dark:to-lime-500">StomaDiaHelp</span>
+                        class="self-center text-2xl hidden sm:block font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:from-green-400 dark:to-lime-500">CAREFULNESS</span>
                 </a>
                 <?php if ($auth): ?>
                     <div class="md:order-2">
@@ -55,7 +56,7 @@ $auth = $_SESSION["login"] ?? false;
                                 <div>
                                     <?php echo "$_SESSION[nombre]" ?>
                                 </div>
-                                <div class="font-medium truncate">
+                                <div id="usuarioEmail" class="font-medium truncate">
                                     <?php echo "$_SESSION[email]" ?>
                                 </div>
                             </div>
@@ -66,7 +67,7 @@ $auth = $_SESSION["login"] ?? false;
                                         <div class="flex">
                                             <a href="/public/perfil">
                                                 <button id="defaultModalButton" data-modal-toggle="defaultModal"
-                                                    class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                    class=" px-4  mb-2 ml-[0.9rem] text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                                     type="button">
                                                     Perfil
                                                 </button>
@@ -79,7 +80,7 @@ $auth = $_SESSION["login"] ?? false;
                                         <div class="flex">
                                             <a href="/public/perfil/profesionales">
                                                 <button id="defaultModalButton" data-modal-toggle="defaultModal"
-                                                    class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                                                    class=" px-4  mb-2 text-sm ml-[0.9rem] font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                                     type="button">
                                                     Perfil
                                                 </button>
@@ -120,7 +121,7 @@ $auth = $_SESSION["login"] ?? false;
                             <div>
                                 <a href="/public/logout" class="md:order-2">
                                     <button type="button"
-                                        class=" px-4  mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cerrar
+                                        class=" px-4  mb-2 ml-[0.9rem] text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cerrar
                                         Sesion</button>
                                 </a>
                             </div>
@@ -131,8 +132,8 @@ $auth = $_SESSION["login"] ?? false;
                 <?php if (!$auth): ?>
                     <a href="/public/login" class="md:order-2">
                         <button type="button"
-                            class="  text-white bg-gradient-to-br from-green-400 to-blue-800  dark:to-lime-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Inicia
-                            Sesion</button>
+                            class="  text-white bg-gradient-to-br from-green-400 to-blue-600  dark:to-lime-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Iniciar
+                            Sesión</button>
                     </a>
                 <?php endif ?>
                 <button data-collapse-toggle="navbar-multi-level" type="button"
@@ -158,7 +159,7 @@ $auth = $_SESSION["login"] ?? false;
                         </li>
                         <li>
                             <button id="dropdownNavbarLink" data-dropdown-toggle="dropdownNavbar"
-                                class="flex items-center justify-between w-full py-2 pl-3 pr-4  text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 hover:text-green-500 dark:hover:text-lime-500 md:p-0 md:w-auto dark:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Servicios
+                                class="flex items-center justify-between w-full py-2 pl-3 pr-4  text-black border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 hover:text-green-500 dark:hover:text-lime-500 md:p-0 md:w-auto dark:text-white dark:focus:text-white dark:border-gray-700 dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Servicios
                                 <svg class="w-5 h-5 ml-1" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd"
@@ -249,9 +250,9 @@ $auth = $_SESSION["login"] ?? false;
             <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
                 <div class="sm:flex sm:items-center sm:justify-between">
                     <a href="/public" class="flex items-center mb-4 sm:mb-0">
-                        <img src="/public/build/img/zyro-image.webp" class="h-8 mr-3" alt="Flowbite Logo" />
+                        <img src="/public/build/img/Logo CAREFULNESS.svg" class="h-12" alt="Flowbite Logo" />
                         <span
-                            class="self-center text-2xl font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-blue-800 dark:from-green-500 dark:to-lime-500">StomaDiaHelp</span>
+                            class="self-center text-2xl font-semibold whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-cyan-500 dark:from-green-500 dark:to-lime-500">CAREFULNESS</span>
                     </a>
                     <ul
                         class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
@@ -271,13 +272,16 @@ $auth = $_SESSION["login"] ?? false;
                 </div>
                 <hr class="my-6 inset-x-0 top-0 z-50 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
                 <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2023 <a
-                        href="https://flowbite.com/" class="hover:underline">StomaDiaHelp™</a>. Todos los Derechos
+                        href="https://flowbite.com/" class="hover:underline">CAREFULNESS™</a>. Todos los Derechos
                     Reservados.</span>
             </div>
         </footer>
     </footer>
 
 </body>
+
+<!-- sweet alerts -->
+<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
 <script type="text/javascript">
   (function(d, t) {
       var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
@@ -301,5 +305,13 @@ $auth = $_SESSION["login"] ?? false;
     })
 </script>
 
+<!-- gsap -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/TextPlugin.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
 
+<!-- excel -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
+ 
 </html>

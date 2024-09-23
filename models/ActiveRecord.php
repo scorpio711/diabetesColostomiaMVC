@@ -24,19 +24,18 @@ class ActiveRecord
 
         //Sanitizar los datos
         $atributos = $this->sanitizarAtributos();
-        
+
         //insertar en la base de datos
         $query = "INSERT INTO " . static::$tabla . " ( ";
         $query .= join(", ", array_keys($atributos));
         $query .= " ) VALUES ('";
         $query .= join("', '", array_values($atributos));
         $query .= "');";
-
+        // debuguear($query);
         // return json_encode(["query" => $query]);
-
         $resultado = self::$db->query($query);
 
-        // debuguear($query);
+        
 
         return [
             "resultado" => $resultado,
@@ -97,7 +96,7 @@ class ActiveRecord
                 continue;
             $atributos[$columna] = $this->$columna;
         }
-       
+
         return $atributos;
     }
 
@@ -148,7 +147,7 @@ class ActiveRecord
     public static function find($id)
     {
         $query = "SELECT * FROM " . static::$tabla . " WHERE id = ${id};";
-        
+
         $resultado = self::consultarSQL($query);
         return array_shift($resultado);
 
