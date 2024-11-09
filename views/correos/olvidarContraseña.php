@@ -367,7 +367,7 @@
                                                                     <h3
                                                                         style="Margin:0;line-height:34px;mso-line-height-rule:exactly;font-family:Imprima, Arial, sans-serif;font-size:28px;font-style:normal;font-weight:bold;color:#2D3142">
                                                                         Atencion!&nbsp;
-                                                                        <?php echo $nombre; ?>
+                                                                        Andrés Felipe Jaime Mejía
                                                                     </h3>
                                                                     <p
                                                                         style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:Imprima, Arial, sans-serif;line-height:27px;color:#2D3142;font-size:18px">
@@ -420,7 +420,7 @@
     </v:roundrect></a>
 <![endif]--><!--[if !mso]><!-- --><span class="msohide es-button-border"
                                                                         style="border-style:solid;border-color:#2CB543;background:#7630f3;border-width:0px;display:block;border-radius:30px;width:auto;mso-hide:all"><a
-                                                                            href="<?php echo $url; ?>"
+                                                                            href="http://localhost:3000/public/cambio-password?token=672e9bacf15c4"
                                                                             class="es-button msohide" target="_blank"
                                                                             style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:22px;padding:15px 20px 15px 20px;display:block;background:#7630f3;border-radius:30px;font-family:Imprima, Arial, sans-serif;font-weight:bold;font-style:normal;line-height:26px;width:auto;text-align:center;mso-padding-alt:0;mso-border-alt:10px solid  #7630f3;mso-hide:all;padding-left:5px;padding-right:5px">Cambiar Contraseña
                                                                         </a></span><!--<![endif]--></td>

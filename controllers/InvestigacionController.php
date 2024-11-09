@@ -55,7 +55,6 @@ class InvestigacionController
 
                     //Guarda la imagen en el servidor
                     $image->save(CARPETA_IMAGENES_INVESTIGACIONES . $nombreImagen);
-
                     //guarda en la base de datos
                     $resultado = $investigacionC->crear();
 

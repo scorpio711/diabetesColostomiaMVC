@@ -33,7 +33,7 @@ const demoBaseConfig = {
     "wordcount",
   ],
   toolbar:
-    "insertfile a11ycheck undo redo | bold italic | forecolor backcolor | codesample | alignleft aligncenter alignright alignjustify | bullist numlist | link image",
+    "insertfile a11ycheck undo redo | bold italic | forecolor backcolor | codesample | alignleft aligncenter alignright alignjustify | bullist numlist | link image | lineheight",
   spellchecker_dialog: true,
   spellchecker_ignore_list: ["Ephox", "Moxiecode"],
   tinydrive_demo_files_url: "../_images/tiny-drive-demo/demo_files.json",

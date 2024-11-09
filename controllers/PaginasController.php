@@ -12,7 +12,10 @@ class PaginasController
     {
         session_start();
         // debuguear($_SESSION);
-        $investigaciones = Investigacion::get(4);
+        $investigaciones = Investigacion::get(4, 'DESC');
+
+        
+
         $router->render("/paginas/index", [
             "investigaciones" => $investigaciones
         ]);
@@ -20,6 +23,9 @@ class PaginasController
     public static function investigaciones(Router $router)
     {
         $investigaciones = Investigacion::all();
+        // Invertir el orden de los elementos en el array
+        $investigaciones = array_reverse($investigaciones);
+
         $router->render("/paginas/investigaciones", [
             "investigaciones" => $investigaciones
         ]);
@@ -37,7 +43,7 @@ class PaginasController
     {
         $router->render("paginas/medico");
     }
-    
+
     public static function psicologico(Router $router)
     {
         $router->render("paginas/psicologico");
@@ -68,7 +74,7 @@ class PaginasController
                     $suma += $_POST[$campo];
                 }
             }
-            
+
             // Imprime el resultado
             echo "La suma de los 15 rangos es: " . $suma;
         }

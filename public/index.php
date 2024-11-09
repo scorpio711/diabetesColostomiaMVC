@@ -110,6 +110,7 @@ $router->get("/public/editor", [BlogController::class, "editor"] );
 $router->get("/public/admin/blog", [BlogController::class, "admin"] );
 $router->post("/public/admin/blog", [BlogController::class, "admin"] );
 $router->get("/public/blog", [BlogController::class, "lector"] );
+$router->post("/public/blog", [BlogController::class, "lector"] );
 $router->post("/public/api/blog", [BlogController::class, "guardar"]);
 
 //API para el chat

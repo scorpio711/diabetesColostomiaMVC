@@ -20,7 +20,7 @@ class Email
 
     public function enviarConfirmacion($destinatario)
     {
-        
+
         //crear el objeto de email
         $mail = new PHPMailer();
         $mail->isSMTP();
@@ -29,14 +29,14 @@ class Email
         $mail->Port = $_ENV["EMAIL_PORT"];
         $mail->Username = $_ENV["EMAIL_USER"];
         $mail->Password = $_ENV["EMAIL_PASS"];
-        
+
         //Quien lo envia
         $mail->setFrom("stomadiahelp@gmail.com", "stomadiahelp");
-        
+
         //Quien recibe
         $mail->addAddress($destinatario);
         $mail->Subject = "Confirma tu cuenta";
-        
+
         //Set HTML
         $mail->isHTML(TRUE);
         $mail->CharSet = 'UTF-8';
@@ -65,7 +65,7 @@ class Email
         // Después de enviar el correo, restablece el contenido original
         file_put_contents($rutaArchivo, $contenido);
 
-        
+
 
     }
 
@@ -73,6 +73,8 @@ class Email
     {
         //crear el objeto de email
         $mail = new PHPMailer();
+        // $mail->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;
+        // $mail->SMTPDebug = 2;
         $mail->isSMTP();
         $mail->Host = $_ENV["EMAIL_HOST"];
         $mail->SMTPAuth = true;
@@ -114,5 +116,6 @@ class Email
 
         // Después de enviar el correo, restablece el contenido original
         file_put_contents($rutaArchivo, $contenido);
+     
     }
 }

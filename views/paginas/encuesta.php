@@ -3,13 +3,13 @@
     <h1
         class="text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-center mt-8">
         ¿Qué haces cuándo?</h1>
-    <div class="grid grid-cols-4 mt-8">
-        <div class="grid grid-rows-2 col-span-2">
+    <div class="flex flex-col lg:grid grid-rows-2 grid-col-2 md:grid-cols-4 lg:grid-rows-1 mt-8">
+        <div class="lg:grid grid-rows-2 col-span-4 lg:col-span-2">
             <!-- Primera fila -->
             <div class="flex justify-center items-center mb-4 ">
 
                 <div
-                    class="card ml-24 mb-6 shadow-md shadow-green-500/20 col-span-full  xl:col-span-3 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900">
+                    class="card lg:ml-24 mb-6 shadow-md shadow-green-500/20 col-span-full  xl:col-span-3 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900">
                     <p id="pregunta" class="dark:text-gray-300 text-gray-700 text-center"></p>
 
                     <div class="buttons">
@@ -38,22 +38,22 @@
             </div>
 
             <!-- Segunda fila -->
-            <div class="relative ml-20">
+            <div class="relative flex flex-row justify-center lg:ml-20">
                 <img src="/public/build/img/Pregunta 1.png" alt="pregunta 1"
-                    class="h-[17rem] xl:h-[20rem] z-40 absolute bottom-4">
+                    class="img-1 h-20 lg:h-[17rem] xl:h-[20rem] z-[35] lg:absolute left-[0] bottom-4">
                 <img src="/public/build/img/Pregunta 2.png" alt="pregunta 2"
-                    class="h-[17rem] xl:h-[20rem] z-30 absolute left-[4.5rem] xl:left-24 bottom-4">
+                    class="img-2 h-20 lg:h-[17rem] xl:h-[20rem] z-30 lg:absolute lg:left-[4.5rem] xl:left-24 bottom-4">
                 <img src="/public/build/img/Pregunta 3.png" alt="pregunta 3"
-                    class="h-[17rem] xl:h-[20rem] z-20 absolute left-[8.5rem] xl:left-48 bottom-4">
+                    class="img-3 h-20 lg:h-[17rem] xl:h-[20rem] z-20 lg:absolute lg:left-[8.5rem] xl:left-48 bottom-4">
                 <img src="/public/build/img/Pregunta 4.png" alt="pregunta 4"
-                    class="h-[17rem] xl:h-[20rem] z-10 absolute left-[13rem] xl:left-[18rem] bottom-4">
+                    class="img-4 h-20 lg:h-[17rem] xl:h-[20rem] z-10 lg:absolute lg:left-[13rem] xl:left-[18rem] bottom-4">
                 <img src="/public/build/img/Pregunta 5.png" alt="pregunta 5"
-                    class="h-[17rem] xl:h-[20rem] z-0 absolute  left-[16.5rem] xl:left-[23rem] bottom-4">
+                    class="img-5 h-20 lg:h-[17rem] xl:h-[20rem] z-0 lg:absolute lg:left-[16.5rem] xl:left-[23rem] bottom-4">
             </div>
         </div>
 
         <!-- parte derecha -->
-        <div class="col-start-3 col-span-2">
+        <div class="lg:col-start-3 col-span-4 lg:col-span-2">
             <div class="text-left md:px-8">
 
                 <div class="grid grid-cols-4 w-full mt-4">

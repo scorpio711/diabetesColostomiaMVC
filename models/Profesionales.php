@@ -65,8 +65,8 @@ class Profesionales extends ActiveRecord
         if (strlen($this->descripcion) < 50) {
             self::$errores[] = "La descrpcion es muy corta debe ser de almenos 50 caracteres";
         }
-        if (strlen($this->descripcion) > 200) {
-            self::$errores[] = "La descrpcion es muy larga debe ser de menos 250 caracteres";
+        if (strlen($this->descripcion) > 500) {
+            self::$errores[] = "La descrpcion es muy larga debe ser de menos 500 caracteres";
         }
         return self::$errores;
     }

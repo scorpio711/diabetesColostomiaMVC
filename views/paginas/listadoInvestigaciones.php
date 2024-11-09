@@ -17,7 +17,7 @@
 
                 <div
                     class="max-w-sm bg-green-50 border border-blue-300 shadow-md shadow-green-500/20  rounded-lg  dark:bg-gray-800 dark:border-gray-700" style="backdrop-filter: blur(20px);">
-                    <a href="#">
+                    <a href="<?php echo $investigacion->url?>">
                         <img class="rounded-t-lg" src="/public/imagenesInvestigaciones/<?php echo $investigacion->imagen ?>"
                             alt="imagen investigación" />
                     </a>
@@ -30,7 +30,7 @@
                         <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
                             <?php echo substr($investigacion->resumen, 0, 90); ?>...
                         </p>
-                        <a href="/public/blog"
+                        <a href="<?php echo $investigacion->url?>"
                             class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-green-500 rounded-lg hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                             Leer más
                             <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true"

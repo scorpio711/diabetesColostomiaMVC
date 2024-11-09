@@ -145,3 +145,24 @@ input[type="range"]::-moz-range-thumb {
 }
 
 //path
+@media (max-width: 1023px) {
+  .img-1 {
+    content: url('/public/build/img/preguntaPequeña1.svg');
+  }
+
+  .img-2 {
+    content: url('/public/build/img/preguntaPequeña2.svg');
+  }
+
+  .img-3 {
+    content: url('/public/build/img/preguntaPequeña3.svg');
+  }
+
+  .img-4 {
+    content: url('/public/build/img/preguntaPequeña4.svg');
+  }
+
+  .img-5 {
+    content: url('/public/build/img/preguntaPequeña5.svg');
+  }
+}

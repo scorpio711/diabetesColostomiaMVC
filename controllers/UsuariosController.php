@@ -224,7 +224,7 @@ class UsuariosController
                 //Setear la imagen
                 //Realiza un resize a la imagen con intervention
                 if ($_FILES["imagen"]["tmp_name"]) {
-                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(400, 400);
+                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit( 400, 400);
                     $usuario->setImagen($nombreImagen);
                 }
 
@@ -285,7 +285,7 @@ class UsuariosController
                 if (isset($_FILES["imagen"]["tmp_name"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
 
                     // Verificar que el archivo se envió correctamente y no hubo errores
-                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(800, 600);
+                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(400, 400);
 
                     // Guardar la imagen con el nuevo nombre
                     if ($image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen)) {

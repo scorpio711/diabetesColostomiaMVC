@@ -29,7 +29,7 @@
                 </button>
             </div>
             <!-- fin de la alerta -->
-            <!-- alerta de investigacion creada-->
+            <!-- alerta de investigacion actualizada-->
         <?php elseif (intval($resultado) === 2): ?>
             <div id="alert-2"
                 class="flex p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"

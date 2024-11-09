@@ -35,7 +35,7 @@ class ActiveRecord
         // return json_encode(["query" => $query]);
         $resultado = self::$db->query($query);
 
-        
+
 
         return [
             "resultado" => $resultado,
@@ -199,15 +199,18 @@ class ActiveRecord
     }
 
     //obtinene determinado numero de registros
-    public static function get($limite)
+    public static function get($limite, $orden = "ASC")
     {
-        $query = "SELECT * FROM " . static::$tabla . " LIMIT ${limite}";
+        // Asegurarse de que el valor de $orden sea solo "ASC" o "DESC" para evitar inyecciones SQL
+        $orden = strtoupper($orden) === "DESC" ? "DESC" : "ASC";
+
+        // Ordenar por un campo específico, como id o fecha, y limitar la cantidad de resultados
+        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id $orden LIMIT ${limite}";
 
         $resultado = self::consultarSQL($query);
 
         return $resultado;
     }
-
     public static function where($columna, $valor)
     {
         $query = "SELECT * FROM " . static::$tabla . " WHERE ${columna} = '${valor}'";
