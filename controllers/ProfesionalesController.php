@@ -5,6 +5,7 @@ namespace Controllers;
 use MVC\Router;
 use Model\Profesionales;
 use Model\Usuario;
+use Model\Horarios;
 use Classes\Email;
 use Intervention\Image\ImageManagerStatic as Image;
 
@@ -103,12 +104,28 @@ class ProfesionalesController
         esfuncionario();
         //obtener datos de la sesion
         $id = $_SESSION["id"];
-        
+        $resultado = $_GET['resultado'];
+
         $usuario = Usuario::find($id);
 
         //buscar el profesional
         $query = "SELECT * FROM profesionales WHERE id_usuario = " . $usuario->id . ";";
         $profesional = Profesionales::SQL($query)[0];
+        $idProfesional = $profesional->id;
+
+        //horarios
+        $query = "SELECT * FROM horarios WHERE user_id = $idProfesional;";
+        $horarios = Horarios::SQL($query);
+
+        // Verificamos si hay un horario para el lunes
+        $diasCheck = array_map(function ($horario) {
+            return $horario->day;
+        }, $horarios);
+
+        $horarios_por_dia = [];
+        foreach ($horarios as $horario) {
+            $horarios_por_dia[$horario->day] = $horario;
+        }
 
         //crear una nueva instancia de profesional para poder guardarlos en memoria temporal
         $profesionalC = new Profesionales($_POST);
@@ -117,7 +134,7 @@ class ProfesionalesController
         $errores = [];
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
-            
+
             if (isset($_POST['actualizar'])) {
 
                 //sincronizar los datos
@@ -136,7 +153,7 @@ class ProfesionalesController
 
                 //generar un nombre unico
                 $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-                
+
                 //Setear la imagen
                 //Realiza un resize a la imagen con intervention
                 if ($_FILES["imagen"]["tmp_name"]) {
@@ -151,7 +168,7 @@ class ProfesionalesController
                 $errores = $usuario->validarImagen();
 
                 if (empty($errores)) {
-                    
+
                     //agregar actualizado al usuario
                     $usuario->actualizado = "1";
 
@@ -159,9 +176,9 @@ class ProfesionalesController
                     $usuario->nombre = $_POST["nombre"];
 
                     //Guarda la imagen en el servidor
-                    
+
                     $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
-                    
+
                     //actualizar el usuario y su perfil
                     $usuario->actualizar();
 
@@ -224,11 +241,53 @@ class ProfesionalesController
                         header("location:/public/");
                     }
                 }
-            }
+            } elseif (isset($_POST['guardarHorario'])) {
+                $days = $_POST['days'];
 
+                // Verificamos si la variable $horarios está vacía
+                if (empty($horarios)) {
+                    foreach ($days as $day) {
+                        $horario = new Horarios;
+
+                        $horario->day = $day;
+                        $horario->start_time = $_POST["start-time-{$day}"];
+                        $horario->end_time = $_POST["end-time-{$day}"];
+                        $horario->user_id = $idProfesional;
+
+                        $resultado = $horario->crear();
+
+                    }
+                    if ($resultado) {
+                        header("location:/public/perfil/profesionales?resultado=1");
+                    }
+                } elseif (!empty($horarios)) {
+                    // Eliminar horarios existentes del usuario
+                    $horario = new Horarios;
+                    $query = "DELETE FROM horarios WHERE user_id = $idProfesional;";
+                    $horario->eliminar_horarios($query);
+
+                    // Crear nuevos horarios en función de los datos enviados en el POST
+                    foreach ($days as $day) {
+                        $horarioNuevo = new Horarios;
+
+                        $horarioNuevo->day = $day;
+                        $horarioNuevo->start_time = $_POST["start-time-{$day}"];
+                        $horarioNuevo->end_time = $_POST["end-time-{$day}"];
+                        $horarioNuevo->user_id = $idProfesional;
+
+                        $resultado = $horarioNuevo->crear();
+                    }
+                    if ($resultado) {
+                        header("location:/public/perfil/profesionales?resultado=2");
+                    }
+                }
+            }
         }
 
         $router->render("/admin/profesionales/perfil", [
+            "resultado" => $resultado,
+            "horarios_por_dia" => $horarios_por_dia,
+            "diasCheck" => $diasCheck,
             "usuario" => $usuario,
             "profesional" => $profesional,
             "profesionalC" => $profesionalC,

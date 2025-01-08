@@ -46,7 +46,6 @@ function animarEstrella(color) {
 }
 
 function tabs() {
-
     const tabs = document.querySelectorAll('[role="tab"]');
     const tabPanels = document.querySelectorAll('[role="tabpanel"]');
     const images = document.querySelectorAll('.relative img'); // Selecciona todas las imágenes
@@ -55,10 +54,10 @@ function tabs() {
     // Definir la lista de preguntas
     const preguntas = [
         "He tenido dificultades al realizar los cuidados que necesito para mantener adcuadamente mi salud, por:",
-        "¿Cuántos años tienes?",
-        "¿De dónde eres?",
-        "¿Cuál es tu ocupación?",
-        "¿Cuál es tu hobby favorito?"
+        "He tenido dificultades al realizar los cambios en mi alimentación que son necesarios para mantener mi salud, por:",
+        "He tenido dificultades al realizar la actividad física que necesito para mantener mi salud, por:",
+        "He tenido dificultades para usar la vestimenta y/o accesorio y/o calzado que mejor se adapta a mis necesidades de salud, por: ",
+        "He tenido dificultades para identificar los signos de alarma y acudir a los servicios especializados ante complicaciones en mi salud, por: "
     ];
 
     // Índice para recorrer las preguntas
@@ -66,6 +65,13 @@ function tabs() {
 
     // Selecciona el texto de la pregunta
     const pregunta = document.getElementById("pregunta");
+
+    // Selecciona botones
+    const nextButton = document.getElementById('next-tab');
+    const prevButton = document.getElementById('prev-tab');
+    const finalizarButton = document.getElementById('finalizar-tab');
+
+
 
     function showTab(index) {
         tabs.forEach((tab, i) => {
@@ -90,24 +96,36 @@ function tabs() {
                 img.classList.add('grayscale'); // Otras imágenes en escala de grises
             }
         });
+
+        // Mostrar/ocultar botones
+        if (index === tabs.length - 1) {
+            nextButton.classList.add('hidden');
+            finalizarButton.classList.remove('hidden');
+        } else {
+            nextButton.classList.remove('hidden');
+            finalizarButton.classList.add('hidden');
+        }
     }
 
-    document.getElementById('next-tab').addEventListener('click', () => {
+    nextButton.addEventListener('click', () => {
         if (currentTabIndex < tabs.length - 1) {
             currentTabIndex++;
-        } else {
-            currentTabIndex = 0; // Si quieres reiniciar después de la última pregunta
         }
         showTab(currentTabIndex);
     });
 
-    document.getElementById('prev-tab').addEventListener('click', () => {
+    prevButton.addEventListener('click', () => {
         if (currentTabIndex > 0) {
             currentTabIndex--;
-        } else {
-            currentTabIndex = tabs.length - 1; // Si quieres ir al último si estás en el primero
         }
         showTab(currentTabIndex);
+    });
+
+    finalizarButton.addEventListener('click', () => {
+        // Aquí puedes realizar cualquier acción adicional
+        setTimeout(function () {
+            window.location.reload(); // Recargar la página
+        }, 2);
     });
 
     // Inicializa mostrando la primera pestaña y pregunta
@@ -117,11 +135,10 @@ function tabs() {
     document.getElementById("card__arrow").addEventListener("click", () => {
         if (currentTabIndex < tabs.length - 1) {
             currentTabIndex++;
-        } else {
-            currentTabIndex = 0;
         }
         showTab(currentTabIndex);
     });
 }
+
 
 

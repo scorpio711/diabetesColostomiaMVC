@@ -28,7 +28,7 @@ $auth = $_SESSION["login"] ?? false;
     <l-cardio size="124" stroke="4" speed="2" color="green"></l-cardio>
     </div>
     <header>
-        <nav class=" bg-white fixed w-full z-[40] top-0 left-0 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+        <nav class=" bg-white fixed w-full z-30 top-0 left-0 border-gray-200 dark:bg-gray-900 dark:border-gray-700">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <a href="/public" class="flex items-center">
                     <img src="/public/build/img/Logo CAREFULNESS.svg" class="h-10" alt="Flowbite Logo" />
@@ -260,7 +260,7 @@ $auth = $_SESSION["login"] ?? false;
                             <a href="#" class="mr-4 hover:underline md:mr-6 ">Nosotros</a>
                         </li>
                         <li>
-                            <a href="#" class="mr-4 hover:underline md:mr-6">Politicas de privacidad</a>
+                            <a href="#" class="mr-4 hover:underline md:mr-6">Politicas</a>
                         </li>
                         <li>
                             <a href="#" class="mr-4 hover:underline md:mr-6 ">Licencia</a>

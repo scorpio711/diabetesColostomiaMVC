@@ -10,6 +10,7 @@ use Controllers\DiabetesController;
 use Controllers\EnfermerosController;
 use MVC\Router;
 use Controllers\InvestigacionController;
+use Controllers\EncuestasController;
 use Controllers\UsuariosController;
 use Controllers\PaginasController;
 use Controllers\LoginController;
@@ -18,6 +19,7 @@ use Controllers\ServiciosController;
 use Controllers\ProfesionalesController;
 use Controllers\PsicologosController;
 use Controllers\BlogController;
+use Controllers\BookingsController;
 
 $router = new Router();
 
@@ -51,6 +53,11 @@ $router->post("/public/admin/servicios/administrar", [ServiciosController::class
 $router->get("/public/perfil/profesionales", [ProfesionalesController::class, "perfilProfesionales"]);
 $router->post("/public/perfil/profesionales", [ProfesionalesController::class, "perfilProfesionales"]);
 
+//Crud encuesta salud
+$router->get("/public/admin/encuestaSalud", [EncuestasController::class, "adminSalud"]);
+$router->get("/public/encuesta", [EncuestasController::class, "encuestaSalud"]);
+$router->post("/public/encuesta", [EncuestasController::class, "encuestaSalud"]);
+
 //Abogados
 $router->get("/public/admin/abogados", [AbogadosController::class, "indexAbogados"]);
 
@@ -68,8 +75,7 @@ $router->get("/public/juridico", [PaginasController::class, "juridico"]);
 $router->get("/public/medico", [PaginasController::class, "medico"]);
 $router->get("/public/psicologico", [PaginasController::class, "psicologico"]);
 $router->get("/public/contacto", [PaginasController::class, "contacto"]);
-$router->get("/public/encuesta", [PaginasController::class, "encuesta"]);
-$router->post("/public/encuesta", [PaginasController::class, "encuesta"]);
+
 $router->get("/public/blogplantilla", [PaginasController::class, "blog"]);
 
 //Login y Autenticacion
@@ -105,12 +111,15 @@ $router->post("/public/api/cita", [APIController::class, "guardar"]);
 $router->post("/public/api/eliminar", fn: [APIController::class, "eliminar"]);
 $router->get("/public/api/profesionales", [APIController::class, "profesionales"]);
 
+//bookings
+$router->get("/public/bookings/view", [BookingsController::class, "view"]);
+
 //API para edición de blogs
-$router->get("/public/editor", [BlogController::class, "editor"] );
-$router->get("/public/admin/blog", [BlogController::class, "admin"] );
-$router->post("/public/admin/blog", [BlogController::class, "admin"] );
-$router->get("/public/blog", [BlogController::class, "lector"] );
-$router->post("/public/blog", [BlogController::class, "lector"] );
+$router->get("/public/editor", [BlogController::class, "editor"]);
+$router->get("/public/admin/blog", [BlogController::class, "admin"]);
+$router->post("/public/admin/blog", [BlogController::class, "admin"]);
+$router->get("/public/blog", [BlogController::class, "lector"]);
+$router->post("/public/blog", [BlogController::class, "lector"]);
 $router->post("/public/api/blog", [BlogController::class, "guardar"]);
 
 //API para el chat

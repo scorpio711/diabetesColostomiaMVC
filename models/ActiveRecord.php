@@ -176,7 +176,7 @@ class ActiveRecord
         //Retornar los resultados
         return $array;
     }
-    protected static function crearObjeto($registro)
+    protected static function crearObjeto($registro): ActiveRecord
     {
         $objeto = new static;
 

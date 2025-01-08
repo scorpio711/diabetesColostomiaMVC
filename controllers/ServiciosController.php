@@ -2,7 +2,9 @@
 
 namespace Controllers;
 
+use Model\Horarios;
 use Model\Servicio;
+use Model\Profesionales;
 use MVC\Router;
 
 class ServiciosController
@@ -12,6 +14,7 @@ class ServiciosController
         session_start();
         esFuncionario();
         $rol = $_SESSION["rol"];
+        $id = $_SESSION["id"];
 
         $resultado = $_GET['resultado'];
         $errores = [];
@@ -23,9 +26,9 @@ class ServiciosController
 
             if (isset($_POST['crear'])) {
                 $servicioC = new Servicio($_POST);
-
-                $errores = $servicioC->validarServicio();
                 
+                $errores = $servicioC->validarServicio();
+
                 if (empty($errores)) {
                     $resultado = $servicioC->crear();
 
@@ -34,13 +37,13 @@ class ServiciosController
                     }
                 }
             }
-            if(isset($_POST['actualizar'])){
+            if (isset($_POST['actualizar'])) {
                 $servicio = new Servicio($_POST);
 
                 //Validar
                 $erroresActualizacion = $servicio->validarServicio();
 
-                if(empty($erroresActualizacion)){
+                if (empty($erroresActualizacion)) {
                     //Actualizar el servicio si no hay errores
                     $resultado = $servicio->actualizar();
 
@@ -49,7 +52,7 @@ class ServiciosController
                     }
                 }
             }
-            if(isset($_POST['borrar'])){
+            if (isset($_POST['borrar'])) {
                 $id = $_POST["id"];
                 $servicio = Servicio::find($id);
                 $resultado = $servicio->eleminar();
@@ -58,6 +61,7 @@ class ServiciosController
                     header("location:/public/admin/servicios/administrar?resultado=3");
                 }
             }
+
         }
 
         $router->render("/admin/servicios/administrarServicios", [

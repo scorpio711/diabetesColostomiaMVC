@@ -562,7 +562,7 @@
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sexo</label>
                                     <select name="usuario[sexo]"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option selected value="">Escoge tu sexo</option>
+                                        <option sselected disabled>Escoge tu sexo</option>
                                         <option value="masculino" <?php echo $usuario->sexo == "masculino" ? "selected" : '' ?>>Masculino</option>
                                         <option value="femenino" <?php echo $usuario->sexo == "femenino" ? "selected" : '' ?>>
                                             Femenino</option>
@@ -573,7 +573,7 @@
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-6">Rol</label>
                                     <select name="usuario[rol]"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option selected value="">Escoge el rol</option>
+                                        <option selected disabled>Escoge el rol</option>
                                         <option value="paciente" <?php echo $usuario->rol === "paciente" ? "selected" : '' ?>>
                                             Paciente</option>
                                         <option value="abogado" <?php echo $usuario->rol === "abogado" ? "selected" : '' ?>>
