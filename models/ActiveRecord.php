@@ -75,7 +75,6 @@ class ActiveRecord
         $query .= join(", ", $valores);
         $query .= "WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= "LIMIT 1;";
-
         $resultado = self::$db->query($query);
 
         // if ($resultado) {
@@ -223,7 +222,45 @@ class ActiveRecord
     {
         $query = $consulta;
         $resultado = self::consultarSQL($query);
+
         return $resultado;
+
+    }
+
+    public static function contarPorId($columna, $id)
+    {
+        //consultar la base de datos
+        $query = "SELECT COUNT(*) FROM " . static::$tabla . " WHERE ${columna} = ${id};";
+        $resultado = self::$db->query($query);
+        $fila = $resultado->fetch_assoc();
+        //liberar la memoria
+        $resultado->free();
+
+        return intval($fila["COUNT(*)"]);
+    }
+    public static function unirTabla($tabla1, $tabla2, $id1, $id2)
+    {
+        //consultar la base de datos
+        $query = "SELECT * FROM ${tabla1} JOIN ${tabla2} ON ${tabla1}.${id1} = ${tabla2}.${id2};";
+        $resultado = self::$db->query($query);
+
+        // Crear un array para almacenar los datos
+        $datos = [];
+
+        // Recorrer las filas de la tabla
+        while ($fila = $resultado->fetch_assoc()) {
+            // Agregar cada fila al array de datos
+            $datos[] = $fila;
+        }
+
+        // // Opcional: Imprimir los datos (por ejemplo, en formato JSON)
+        // echo json_encode($datos, JSON_PRETTY_PRINT);
+
+        //liberar la memoria
+        $resultado->free();
+
+        //Retornar los resultados
+        return $datos;
     }
 
 }

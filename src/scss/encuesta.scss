@@ -159,10 +159,31 @@ input[type="range"]::-moz-range-thumb {
   }
 
   .img-4 {
-    content: url('/public/build/img/preguntaPequeña4.svg');
+    content: url('/public/build/img/preguntaPequeña5.svg');
   }
 
   .img-5 {
-    content: url('/public/build/img/preguntaPequeña5.svg');
+    content: url('/public/build/img/preguntaPequeña4.svg');
+  }
+}
+@media (max-width: 1023px) {
+  .img-1p {
+    content: url('/public/build/img/PsicologiaPequeña1.png');
+  }
+
+  .img-2p {
+    content: url('/public/build/img/PsicologiaPequeña2.png');
+  }
+
+  .img-3p {
+    content: url('/public/build/img/PsicologiaPequeña3.png');
+  }
+
+  .img-4p {
+    content: url('/public/build/img/PsicologiaPequeña4.png');
+  }
+
+  .img-5p {
+    content: url('/public/build/img/PsicologiaPequeña5.png');
   }
 }

@@ -5,7 +5,7 @@ namespace Model;
 class Usuario extends ActiveRecord
 {
     protected static $tabla = "usuarios";
-    protected static $columnasDB = ["id", "email", "telefono", "password", "nombre", "fecha_nacimiento", "imagen", "admin", "confirmado", "token", "enfermedad", "sexo", "actualizado", "rol", "encuesta"];
+    protected static $columnasDB = ["id", "email", "telefono", "password", "nombre", "fecha_nacimiento", "imagen", "admin", "confirmado", "token", "enfermedad", "sexo", "actualizado", "rol", "encuesta_salud", "encuesta_psicologia", "encuesta_juridico"];
 
     public $id;
     public $email;
@@ -21,7 +21,9 @@ class Usuario extends ActiveRecord
     public $token;
     public $actualizado;
     public $rol;
-    public $encuesta;
+    public $encuesta_salud;
+    public $encuesta_psicologia;
+    public $encuesta_juridico;
 
 
     public function __construct($args = [])
@@ -40,7 +42,9 @@ class Usuario extends ActiveRecord
         $this->token = $args["token"] ?? "";
         $this->actualizado = $args["actualizado"] ?? 0;
         $this->rol = $args["rol"] ?? "";
-        $this->rol = $args["encuesta"] ?? 0;
+        $this->encuesta_salud = $args["encuesta_salud"] ?? 0;
+        $this->encuesta_psicologia = $args["encuesta_psicologia"] ?? 0;
+        $this->encuesta_juridico = $args["encuesta_juridico"] ?? 0;
     }
     public function validarNuevaCuenta()
     {

@@ -15,7 +15,7 @@ if (!$_SESSION["login"]):
                     <span class="sr-only">Light bulb</span>
                 </span>
                 <span>Registrate para acceder a más servicios <a href="/public/registro"
-                        class="inline font-medium text-green-500 underline dark:text-blue-500 underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">Registrate
+                        class="inline font-medium text-green-500 underline dark:text-green-500 underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">Registrate
                         aquí</a></span>
             </p>
         </div>
@@ -33,43 +33,153 @@ if (!$_SESSION["login"]):
     <?php
 endif;
 ?>
+<?php
+if ($_SESSION["login"]):
+    ?>
+    <?php
+    if ($_SESSION["actualizado"] == 0):
+        ?>
+        <div id="sticky-banner" tabindex="-1"
+            class="fixed top-0 start-0 z-50 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
+            <div class="flex items-center mx-auto">
+                <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
+                    <span
+                        class="inline-flex p-1 me-3 bg-gray-200 rounded-full dark:bg-gray-600 w-6 h-6 items-center justify-center flex-shrink-0">
+                        <svg class="w-3 h-3 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
+                            <path
+                                d="M15 1.943v12.114a1 1 0 0 1-1.581.814L8 11V5l5.419-3.871A1 1 0 0 1 15 1.943ZM7 4H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2v5a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V4ZM4 17v-5h1v5H4ZM16 5.183v5.634a2.984 2.984 0 0 0 0-5.634Z" />
+                        </svg>
+                        <span class="sr-only">Light bulb</span>
+                    </span>
+                    <span>Por favor actualiza tu perfil puedes hacerlo dando<a href="/public/perfil"
+                            class="inline font-medium text-green-600 underline dark:text-green-500 underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">
+                            click
+                            aquí</a></span>
+                </p>
+            </div>
+            <div class="flex items-center">
+                <button data-dismiss-target="#sticky-banner" type="button"
+                    class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close banner</span>
+                </button>
+            </div>
+        </div>
+        <?php
+    endif;
+?>
+<?php endif ?>
 
 <div class="container mx-auto p-4 md:py-12 mt-10 ">
 
     <!--parte rincipal -->
-    <section class="flex flex-col items-center">
-        <div class="flex max-w-xl flex-col items-center pt-8 pb-0 text-center sm:pb-16 lg:pt-32 lg:pb-32">
-            <p id="animacion1" class="mb-4 font-semibold text-teal-900 dark:text-white  md:mb-6 md:text-lg xl:text-xl">
-            </p>
-            <h1 class="text-black-800 mb-8 text-4xl font-bold sm:text-5xl md:mb-12 md:text-6xl dark:text-white"><span
-                    id="animacion2"
-                    class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:to-lime-500 dark:from-green-400"></span>
-            </h1>
+    <?php
+    if (!$_SESSION["login"]):
+        ?>
+        <section class="flex flex-col items-center">
+            <div class="flex max-w-xl flex-col items-center pt-8 pb-0 text-center sm:pb-16 lg:pt-32 lg:pb-32">
+                <p id="animacion1" class="mb-4 font-semibold text-teal-900 dark:text-white  md:mb-6 md:text-lg xl:text-xl">
+                </p>
+                <h1 class="text-black-800 mb-8 text-4xl font-bold sm:text-5xl md:mb-12 md:text-6xl dark:text-white"><span
+                        id="animacion2"
+                        class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:to-lime-500 dark:from-green-400"></span>
+                </h1>
 
-            <p class="mb-8 leading-relaxed text-black dark:text-white md:mb-12 xl:text-lg">"Uniendo fuerzas para
-                vivir con pasión
-                y superar los desafíos juntos"</p>
+                <p class="mb-8 leading-relaxed text-black dark:text-white md:mb-12 xl:text-lg">"Uniendo fuerzas para
+                    vivir con pasión
+                    y superar los desafíos juntos"</p>
 
-            <div class="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
-                <a href="/public/registro">
-                    <button type="button"
-                        class="text-white bg-gradient-to-br  from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-base px-6 py-3.5 text-center me-2 mb-2">Registrate</button>
-                </a>
-                <a href="/public/login">
-                    <button
-                        class="relative inline-flex items-center leading-7 justify-center p-0.5 mb-2 me-2 overflow-hidden text-base font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
-                        <span
-                            class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                            Iniciar Sesión
-                        </span>
-                    </button>
-                </a>
+                <div class="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
+                    <a href="/public/registro">
+                        <button type="button"
+                            class="text-white bg-gradient-to-br  from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-base px-6 py-3.5 text-center me-2 mb-2">Registrate</button>
+                    </a>
+                    <a href="/public/login">
+                        <button
+                            class="relative inline-flex items-center leading-7 justify-center p-0.5 mb-2 me-2 overflow-hidden text-base font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                            <span
+                                class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                Iniciar Sesión
+                            </span>
+                        </button>
+                    </a>
+                </div>
             </div>
-        </div>
-    </section>
-
+        </section>
+    <?php endif; ?>
+    <?php
+    if ($enfermedad == "colostomia"): ?>
+        <section class="bg-white dark:bg-gray-900">
+            <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+                <div class="mr-auto place-self-center lg:col-span-7">
+                    <h1 class="text-black-800 mb-4 text-4xl font-bold sm:text-5xl md:mb-8 md:text-6xl dark:text-white">
+                        <span id="animacion1"
+                            class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:to-lime-500 dark:from-green-400"></span>
+                    </h1>
+                    <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+                        Estamos aquí para apoyarte en el cuidado de tu ostomía, brindándote información y herramientas.</p>
+                    <a href="#"
+                        class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                        Get started
+                        <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                    <a href="#"
+                        class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                        Speak to Sales
+                    </a>
+                </div>
+                <div class="hidden lg:mt-0 lg:col-span-5 lg:flex justify-center">
+                    <img src="/public/build/img/lennox-chitando-QEHWkzcBaZQ-unsplash.jpg"
+                        class="w-full h-auto max-w-80 rounded-lg" alt="mockup">
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
+    <?php
+    if ($enfermedad == "diabetes"): ?>
+        <section class="bg-white dark:bg-gray-900">
+            <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
+                <div class="mr-auto place-self-center lg:col-span-7">
+                    <h1 class="text-black-800 mb-4 text-4xl font-bold sm:text-5xl md:mb-8 md:text-6xl dark:text-white">
+                        <span id="animacion1"
+                            class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:to-lime-500 dark:from-green-400"></span>
+                    </h1>
+                    <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
+                        Estamos aquí para apoyarte en el cuidado de tu ostomía, brindándote información y herramientas.</p>
+                    <a href="#"
+                        class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
+                        Get started
+                        <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                    <a href="#"
+                        class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+                        Speak to Sales
+                    </a>
+                </div>
+                <div class="hidden lg:mt-0 lg:col-span-5 lg:flex justify-center">
+                    <img src="/public/build/img/lennox-chitando-QEHWkzcBaZQ-unsplash.jpg"
+                        class="w-full h-auto max-w-80 rounded-lg" alt="mockup">
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
     <!-- fin del gradiente -->
-    <hr class="h-px my-8 bg-blue-200 border-0 dark:bg-gray-700">
+    <hr class="h-[0.1px] my-8 bg-blue-200 border-0 dark:bg-gray-700">
+
     <!-- bento grid -->
     <div>
         <!-- component -->
@@ -197,7 +307,8 @@ endif;
                     collection of open-source web components and elements built with the utility classes from Tailwind
                 </p>
             </div>
-            <div class="grid mb-8 lg:mb-12 lg:grid-cols-2 border border-blue-300 rounded-lg shadow-md shadow-green-500/20">
+            <div
+                class="grid mb-8 lg:mb-12 lg:grid-cols-2 border border-blue-300 rounded-lg shadow-md shadow-green-500/20">
                 <figure
                     class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-b border-blue-300 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
                     <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
@@ -304,31 +415,74 @@ endif;
     require "listadoInvestigaciones.php";
     ?>
 
-
 </div>
-
-
-
 
 </div>
 </body>
-<script>
-    document.addEventListener("DOMContentLoaded", (event) => {
-        gsap.registerPlugin(TextPlugin);
+<?php
+if (!$_SESSION["login"]): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(TextPlugin);
 
-        // Definir la primera animación
-        gsap.to(animacion1, {
-            duration: 1,
-            text: "Estamos orgullosos de presentarte una plataforma",
-            ease: "none",
-            onComplete: () => {
-                // Definir la segunda animación dentro de la función onComplete de la primera
-                gsap.to(animacion2, {
-                    duration: 1,
-                    text: "Para personas con Diabetes y Ostomizados",
-                    ease: "none"
-                });
-            }
+            // Definir la primera animación
+            gsap.to(animacion1, {
+                duration: 1,
+                text: "Estamos orgullosos de presentarte una plataforma",
+                ease: "none",
+                onComplete: () => {
+                    // Definir la segunda animación dentro de la función onComplete de la primera
+                    gsap.to(animacion2, {
+                        duration: 1,
+                        text: "Para personas con Diabetes y Ostomizados",
+                        ease: "none"
+                    });
+                }
+            });
         });
-    });
-</script>
+    </script>
+<?php endif ?>
+<?php if ($enfermedad == "colostomia"): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(TextPlugin);
+
+            // Definir la primera animación
+            gsap.to(animacion1, {
+                duration: 1,
+                text: '¡Bienvenido! Nos alegra que estés aquí Juntos cuidaremos de tu Ostomía',
+                ease: "none",
+                onComplete: () => {
+                    // Definir la segunda animación dentro de la función onComplete de la primera
+                    gsap.to(animacion2, {
+                        duration: 1,
+                        text: "",
+                        ease: "none"
+                    });
+                }
+            });
+        });
+    </script>
+<?php endif ?>
+<?php if ($enfermedad == "diabetes"): ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(TextPlugin);
+
+            // Definir la primera animación
+            gsap.to(animacion1, {
+                duration: 1,
+                text: '¡Bienvenido! Nos alegra que estés aquí Juntos cuidaremos de tu diabetes',
+                ease: "none",
+                onComplete: () => {
+                    // Definir la segunda animación dentro de la función onComplete de la primera
+                    gsap.to(animacion2, {
+                        duration: 1,
+                        text: "",
+                        ease: "none"
+                    });
+                }
+            });
+        });
+    </script>
+<?php endif ?>

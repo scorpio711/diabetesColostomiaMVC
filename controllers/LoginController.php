@@ -65,9 +65,9 @@ class LoginController
                         }elseif ($_SESSION["rol"] === "psicologo") {
                             header('Location: /public/admin/psicologos');
                         }elseif ($_SESSION["enfermedad"] === "diabetes") {
-                            header('Location: /public/diabetes');
+                            header('Location: /public');
                         }elseif ($_SESSION["enfermedad"] === "colostomia") {
-                            header('Location: /public/colostomia');
+                            header('Location: /public');
                         } else {
                             header('Location: /public/cita');
                         }

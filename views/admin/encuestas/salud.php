@@ -44,7 +44,7 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div class="ml-3 text-sm font-medium">
-                    El usuario ha sido actualizado
+                    Se ha habilitado la encuesta
                 </div>
                 <button type="button"
                     class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
@@ -169,18 +169,18 @@
                         class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                         <button type="button" id="exportExcel"
                             class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Excel</button>
-                        <button type="button" id="createProductModalButton" data-modal-target="createProductModal"
-                            data-modal-toggle="createProductModal"
-                            class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path clip-rule="evenodd" fill-rule="evenodd"
-                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                            </svg>
-                            Añadir Usuario
-                        </button>
-                        <div class="flex items-center space-x-3 w-full  md:w-auto">
-                            <a class="w-full" href="/public/admin/index">
+
+                        <div class="flex items-center space-x-3 w-full md:w-auto">
+                            <a class="w-full" href="/public/admin/<?php if ($rol == 'abogado') {
+                                echo "abogados";
+                            } elseif ($rol == 'enfermero') {
+                                echo "enfermeros";
+                            } elseif ($rol == 'psicologo') {
+                                echo "psicologos";
+                            } else {
+                                echo "index";
+                            } ?>">
+
                                 <button type="button"
                                     class="py-2 px-5 w-full  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Volver</button>
                             </a>
@@ -194,6 +194,7 @@
                                 <th scope="col" class="px-4 py-4">Id</th>
                                 <th scope="col" class="px-4 py-4">Nombre</th>
                                 <th scope="col" class="px-4 py-4">condición</th>
+                                <th scope="col" class="px-4 py-4">Correo</th>
                                 <th scope="col" class="px-4 py-4">Fecha de registro</th>
                                 <th scope="col" class="px-4 py-3">Cuidado intrumental</th>
                                 <th scope="col" class="px-4 py-3">Alimentación</th>
@@ -201,48 +202,59 @@
                                 <th scope="col" class="px-4 py-3">Adaptaciones</th>
                                 <th scope="col" class="px-4 py-3">Signos de alarma</th>
                                 <th scope="col" class="px-4 py-3">Total</th>
+                                <th scope="col" class="px-4 py-3">Intento</th>
+                                <th scope="col" class="px-4 py-3">Habilitada</th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="sr-only">Actions</span>
                                 </th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($resultados as $resultado): ?>
+                            <?php foreach ($encuestas as $encuesta): ?>
 
                                 <tr class="border-b dark:border-gray-700">
                                     <td class="px-4 py-3">
-                                        <?php echo $resultado[0]->id; ?>
+                                        <?php echo $encuesta["id"]; ?>
                                     </td>
                                     <th scope="row"
                                         class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <?php echo $resultado[1]->nombre; ?>
+                                        <?php echo $encuesta["nombre"] ?>
                                     </th>
 
                                     <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $resultado[1]->enfermedad; ?>
+                                        <?php echo $encuesta["enfermedad"] ?>
+                                    </td>
+                                    <td class="px-4 py-3 max-w-[12rem] truncate">
+                                        <?php echo $encuesta["email"] ?>
                                     </td>
 
                                     <td class="px-4 py-3">
-                                        <?php echo $fechaFormateada = date("d/m/Y", strtotime($resultado[0]->fecha_registro)); ?>
+                                        <?php echo $fechaFormateada = date("d/m/Y", strtotime($encuesta["fecha_registro"])); ?>
                                     </td>
 
                                     <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $resultado[0]->cuidado_instrumental; ?>
+                                        <?php echo $encuesta["cuidado_instrumental"]; ?>
                                     </td>
                                     <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $resultado[0]->alimentacion; ?>
+                                        <?php echo $encuesta["alimentacion"]; ?>
                                     </td>
                                     <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $resultado[0]->actividad_fisica; ?>
+                                        <?php echo $encuesta["actividad_fisica"]; ?>
                                     </td>
                                     <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $resultado[0]->adaptaciones; ?>
+                                        <?php echo $encuesta["adaptaciones"]; ?>
                                     </td>
                                     <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $resultado[0]->signos_alarma; ?>
+                                        <?php echo $encuesta["signos_alarma"]; ?>
                                     </td>
                                     <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $resultado[0]->categoria_total; ?>
+                                        <?php echo $encuesta["categoria_total"]; ?>
+                                    </td>
+                                    <td class="px-4 py-3 max-w-[12rem] truncate">
+                                        <?php echo $encuesta["intento"]; ?>
+                                    </td>
+                                    <td class="px-4 py-3 max-w-[12rem] truncate">
+                                        <?php echo $encuesta["encuesta_salud"] == 1 ? "No" : "Sí"; ?>
                                     </td>
                                     <!-- <td class="px-4 py-3">
                                         <button data-popover-target="popover-default<?php echo $usuario->id; ?>"
@@ -264,8 +276,8 @@
                                     </td> -->
 
                                     <td class="px-4 py-3 flex items-center justify-end">
-                                        <button id="apple-imac-27-dropdown-button<?php echo $resultado[0]->id; ?>"
-                                            data-dropdown-toggle="apple-imac-27-dropdown<?php echo $resultado[0]->id; ?>"
+                                        <button id="apple-imac-27-dropdown-button<?php echo $encuesta["id"]; ?>"
+                                            data-dropdown-toggle="apple-imac-27-dropdown<?php echo $encuesta["id"]; ?>"
                                             class="inline-flex items-center text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 dark:hover-bg-gray-800 text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                                             type="button">
                                             <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
@@ -274,12 +286,14 @@
                                                     d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
                                             </svg>
                                         </button>
-                                        <div id="apple-imac-27-dropdown<?php echo $resultado[0]->id; ?>"
+                                        <div id="apple-imac-27-dropdown<?php echo $encuesta["id"]; ?>"
                                             class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
                                             <ul class="py-1 text-sm" aria-labelledby="apple-imac-27-dropdown-button">
                                                 <li>
                                                     <form method="POST">
-                                                        <button type="button" name="habilitar"
+                                                        <input type="number" name="investigacion[id]" class="hidden"
+                                                            value="<?php echo $encuesta["usuario_id"]; ?>">
+                                                        <button type="submit"
                                                             class="flex w-full items-center py-2 px-4 hover:bg-green-100 dark:hover:bg-green-600 dark:hover:text-white text-green-700 dark:text-green-200">
                                                             <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg"
                                                                 viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -292,7 +306,6 @@
                                                         </button>
                                                     </form>
                                                 </li>
-
                                             </ul>
                                         </div>
                                     </td>
@@ -361,276 +374,8 @@
     </section>
     <!-- End block -->
 
-    <!-- Modal para crear-->
-    <div id="createProductModal" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex-col justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-
-        <div class="relative p-4 w-full max-w-2xl max-h-full">
-            <!-- Modal content -->
-            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                <!-- Modal header -->
-                <div
-                    class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Añadir Usuario</h3>
-                    <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-target="createProductModal" data-modal-toggle="createProductModal">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                </div>
-                <!-- alerta -->
-                <?php foreach ($errores as $error): ?>
-                    <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                        role="alert">
-                        <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor"
-                            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="sr-only">Info</span>
-                        <div>
-                            <span class="font-medium">Alerta!</span>
-                            <?php echo $error ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-                <!--cierre alerta -->
-                <!-- Modal body -->
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                        <div>
-                            <label for="email"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                            <input value="<?php echo s($usuariosC->email); ?>" type="email" name="email" id="email"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Escribe el email" required="">
-                        </div>
-                        <div>
-                            <label for="nombre"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre
-                                Completo</label>
-                            <input value="<?php echo s($usuariosC->nombre); ?>" type="text" name="nombre" id="nombre"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Escribre tu nombre" required="">
-                        </div>
-                        <div>
-                            <label for="fecha_nacimiento"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de
-                                nacimiento</label>
-                            <input value="<?php echo date('Y-m-d', strtotime(s($usuariosC->fecha_nacimiento))); ?>"
-                                type="date" name="fecha_nacimiento" id="fecha"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <div class="mt-6">
-                                <label for="password"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                <input value="<?php echo s($usuariosC->password); ?>" type="text" name="password"
-                                    id="password"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="password" required="">
-                            </div>
-                        </div>
-
-                        <div>
-                            <div class="w-full">
-                                <label for="sexo"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sexo</label>
-                                <select name="sexo"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected value="">Escoge tu sexo</option>
-                                    <option value="masculino" <?php echo $usuariosC->sexo === "masculino" ? "selected" : '' ?>>
-                                        Masculino</option>
-                                    <option value="femenino" <?php echo $usuariosC->sexo === "femenino" ? "selected" : '' ?>>
-                                        Femenino</option>
-                                </select>
-                            </div>
-                            <div id="opcionPaciente">
-                                <label for="enfermedad"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-6">Condición</label>
-                                <select id="countries" name="enfermedad"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="">Selecciona tu condición</option>
-                                    <option value="diabetes" <?php echo $usuariosC->enfermedad == "diabetes" ? "selected" : "" ?>>Diabetes</option>
-                                    <option value="colostomia" <?php echo $usuariosC->enfermedad == "colostomia" ? "selected" : "" ?>>Colostomia</option>
-                                </select>
-                            </div>
-                        </div>
-
-                    </div>
-                    <button type="submit" name="crear"
-                        class="text-white inline-flex items-center  bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewbox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        Crear
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Actualizar modal -->
-
-    <?php foreach ($usuarios as $usuario): ?>
-        <div id="updateProductModal<?php echo $usuario->id; ?>" tabindex="-1" aria-hidden="true"
-            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative p-4 w-full max-w-2xl max-h-full">
-                <!-- Modal content -->
-                <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                    <!-- Modal header -->
-                    <div
-                        class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Actualizar Usuario</h3>
-                        <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-toggle="updateProductModal<?php echo $usuario->id; ?>">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="sr-only">Close modal</span>
-                        </button>
-                    </div>
-                    <!-- Modal body -->
-                    <!-- alerta -->
-                    <?php foreach ($erroresActualizacion as $error): ?>
-                        <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                            role="alert">
-                            <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor"
-                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="sr-only">Info</span>
-                            <div>
-                                <span class="font-medium">Alerta!</span>
-                                <?php echo $error ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                    <!--cierre alerta -->
-                    <form method="POST" enctype="multipart/form-data">
-                        <input type="number" name="usuario[id]" class="hidden" value="<?php echo $usuario->id; ?>">
-                        <input type="text" name="imagenPrevia" class="hidden" value="<?php echo $usuario->imagen; ?>">
-                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                            <div>
-                                <label for="email"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                <input value="<?php echo s($usuario->email); ?>" type="email" name="usuario[email]"
-                                    id="email"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Escribe el email" required="">
-                            </div>
-                            <div>
-                                <label for="nombre"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre
-                                    Completo</label>
-                                <input value="<?php echo s($usuario->nombre); ?>" type="text" name="usuario[nombre]"
-                                    id="nombre"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Escribre tu nombre" required="">
-                            </div>
-
-                            <div>
-                                <label for="fecha_nacimiento"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de
-                                    nacimiento</label>
-                                <input value="<?php echo date('Y-m-d', strtotime(s($usuario->fecha_nacimiento))); ?>"
-                                    type="date" name="usuario[fecha_nacimiento]" id="fecha"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <div class="mt-6">
-                                    <label for="password"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                    <input value="" type="text" name="usuario[password]" id="password"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="password">
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="w-full">
-                                    <label for="sexo"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sexo</label>
-                                    <select name="usuario[sexo]"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option selected value="">Escoge tu sexo</option>
-                                        <option value="masculino" <?php echo $usuario->sexo === "masculino" ? "selected" : '' ?>>Masculino </option>
-                                        <option value="femenino" <?php echo $usuario->sexo === "femenino" ? "selected" : '' ?>>Femenino</option>
-                                    </select>
-                                </div>
-                            </div>
-
-
-                        </div>
-
-                        <button type="submit" name="actualizar"
-                            class="text-white inline-flex items-center  bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            Update
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    <?php endforeach; ?>
     <!-- Delete modal -->
-    <?php foreach ($usuarios as $usuario): ?>
-        <div id="deleteModal<?php echo $usuario->id; ?>" tabindex="-1" aria-hidden="true"
-            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-            <div class="relative p-4 w-full max-w-md max-h-full">
-                <!-- Modal content -->
-                <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                    <button type="button"
-                        class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-toggle="deleteModal<?php echo $usuario->id; ?>">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <span class="sr-only">Close modal</span>
-                    </button>
-                    <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true"
-                        fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estas seguro de borrar este Usuario?</p>
-                    <div class="flex justify-center align-center items-center space-x-4">
-                        <button data-modal-toggle="deleteModal<?php echo $usuario->id; ?>" type="button"
-                            class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No,
-                            cancelar</button>
-                        <form method="POST" class="m-0""
-                            enctype=" multipart/form-data">
-                            <input type="number" name="id" class="hidden" value="<?php echo $usuario->id; ?>">
-                            <input type="text" name="tipo" class="hidden" value="usuario">
-                            <button type="submit" name="borrar"
-                                class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Si,
-                                estoy seguro</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <?php endforeach ?>
+
 </main>
 
 <!-- js para exportar en excel -->

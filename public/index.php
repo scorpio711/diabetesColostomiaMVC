@@ -55,8 +55,21 @@ $router->post("/public/perfil/profesionales", [ProfesionalesController::class, "
 
 //Crud encuesta salud
 $router->get("/public/admin/encuestaSalud", [EncuestasController::class, "adminSalud"]);
-$router->get("/public/encuesta", [EncuestasController::class, "encuestaSalud"]);
-$router->post("/public/encuesta", [EncuestasController::class, "encuestaSalud"]);
+$router->post("/public/admin/encuestaSalud", [EncuestasController::class, "adminSalud"]);
+$router->get("/public/encuestaSalud", [EncuestasController::class, "encuestaSalud"]);
+$router->post("/public/encuestaSalud", [EncuestasController::class, "encuestaSalud"]);
+
+//Crud encuesta Psicología
+$router->get("/public/admin/encuestaPsicologia", [EncuestasController::class, "adminPsicologia"]);
+$router->post("/public/admin/encuestaPsicologia", [EncuestasController::class, "adminPsicologia"]);
+$router->get("/public/encuestaPsicologia", [EncuestasController::class, "encuestaPsicologia"]);
+$router->post("/public/encuestaPsicologia", [EncuestasController::class, "encuestaPsicologia"]);
+
+//Crud encuesta Juridica
+$router->get("/public/admin/encuestaJuridica", [EncuestasController::class, "adminJuridica"]);
+$router->post("/public/admin/encuestaJuridica", [EncuestasController::class, "adminJuridica"]);
+$router->get("/public/encuestaJuridica", [EncuestasController::class, "encuestaJuridica"]);
+$router->post("/public/encuestaJuridica", [EncuestasController::class, "encuestaJuridica"]);
 
 //Abogados
 $router->get("/public/admin/abogados", [AbogadosController::class, "indexAbogados"]);
@@ -66,7 +79,6 @@ $router->get("/public/admin/psicologos", [PsicologosController::class, "indexPsi
 
 //enfermeros
 $router->get("/public/admin/enfermeros", [EnfermerosController::class, "indexEnfermeros"]);
-
 
 //paginas
 $router->get("/public", [PaginasController::class, "index"]);

@@ -4,7 +4,6 @@ namespace Controllers;
 
 use MVC\router;
 use Model\Investigacion;
-use Model\EncuestaSalud;
 use PHPMailer\PHPMailer\PHPMailer;
 
 class PaginasController
@@ -12,13 +11,12 @@ class PaginasController
     public static function index(Router $router)
     {
         session_start();
-        // debuguear($_SESSION);
+        $enfermedad = $_SESSION["enfermedad"];
         $investigaciones = Investigacion::get(4, 'DESC');
 
-
-
         $router->render("/paginas/index", [
-            "investigaciones" => $investigaciones
+            "investigaciones" => $investigaciones,
+            "enfermedad" => $enfermedad
         ]);
     }
     public static function investigaciones(Router $router)

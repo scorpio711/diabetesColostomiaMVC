@@ -2,14 +2,17 @@
 
 namespace Controllers;
 
+use Model\Investigacion;
 use MVC\Router;
 
 class DiabetesController
 {
-    public static function index($router)
+    public static function index(Router $router)
     {
         session_start();
         esDiabetes();
-        $router->render("/diabetes/index", []);
+        $investigaciones = Investigacion::get(4, 'DESC');
+
+        $router->render("/diabetes/index", ["investigaciones" => $investigaciones]);
     }
 }
