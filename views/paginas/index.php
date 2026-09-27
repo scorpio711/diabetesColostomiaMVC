@@ -1,488 +1,855 @@
 <?php
-if (!$_SESSION["login"]):
-    ?>
-    <div id="sticky-banner" tabindex="-1"
-        class="fixed top-0 start-0 z-50 flex justify-between w-full p-4 border-b border-gray-300 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-        <div class="flex items-center mx-auto">
-            <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
-                <span
-                    class="inline-flex p-1 me-3 bg-gray-200 rounded-full dark:bg-gray-600 w-6 h-6 items-center justify-center flex-shrink-0">
-                    <svg class="w-3 h-3 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
-                        <path
-                            d="M15 1.943v12.114a1 1 0 0 1-1.581.814L8 11V5l5.419-3.871A1 1 0 0 1 15 1.943ZM7 4H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2v5a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V4ZM4 17v-5h1v5H4ZM16 5.183v5.634a2.984 2.984 0 0 0 0-5.634Z" />
-                    </svg>
-                    <span class="sr-only">Light bulb</span>
-                </span>
-                <span>Registrate para acceder a más servicios <a href="/public/registro"
-                        class="inline font-medium text-green-500 underline dark:text-green-500 underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">Registrate
-                        aquí</a></span>
-            </p>
-        </div>
-        <div class="flex items-center">
-            <button data-dismiss-target="#sticky-banner" type="button"
-                class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
-                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+// ALERTA 1: Toast interactivo de bienvenida para visitantes (No autenticados)
+if (empty($_SESSION["login"])):
+?>
+    <div id="welcome-floating-toast" 
+        class="fixed bottom-6 left-6 z-40 max-w-sm w-[calc(100%-3rem)] bg-white/95 dark:bg-gray-800/95 backdrop-blur-md rounded-2xl shadow-2xl border border-emerald-500/30 p-4 transform translate-y-24 opacity-0 transition-all duration-500 ease-out hidden"
+        role="alert">
+        <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 text-white flex items-center justify-center flex-shrink-0 shadow-md shadow-emerald-500/20">
+                <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
-                <span class="sr-only">Close banner</span>
+            </div>
+            <div class="flex-1 pr-1">
+                <h4 class="text-sm font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                    ¡Bienvenido a CAREFULNESS!
+                </h4>
+                <p class="text-xs text-gray-600 dark:text-gray-300 mt-1 leading-relaxed">
+                    Regístrate gratis para agendar valoraciones médicas, recibir orientación jurídica y acompañamiento psicológico.
+                </p>
+                <div class="flex items-center gap-2 mt-3">
+                    <a href="/public/registro" 
+                        class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition">
+                        Crear Cuenta
+                    </a>
+                    <a href="/public/login" 
+                        class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-xs font-semibold rounded-lg transition">
+                        Iniciar Sesión
+                    </a>
+                </div>
+            </div>
+            <button id="dismiss-welcome-toast" type="button" aria-label="Cerrar aviso"
+                class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
             </button>
         </div>
     </div>
+<?php endif; ?>
+
+<div class="container mx-auto px-4 py-4 md:py-8 relative">
     <?php
-endif;
-?>
-<?php
-if ($_SESSION["login"]):
+    // ALERTA 2: Smart Callout interactivo para pacientes con perfil incompleto
+    if (!empty($_SESSION["login"]) && isset($_SESSION["actualizado"]) && intval($_SESSION["actualizado"]) === 0):
     ?>
-    <?php
-    if ($_SESSION["actualizado"] == 0):
-        ?>
-        <div id="sticky-banner" tabindex="-1"
-            class="fixed top-0 start-0 z-50 flex justify-between w-full p-4 border-b border-gray-200 bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-            <div class="flex items-center mx-auto">
-                <p class="flex items-center text-sm font-normal text-gray-500 dark:text-gray-400">
-                    <span
-                        class="inline-flex p-1 me-3 bg-gray-200 rounded-full dark:bg-gray-600 w-6 h-6 items-center justify-center flex-shrink-0">
-                        <svg class="w-3 h-3 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
-                            <path
-                                d="M15 1.943v12.114a1 1 0 0 1-1.581.814L8 11V5l5.419-3.871A1 1 0 0 1 15 1.943ZM7 4H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2v5a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2V4ZM4 17v-5h1v5H4ZM16 5.183v5.634a2.984 2.984 0 0 0 0-5.634Z" />
+        <div id="incomplete-profile-alert" class="mb-8 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/10 dark:from-amber-950/40 dark:via-emerald-950/40 dark:to-teal-950/40 border border-amber-300 dark:border-amber-500/30 p-4 md:p-5 shadow-sm transition-all duration-300">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div class="flex items-start gap-3.5">
+                    <div class="w-11 h-11 rounded-xl bg-amber-500/20 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-6 h-6 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                         </svg>
-                        <span class="sr-only">Light bulb</span>
-                    </span>
-                    <span>Por favor actualiza tu perfil puedes hacerlo dando<a href="/public/perfil"
-                            class="inline font-medium text-green-600 underline dark:text-green-500 underline-offset-2 decoration-600 dark:decoration-500 decoration-solid hover:no-underline">
-                            click
-                            aquí</a></span>
-                </p>
-            </div>
-            <div class="flex items-center">
-                <button data-dismiss-target="#sticky-banner" type="button"
-                    class="flex-shrink-0 inline-flex justify-center w-7 h-7 items-center text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 dark:hover:bg-gray-600 dark:hover:text-white">
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                    <span class="sr-only">Close banner</span>
-                </button>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 class="text-sm md:text-base font-bold text-gray-900 dark:text-white">
+                                Tu perfil de salud está incompleto
+                            </h3>
+                            <span class="px-2 py-0.5 text-[10px] font-extrabold uppercase rounded-full bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-300">
+                                40% Completado
+                            </span>
+                        </div>
+                        <p class="text-xs md:text-sm text-gray-600 dark:text-gray-300 mt-1 max-w-2xl leading-relaxed">
+                            Completa tus datos clínicos y de contacto para que nuestros profesionales de enfermería, psicología y derecho puedan brindarte un seguimiento seguro y personalizado.
+                        </p>
+                        <div class="w-full max-w-md bg-gray-200 dark:bg-gray-700 h-2 rounded-full mt-2.5 overflow-hidden">
+                            <div class="bg-gradient-to-r from-amber-500 to-emerald-500 h-full rounded-full transition-all duration-500" style="width: 40%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-2 self-end sm:self-center flex-shrink-0">
+                    <a href="/public/perfil" 
+                        class="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-amber-500 to-emerald-600 hover:from-amber-600 hover:to-emerald-700 text-white text-xs md:text-sm font-bold rounded-xl shadow-sm transition transform hover:-translate-y-0.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 0 0-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Completar Perfil
+                    </a>
+                    <button id="dismiss-profile-alert" type="button" aria-label="Descartar por ahora"
+                        class="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 rounded-xl hover:bg-white/50 dark:hover:bg-gray-800/50 transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
-        <?php
-    endif;
-?>
-<?php endif ?>
+    <?php endif; ?>
 
-<div class="container mx-auto p-4 md:py-12 mt-10 ">
-
-    <!--parte rincipal -->
+    <!-- Hero Principal -->
     <?php
-    if (!$_SESSION["login"]):
+    $esAdmin = !empty($_SESSION["rol"]) && $_SESSION["rol"] == "admin";
+    $estaAutenticado = !empty($_SESSION["login"]);
+    $esFuncionarioVar = !empty($esFuncionario);
+    if (!$estaAutenticado || $esFuncionarioVar || $esAdmin):
         ?>
-        <section class="flex flex-col items-center">
-            <div class="flex max-w-xl flex-col items-center pt-8 pb-0 text-center sm:pb-16 lg:pt-32 lg:pb-32">
-                <p id="animacion1" class="mb-4 font-semibold text-teal-900 dark:text-white  md:mb-6 md:text-lg xl:text-xl">
+        <section class="flex flex-col items-center relative py-6 md:py-12 text-center">
+            <!-- Badge superior -->
+            <div
+                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold text-emerald-800 dark:text-emerald-300 mb-6 shadow-sm">
+                <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                Plataforma de Salud & Acompañamiento Integral
+            </div>
+
+            <div class="max-w-3xl mx-auto flex flex-col items-center">
+                <p id="animacion1"
+                    class="mb-3 font-semibold text-teal-800 dark:text-emerald-400 text-base sm:text-lg md:text-xl tracking-wide min-h-[1.75rem]">
+                    Estamos orgullosos de presentarte una plataforma
                 </p>
-                <h1 class="text-black-800 mb-8 text-4xl font-bold sm:text-5xl md:mb-12 md:text-6xl dark:text-white"><span
-                        id="animacion2"
-                        class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:to-lime-500 dark:from-green-400"></span>
+
+                <h1
+                    class="text-gray-900 dark:text-white mb-6 text-3xl font-extrabold sm:text-5xl md:text-6xl tracking-tight leading-tight min-h-[4rem]">
+                    <span id="animacion2" class="text-emerald-700 dark:text-emerald-400 font-extrabold">
+                        Para personas con Diabetes y Ostomizados
+                    </span>
                 </h1>
 
-                <p class="mb-8 leading-relaxed text-black dark:text-white md:mb-12 xl:text-lg">"Uniendo fuerzas para
-                    vivir con pasión
-                    y superar los desafíos juntos"</p>
+                <p class="mb-8 max-w-2xl text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
+                    "Uniendo fuerzas para vivir con pasión, autonomía y bienestar. Orientación médica, apoyo psicoemocional
+                    y respaldo jurídico en un solo lugar seguro."
+                </p>
 
-                <div class="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
-                    <a href="/public/registro">
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md">
+                    <a href="/public/registro" class="w-full sm:w-auto">
                         <button type="button"
-                            class="text-white bg-gradient-to-br  from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-base px-6 py-3.5 text-center me-2 mb-2">Registrate</button>
+                            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-semibold rounded-xl text-base px-7 py-3.5 text-center shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 hover:-translate-y-0.5 transition-all duration-200">
+                            <span>Registrarme gratis</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                            </svg>
+                        </button>
                     </a>
-                    <a href="/public/login">
-                        <button
-                            class="relative inline-flex items-center leading-7 justify-center p-0.5 mb-2 me-2 overflow-hidden text-base font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
-                            <span
-                                class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                Iniciar Sesión
-                            </span>
+                    <a href="/public/login" class="w-full sm:w-auto">
+                        <button type="button"
+                            class="w-full sm:w-auto inline-flex items-center justify-center text-gray-800 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-300 dark:border-gray-600 font-semibold rounded-xl text-base px-6 py-3.5 text-center shadow-sm hover:-translate-y-0.5 transition-all duration-200">
+                            Iniciar Sesión
                         </button>
                     </a>
                 </div>
             </div>
         </section>
     <?php endif; ?>
-    <?php
-    if ($enfermedad == "colostomia"): ?>
-        <section class="bg-white dark:bg-gray-900">
-            <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
-                <div class="mr-auto place-self-center lg:col-span-7">
-                    <h1 class="text-black-800 mb-4 text-4xl font-bold sm:text-5xl md:mb-8 md:text-6xl dark:text-white">
-                        <span id="animacion1"
-                            class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:to-lime-500 dark:from-green-400"></span>
+
+    <?php if (isset($enfermedad) && $enfermedad == "colostomia"): ?>
+        <section class="py-8 md:py-14">
+            <div class="grid max-w-screen-xl px-4 mx-auto lg:gap-10 lg:grid-cols-12 items-center">
+                <div class="mr-auto place-self-center lg:col-span-7 text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800 text-xs font-semibold text-emerald-800 dark:text-emerald-300 mb-4">
+                        <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        Cuidado Especializado • Ostomías
+                    </div>
+                    <h1
+                        class="text-gray-900 dark:text-white mb-4 text-3xl font-extrabold sm:text-4xl md:text-5xl leading-tight">
+                        <span id="animacion1" class="text-emerald-700 dark:text-emerald-400 font-extrabold">
+                            ¡Bienvenido! Cuidemos juntos de tu Ostomía
+                        </span>
                     </h1>
-                    <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
-                        Estamos aquí para apoyarte en el cuidado de tu ostomía, brindándote información y herramientas.</p>
-                    <a href="#"
-                        class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
-                        Get started
-                        <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
-                    <a href="#"
-                        class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                        Speak to Sales
-                    </a>
+                    <p class="max-w-2xl mb-8 text-gray-600 dark:text-gray-300 text-base md:text-lg leading-relaxed">
+                        Estamos a tu lado para acompañarte en el cuidado diario del estoma, la protección de la piel
+                        periestomal, la nutrición adaptada y tu bienestar emocional con expertos en enfermería y salud.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="/public/colostomia"
+                            class="inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold text-white rounded-xl bg-emerald-600 hover:bg-emerald-700 shadow-md shadow-emerald-600/20 hover:-translate-y-0.5 transition-all duration-200">
+                            Mi Portal de Colostomía
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="/public/contacto"
+                            class="inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold text-gray-800 dark:text-white border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:-translate-y-0.5 transition-all duration-200">
+                            Agendar Consulta
+                        </a>
+                    </div>
                 </div>
-                <div class="hidden lg:mt-0 lg:col-span-5 lg:flex justify-center">
-                    <img src="/public/build/img/lennox-chitando-QEHWkzcBaZQ-unsplash.jpg"
-                        class="w-full h-auto max-w-80 rounded-lg" alt="mockup">
-                </div>
-            </div>
-        </section>
-    <?php endif; ?>
-    <?php
-    if ($enfermedad == "diabetes"): ?>
-        <section class="bg-white dark:bg-gray-900">
-            <div class="grid max-w-screen-xl px-4 py-8 mx-auto lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
-                <div class="mr-auto place-self-center lg:col-span-7">
-                    <h1 class="text-black-800 mb-4 text-4xl font-bold sm:text-5xl md:mb-8 md:text-6xl dark:text-white">
-                        <span id="animacion1"
-                            class="text-transparent bg-clip-text bg-gradient-to-r to-green-500 from-teal-700 dark:to-lime-500 dark:from-green-400"></span>
-                    </h1>
-                    <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
-                        Estamos aquí para apoyarte en el cuidado de tu ostomía, brindándote información y herramientas.</p>
-                    <a href="#"
-                        class="inline-flex items-center justify-center px-5 py-3 mr-3 text-base font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:focus:ring-primary-900">
-                        Get started
-                        <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                    </a>
-                    <a href="#"
-                        class="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-                        Speak to Sales
-                    </a>
-                </div>
-                <div class="hidden lg:mt-0 lg:col-span-5 lg:flex justify-center">
-                    <img src="/public/build/img/lennox-chitando-QEHWkzcBaZQ-unsplash.jpg"
-                        class="w-full h-auto max-w-80 rounded-lg" alt="mockup">
-                </div>
-            </div>
-        </section>
-    <?php endif; ?>
-    <!-- fin del gradiente -->
-    <hr class="h-[0.1px] my-8 bg-blue-200 border-0 dark:bg-gray-700">
-
-    <!-- bento grid -->
-    <div>
-        <!-- component -->
-        <section>
-            <div class="p-8 mx-auto px-6 max-w-7xl">
-
-                <div class="relative">
-                    <div class="relative z-10 grid gap-3 grid-cols-6">
-
-                        <a href="#"
-                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 xl:col-span-3 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900">
-
-                            <div class="grid sm:grid-cols-2">
-                                <div class="flex flex-col justify-between relative z-10 space-y-12 lg:space-y-6">
-                                    <div
-                                        class="relative aspect-square rounded-full size-12 flex border dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border-green-300 border-blue-300 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
-                                        <img src="/public/build/img/sun-dynamic-premium.png" alt="">
-                                    </div>
-                                    <div class="space-y-2">
-                                        <h2
-                                            class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white">
-                                            Sobre Nosotros</h2>
-                                        <p class="dark:text-gray-300 text-gray-700">Provident fugit vero voluptate.
-                                            Voluptates a sapiente inventore nisi.</p>
-                                    </div>
-                                </div>
-                                <div
-                                    class="overflow-hidden relative mt-6 sm:mt-auto h-fit -mb-[34px] -mr-[34px] sm:ml-6 py-6 p-6 border border-blue-300 rounded-tl-lg dark:bg-white/5 dark:border-white/10">
-                                    <img class="rounded-lg" src="/public/build/img/hands-1327811_1920.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-
-                        </a>
-                        <a href="#"
-                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 xl:col-span-3 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900">
-                            <div class="h-full grid sm:grid-cols-2">
-                                <div class="flex flex-col justify-between relative z-10 space-y-12 lg:space-y-6">
-                                    <div
-                                        class="relative aspect-square rounded-full size-12 flex border dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
-                                        <img src="/public/build/img/boy-dynamic-premium.png" alt="">
-                                    </div>
-                                    <div class="space-y-2">
-                                        <h2
-                                            class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white">
-                                            Conosca a nuestros Profesionales</h2>
-                                        <p class="dark:text-gray-300 text-gray-700">Voluptate. magnam magni
-                                            doloribus dolores voluptates a sapiente inventore nisi.</p>
-                                    </div>
-                                </div>
-                                <div
-                                    class="flex -space-x-4 rtl:space-x-reverse justify-center items-center pt-10 sm:pt-0">
-                                    <img class="size-16 sm:size-20 border-2 border-white rounded-full dark:border-gray-800"
-                                        src="/public/build/img/perfil1.jpg" alt="">
-                                    <img class="size-16 sm:size-20 border-2 border-white rounded-full dark:border-gray-800"
-                                        src="/public/build/img/perfil2.jpg" alt="">
-                                    <img class="size-16 sm:size-20 border-2 border-white rounded-full dark:border-gray-800"
-                                        src="/public/build/img/perfil3.jpg" alt="">
-                                    <img class="size-16 sm:size-20 border-2 border-white rounded-full dark:border-gray-800"
-                                        src="/public/build/img/perfil4.jpg" alt="">
-                                </div>
-                            </div>
-                        </a>
-
-                        <a href="#"
-                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900 ">
-                            <div>
-                                <div
-                                    class="relative aspect-square rounded-full size-32 flex border mx-auto dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
-                                    <img src="/public/build/img/notebook-dynamic-premium.webp" alt="imagen">
-                                </div>
-                                <div class="mt-6 text-center relative z-10 space-y-2">
-                                    <h2
-                                        class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white ">
-                                        Ayuda Juridica</h2>
-                                    <p class="dark:text-gray-300 text-gray-700">Provident fugit and vero voluptate.
-                                        magnam magni doloribus dolores voluptates a sapiente nisi.</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#"
-                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 sm:col-span-3 lg:col-span-2 overflow-hidden relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900 ">
-                            <div>
-                                <div
-                                    class="relative aspect-square rounded-full size-32 flex border mx-auto dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
-                                    <img src="/public/build/img/heart-dynamic-premium.png" alt="imagen">
-                                </div>
-                                <div class="mt-6 text-center relative z-10 space-y-2">
-                                    <h2
-                                        class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white ">
-                                        Atención Médica</h2>
-                                    <p class="dark:text-gray-300 text-gray-700">Provident fugit and vero voluptate.
-                                        magnam magni doloribus dolores voluptates a sapiente nisi.</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a href="#"
-                            class="shadow-md shadow-green-500/20 col-span-full hover:bg-green-100/40 lg:col-span-2 overflow-hidden flex relative p-8 rounded-3xl bg-white border border-blue-300 dark:border-gray-800 dark:bg-gray-900">
-                            <div>
-                                <div
-                                    class="relative aspect-square rounded-full size-32 flex border mx-auto dark:bg-white/5 dark:border-white/10 before:absolute before:-inset-2 before:border before:border-green-300 border-blue-300 dark:before:border-white/5 dark:before:bg-white/5 before:rounded-full">
-                                    <img src="/public/build/img/star-dynamic-premium.png" alt="imagen">
-                                </div>
-                                <div class="mt-6 text-center relative z-10 space-y-2">
-                                    <h2
-                                        class="text-xl font-bold text-gray-800 transition group-hover:text-purple-950 dark:text-white ">
-                                        Apoyo Emocional</h2>
-                                    <p class="dark:text-gray-300 text-gray-700">Provident fugit and vero voluptate.
-                                        magnam magni doloribus dolores voluptates a sapiente nisi.</p>
-                                </div>
-                            </div>
-                        </a>
-
+                <div class="hidden lg:col-span-5 lg:flex justify-center relative">
+                    <div class="relative group">
+                        <img src="/public/build/img/lennox-chitando-QEHWkzcBaZQ-unsplash.jpg"
+                            class="w-full h-auto max-w-sm rounded-3xl shadow-2xl border-4 border-white dark:border-gray-800 object-cover transform group-hover:scale-[1.02] transition duration-300"
+                            alt="Cuidado de la salud">
+                        <div
+                            class="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 px-4 py-2.5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 flex items-center gap-2">
+                            <span class="text-xl">🩺</span>
+                            <span class="text-xs font-bold text-gray-800 dark:text-gray-200">Enfermería y Guías
+                                Clínicas</span>
+                        </div>
                     </div>
                 </div>
             </div>
+        </section>
+    <?php endif; ?>
+
+    <?php if (isset($enfermedad) && $enfermedad == "diabetes"): ?>
+        <section class="py-8 md:py-14">
+            <div class="grid max-w-screen-xl px-4 mx-auto lg:gap-10 lg:grid-cols-12 items-center">
+                <div class="mr-auto place-self-center lg:col-span-7 text-left">
+                    <div
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-100 dark:bg-teal-950 border border-teal-300 dark:border-teal-800 text-xs font-semibold text-teal-800 dark:text-teal-300 mb-4">
+                        <span class="flex h-2 w-2 rounded-full bg-teal-500 animate-pulse"></span>
+                        Control Integral • Diabetes
+                    </div>
+                    <h1
+                        class="text-gray-900 dark:text-white mb-4 text-3xl font-extrabold sm:text-4xl md:text-5xl leading-tight">
+                        <span id="animacion1" class="text-teal-700 dark:text-teal-400 font-extrabold">
+                            ¡Bienvenido! Cuidemos juntos de tu Diabetes
+                        </span>
+                    </h1>
+                    <p class="max-w-2xl mb-8 text-gray-600 dark:text-gray-300 text-base md:text-lg leading-relaxed">
+                        Te acompañamos en tu monitoreo glucémico, prevención de complicaciones, hábitos alimenticios
+                        saludables y soporte continuo para una vida plena y activa.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="/public/diabetes"
+                            class="inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold text-white rounded-xl bg-teal-600 hover:bg-teal-700 shadow-md shadow-teal-600/20 hover:-translate-y-0.5 transition-all duration-200">
+                            Mi Portal de Diabetes
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </a>
+                        <a href="/public/contacto"
+                            class="inline-flex items-center justify-center px-6 py-3.5 text-base font-semibold text-gray-800 dark:text-white border border-gray-300 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 hover:-translate-y-0.5 transition-all duration-200">
+                            Agendar Consulta
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden lg:col-span-5 lg:flex justify-center relative">
+                    <div class="relative group">
+                        <img src="/public/build/img/lennox-chitando-QEHWkzcBaZQ-unsplash.jpg"
+                            class="w-full h-auto max-w-sm rounded-3xl shadow-2xl border-4 border-white dark:border-gray-800 object-cover transform group-hover:scale-[1.02] transition duration-300"
+                            alt="Control glucémico y salud">
+                        <div
+                            class="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 px-4 py-2.5 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 flex items-center gap-2">
+                            <span class="text-xl">📊</span>
+                            <span class="text-xs font-bold text-gray-800 dark:text-gray-200">Control Glucémico &
+                                Nutrición</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    <?php endif; ?>
+
+    <!-- Barra de Métricas y Confianza (Impacto) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-8 max-w-5xl mx-auto">
+        <div
+            class="stat-card p-4 md:p-5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm text-center transform hover:-translate-y-1 transition duration-300">
+            <span class="block text-2xl md:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">+1,200</span>
+            <span class="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 mt-1 block">Pacientes
+                Acompañados</span>
+        </div>
+        <div
+            class="stat-card p-4 md:p-5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm text-center transform hover:-translate-y-1 transition duration-300">
+            <span class="block text-2xl md:text-3xl font-extrabold text-teal-600 dark:text-teal-400">3 Áreas</span>
+            <span class="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 mt-1 block">Médica, Psicológica
+                y Legal</span>
+        </div>
+        <div
+            class="stat-card p-4 md:p-5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm text-center transform hover:-translate-y-1 transition duration-300">
+            <span class="block text-2xl md:text-3xl font-extrabold text-blue-600 dark:text-blue-400">+50</span>
+            <span class="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 mt-1 block">Guías e
+                Investigaciones</span>
+        </div>
+        <div
+            class="stat-card p-4 md:p-5 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm text-center transform hover:-translate-y-1 transition duration-300">
+            <span class="block text-2xl md:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">100%</span>
+            <span class="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400 mt-1 block">Confidencial y
+                Guiado</span>
+        </div>
     </div>
-    <hr class="h-[0.1px] my-8 bg-blue-200 border-0 dark:bg-gray-700">
-    <!-- Testimonios -->
-    <section class="bg-white dark:bg-gray-900">
-        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6">
-            <div class="mx-auto max-w-screen-sm">
-                <h2 class="mb-4 text-4xl tracking-tight font-bold text-gray-900 dark:text-white">Testimonios</h2>
-                <p class="mb-8 font-light text-black lg:mb-16 sm:text-xl dark:text-gray-400">Explore the whole
-                    collection of open-source web components and elements built with the utility classes from Tailwind
+
+    <!-- Bento Grid de Servicios y Especialidades -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span
+                    class="px-3.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                    Áreas de Acompañamiento
+                </span>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-3 mb-3">
+                    Todo lo que necesitas para tu bienestar
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400 text-base">
+                    Un equipo interdisciplinario dedicado a resolver tus dudas, defender tus derechos y cuidar de tu
+                    salud integral.
                 </p>
             </div>
-            <div
-                class="grid mb-8 lg:mb-12 lg:grid-cols-2 border border-blue-300 rounded-lg shadow-md shadow-green-500/20">
-                <figure
-                    class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-b border-blue-300 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
-                    <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Speechless with how easy this
-                            was to integrate</h3>
-                        <p class="my-4">"I recently got my hands on Flowbite Pro, and holy crap, I'm speechless with how
-                            easy this was to integrate within my application. Most templates are a pain, code is
-                            scattered, and near impossible to theme.</p>
-                        <p class="my-4">Flowbite has code in one place and I'm not joking when I say it took me a matter
-                            of minutes to copy the code, customise it and integrate within a Laravel + Vue application.
-                        </p>
-                        <p class="my-4">If you care for your time, I hands down would go with this."</p>
-                    </blockquote>
-                    <figcaption class="flex justify-center items-center space-x-3">
-                        <img class="w-9 h-9 rounded-full"
-                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/karen-nelson.png"
-                            alt="profile picture">
-                        <div class="space-y-0.5 font-medium dark:text-white text-left">
-                            <div>Bonnie Green</div>
-                            <div class="text-sm font-light text-gray-500 dark:text-gray-400">Developer at Open AI</div>
-                        </div>
-                    </figcaption>
-                </figure>
-                <figure
-                    class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-b border-blue-300 md:p-12 dark:bg-gray-800 dark:border-gray-700">
-                    <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Solid foundation for any project
-                        </h3>
-                        <p class="my-4">"FlowBite provides a robust set of design tokens and components based on the
-                            popular Tailwind CSS framework. From the most used UI components like forms and navigation
-                            bars to the whole app screens designed both for desktop and mobile, this UI kit provides a
-                            solid foundation for any project.</p>
-                        <p class="my-4">Designing with Figma components that can be easily translated to the utility
-                            classes of Tailwind CSS is a huge timesaver!"</p>
-                    </blockquote>
-                    <figcaption class="flex justify-center items-center space-x-3">
-                        <img class="w-9 h-9 rounded-full"
-                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/roberta-casas.png"
-                            alt="profile picture">
-                        <div class="space-y-0.5 font-medium dark:text-white text-left">
-                            <div>Roberta Casas</div>
-                            <div class="text-sm font-light text-gray-500 dark:text-gray-400">Lead designer at Dropbox
+
+            <div class="grid gap-4 md:gap-5 grid-cols-1 md:grid-cols-6">
+                <!-- Card 1: Sobre Nosotros -->
+                <div
+                    class="bento-card col-span-1 md:col-span-6 xl:col-span-3 overflow-hidden relative p-7 md:p-8 rounded-3xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 transition-all duration-300 group">
+                    <div class="grid sm:grid-cols-2 gap-6 items-center">
+                        <div class="flex flex-col justify-between h-full space-y-6">
+                            <div
+                                class="relative size-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center p-2 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                                <img src="/public/build/img/sun-dynamic-premium.png" alt="Icono Sol"
+                                    class="w-8 h-8 object-contain">
+                            </div>
+                            <div class="space-y-2">
+                                <span
+                                    class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Nuestra
+                                    Misión</span>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Sobre Nosotros</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                    Promovemos una comunidad de apoyo integral para personas con diabetes y ostomías,
+                                    facilitando herramientas clínicas, emocionales y de orientación jurídica.
+                                </p>
                             </div>
                         </div>
-                    </figcaption>
-                </figure>
-                <figure
-                    class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-b border-blue-300 lg:border-b-0 md:p-12 lg:border-r dark:bg-gray-800 dark:border-gray-700">
-                    <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Mindblowing workflow and
-                            variants</h3>
-                        <p class="my-4">"As someone who mainly designs in the browser, I've been a casual user of Figma,
-                            but as soon as I saw and started playing with FlowBite my mind was 🤯.</p>
-                        <p class="my-4">Everything is so well structured and simple to use (I've learnt so much about
-                            Figma by just using the toolkit).</p>
-                        <p class="my-4">Aesthetically, the well designed components are beautiful and will undoubtedly
-                            level up your next application."</p>
-                    </blockquote>
-                    <figcaption class="flex justify-center items-center space-x-3">
-                        <img class="w-9 h-9 rounded-full"
-                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/jese-leos.png"
-                            alt="profile picture">
-                        <div class="space-y-0.5 font-medium dark:text-white text-left">
-                            <div>Jese Leos</div>
-                            <div class="text-sm font-light text-gray-500 dark:text-gray-400">Software Engineer at
-                                Facebook</div>
+                        <div
+                            class="overflow-hidden rounded-2xl border border-gray-200 dark:border-gray-700 h-44 sm:h-full">
+                            <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                src="/public/build/img/hands-1327811_1920.jpg" alt="Comunidad unida">
                         </div>
-                    </figcaption>
-                </figure>
-                <figure
-                    class="flex flex-col justify-center items-center p-8 text-center bg-green-50 border-blue-300 md:p-12 dark:bg-gray-800 dark:border-gray-700">
-                    <blockquote class="mx-auto mb-8 max-w-2xl text-gray-500 dark:text-gray-400">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Efficient Collaborating</h3>
-                        <p class="my-4">"This is a very complex and beautiful set of elements. Under the hood it comes
-                            with the best things from 2 different worlds: Figma and Tailwind.</p>
-                        <p class="my-4">You have many examples that can be used to create a fast prototype for your
-                            team."</p>
-                    </blockquote>
-                    <figcaption class="flex justify-center items-center space-x-3">
-                        <img class="w-9 h-9 rounded-full"
-                            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/joseph-mcfall.png"
-                            alt="profile picture">
-                        <div class="space-y-0.5 font-medium dark:text-white text-left">
-                            <div>Joseph McFall</div>
-                            <div class="text-sm font-light text-gray-500 dark:text-gray-400">CTO at Google</div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Profesionales -->
+                <a href="/public/contacto"
+                    class="bento-card col-span-1 md:col-span-6 xl:col-span-3 overflow-hidden relative p-7 md:p-8 rounded-3xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:shadow-emerald-500/10 hover:-translate-y-1.5 transition-all duration-300 group flex flex-col justify-between">
+                    <div class="grid sm:grid-cols-2 gap-6 items-center">
+                        <div class="flex flex-col justify-between h-full space-y-6">
+                            <div
+                                class="relative size-12 rounded-2xl bg-teal-50 dark:bg-teal-950 border border-teal-200 dark:border-teal-800 flex items-center justify-center p-2 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                                <img src="/public/build/img/boy-dynamic-premium.png" alt="Icono Especialistas"
+                                    class="w-8 h-8 object-contain">
+                            </div>
+                            <div class="space-y-2">
+                                <span
+                                    class="text-xs font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400">Equipo
+                                    Certificado</span>
+                                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Nuestros Especialistas</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                    Enfermeros expertos en estomas, psicólogos clínicos y abogados defensores del
+                                    derecho a la salud listos para brindarte atención personalizada.
+                                </p>
+                            </div>
                         </div>
-                    </figcaption>
-                </figure>
+                        <div class="flex flex-col items-center justify-center space-y-3 pt-4 sm:pt-0">
+                            <div class="flex -space-x-3 rtl:space-x-reverse justify-center items-center">
+                                <img class="size-14 rounded-full border-2 border-white dark:border-gray-800 object-cover shadow-sm group-hover:-translate-y-1 transition duration-200"
+                                    src="/public/build/img/perfil1.jpg" alt="Profesional 1">
+                                <img class="size-14 rounded-full border-2 border-white dark:border-gray-800 object-cover shadow-sm group-hover:-translate-y-1 transition duration-200 delay-75"
+                                    src="/public/build/img/perfil2.jpg" alt="Profesional 2">
+                                <img class="size-14 rounded-full border-2 border-white dark:border-gray-800 object-cover shadow-sm group-hover:-translate-y-1 transition duration-200 delay-150"
+                                    src="/public/build/img/perfil3.jpg" alt="Profesional 3">
+                                <img class="size-14 rounded-full border-2 border-white dark:border-gray-800 object-cover shadow-sm group-hover:-translate-y-1 transition duration-200 delay-200"
+                                    src="/public/build/img/perfil4.jpg" alt="Profesional 4">
+                            </div>
+                            <span
+                                class="inline-flex items-center text-xs font-bold text-emerald-600 dark:text-emerald-400 group-hover:gap-2 gap-1 transition-all">
+                                Agendar consulta con un profesional
+                                <svg class="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform"
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Card 3: Ayuda Jurídica -->
+                <a href="/public/juridico"
+                    class="bento-card col-span-1 md:col-span-3 lg:col-span-2 overflow-hidden relative p-7 rounded-3xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1.5 transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="relative size-20 rounded-2xl bg-indigo-50 dark:bg-indigo-950 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center mx-auto p-3 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                            <img src="/public/build/img/notebook-dynamic-premium.webp" alt="Asesoría Jurídica"
+                                class="w-14 h-14 object-contain">
+                        </div>
+                        <div class="mt-6 text-center space-y-2">
+                            <span
+                                class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Derechos
+                                en Salud</span>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Asesoría Jurídica</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                Orientación legal para reclamar bolsas de colostomía, tirillas de glucemia, medicamentos
+                                e interposición de tutelas.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-6 text-center">
+                        <span
+                            class="inline-flex items-center text-xs font-bold text-indigo-600 dark:text-indigo-400 group-hover:gap-1.5 gap-1 transition-all">
+                            Conocer derechos <span
+                                class="transform group-hover:translate-x-1 transition-transform">→</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Card 4: Atención Médica -->
+                <a href="/public/medico"
+                    class="bento-card col-span-1 md:col-span-3 lg:col-span-2 overflow-hidden relative p-7 rounded-3xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:shadow-rose-500/10 hover:-translate-y-1.5 transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="relative size-20 rounded-2xl bg-rose-50 dark:bg-rose-950 border border-rose-200 dark:border-rose-800 flex items-center justify-center mx-auto p-3 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300">
+                            <img src="/public/build/img/heart-dynamic-premium.png" alt="Atención Médica"
+                                class="w-14 h-14 object-contain">
+                        </div>
+                        <div class="mt-6 text-center space-y-2">
+                            <span
+                                class="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400">Cuidados
+                                Clínicos</span>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Atención y Enfermería</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                Guías de cuidado del estoma, monitoreo de glicemia capilar, prevención de lesiones y
+                                protocolos de enfermería validados.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-6 text-center">
+                        <span
+                            class="inline-flex items-center text-xs font-bold text-rose-600 dark:text-rose-400 group-hover:gap-1.5 gap-1 transition-all">
+                            Ver guías médicas <span
+                                class="transform group-hover:translate-x-1 transition-transform">→</span>
+                        </span>
+                    </div>
+                </a>
+
+                <!-- Card 5: Apoyo Emocional -->
+                <a href="/public/psicologico"
+                    class="bento-card col-span-1 md:col-span-6 lg:col-span-2 overflow-hidden relative p-7 rounded-3xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-xl hover:shadow-amber-500/10 hover:-translate-y-1.5 transition-all duration-300 group flex flex-col justify-between">
+                    <div>
+                        <div
+                            class="relative size-20 rounded-2xl bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 flex items-center justify-center mx-auto p-3 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                            <img src="/public/build/img/star-dynamic-premium.png" alt="Apoyo Emocional"
+                                class="w-14 h-14 object-contain">
+                        </div>
+                        <div class="mt-6 text-center space-y-2">
+                            <span
+                                class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">Salud
+                                Emocional</span>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Soporte Psicológico</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                                Acompañamiento en la aceptación del diagnóstico, manejo de la ansiedad, autoimagen,
+                                resiliencia y apoyo familiar.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-6 text-center">
+                        <span
+                            class="inline-flex items-center text-xs font-bold text-amber-600 dark:text-amber-400 group-hover:gap-1.5 gap-1 transition-all">
+                            Acceder a apoyo <span
+                                class="transform group-hover:translate-x-1 transition-transform">→</span>
+                        </span>
+                    </div>
+                </a>
             </div>
-            <!-- <div class="text-center">
-                <a href="#"
-                    class="py-2.5 px-5 mr-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Show
-                    more...</a>
-            </div> -->
+        </div>
     </section>
 
-    <hr class="h-[0.1px] my-8 bg-blue-200 border-0 dark:bg-gray-700">
+    <!-- Eventos y Talleres Comunitarios -->
+    <section class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span
+                    class="px-3.5 py-1 rounded-full text-xs font-semibold bg-teal-100 text-teal-800 dark:bg-teal-950 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
+                    Comunidad en Acción
+                </span>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mt-3 mb-3">
+                    Encuentros, Charlas y Talleres
+                </h2>
+                <p class="text-gray-600 dark:text-gray-400 text-base">
+                    Momentos compartidos en nuestras jornadas de capacitación, integración y aprendizaje colectivo.
+                </p>
+            </div>
+
+            <div id="gallery"
+                class="relative w-full max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
+                data-carousel="slide">
+                <!-- Carousel wrapper -->
+                <div class="relative h-64 sm:h-96 md:h-[28rem] overflow-hidden rounded-3xl">
+                    <!-- Item 1 -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img src="/public/build/img/DSC_0113 (2).jpg" class="absolute block w-full h-full object-cover"
+                            alt="Taller comunitario">
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+                        <img src="/public/build/img/DSC_0154.jpg" class="absolute block w-full h-full object-cover"
+                            alt="Encuentro de pacientes">
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img src="/public/build/img/DSC_0080.jpg" class="absolute block w-full h-full object-cover"
+                            alt="Jornada de salud">
+                    </div>
+                    <!-- Item 4 -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img src="/public/build/img/DSC_0073.jpg" class="absolute block w-full h-full object-cover"
+                            alt="Capacitación y educación">
+                    </div>
+                    <!-- Item 5 -->
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img src="/public/build/img/DSC_0057.jpg" class="absolute block w-full h-full object-cover"
+                            alt="Actividades de bienestar">
+                    </div>
+                </div>
+
+                <!-- Slider controls -->
+                <button type="button"
+                    class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                    data-carousel-prev>
+                    <span
+                        class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow-md group-hover:bg-gray-100 dark:group-hover:bg-gray-700 group-hover:scale-110 transition-all">
+                        <svg class="w-5 h-5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2.5" d="m15 19-7-7 7-7" />
+                        </svg>
+                        <span class="sr-only">Anterior</span>
+                    </span>
+                </button>
+                <button type="button"
+                    class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                    data-carousel-next>
+                    <span
+                        class="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-white shadow-md group-hover:bg-gray-100 dark:group-hover:bg-gray-700 group-hover:scale-110 transition-all">
+                        <svg class="w-5 h-5 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2.5" d="m9 5 7 7-7 7" />
+                        </svg>
+                        <span class="sr-only">Siguiente</span>
+                    </span>
+                </button>
+            </div>
+        </div>
     </section>
-    <!-- fin bento grid -->
 
-    <!-- investigaciones -->
+    <hr class="my-10 border-t border-gray-200 dark:border-gray-700">
 
+    <!-- Listado de Investigaciones -->
     <?php
     require "listadoInvestigaciones.php";
     ?>
 
 </div>
 
-</div>
-</body>
-<?php
-if (!$_SESSION["login"]): ?>
-    <script>
-        document.addEventListener("DOMContentLoaded", (event) => {
-            gsap.registerPlugin(TextPlugin);
+<!-- ========================================== -->
+<!-- MODAL INTERACTIVO DE ENCUESTAS DIAGNÓSTICAS -->
+<!-- ========================================== -->
+<?php if (isset($enfermedad) && ($enfermedad == "diabetes" || $enfermedad == "colostomia")): ?>
+    <?php 
+    $faltaPsicologia = !isset($encuestaPsicologia) || $encuestaPsicologia == 0;
+    $faltaSalud = !isset($encuestaSalud) || $encuestaSalud == 0;
+    $faltaJuridico = !isset($encuestaJuridico) || $encuestaJuridico == 0;
+    
+    $totalEncuestas = 3;
+    $pendientes = ($faltaPsicologia ? 1 : 0) + ($faltaSalud ? 1 : 0) + ($faltaJuridico ? 1 : 0);
+    $completadas = $totalEncuestas - $pendientes;
+    $porcentajeCompletado = round(($completadas / $totalEncuestas) * 100);
+    ?>
 
-            // Definir la primera animación
-            gsap.to(animacion1, {
-                duration: 1,
-                text: "Estamos orgullosos de presentarte una plataforma",
-                ease: "none",
-                onComplete: () => {
-                    // Definir la segunda animación dentro de la función onComplete de la primera
-                    gsap.to(animacion2, {
-                        duration: 1,
-                        text: "Para personas con Diabetes y Ostomizados",
-                        ease: "none"
-                    });
-                }
-            });
-        });
-    </script>
-<?php endif ?>
-<?php if ($enfermedad == "colostomia"): ?>
-    <script>
-        document.addEventListener("DOMContentLoaded", (event) => {
-            gsap.registerPlugin(TextPlugin);
+    <?php if ($pendientes > 0): ?>
+        <!-- Píldora / Widget Flotante Interactivo en la esquina inferior derecha -->
+        <div id="floating-encuestas-widget" class="fixed bottom-6 right-6 z-40 hidden">
+            <button id="open-encuestas-modal-btn" type="button" 
+                class="group flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-600 text-white rounded-2xl shadow-2xl hover:shadow-emerald-500/30 transition-all duration-300 transform hover:-translate-y-1 focus:ring-4 focus:ring-emerald-400/50">
+                <span class="relative flex h-3.5 w-3.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-white"></span>
+                </span>
+                <div class="text-left">
+                    <p class="text-[10px] uppercase font-extrabold tracking-wider text-emerald-200">Autoevaluaciones</p>
+                    <p class="text-xs font-bold"><?php echo $pendientes; ?> pendiente<?php echo $pendientes > 1 ? 's' : ''; ?> por responder</p>
+                </div>
+                <div class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center group-hover:rotate-12 transition-transform">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                    </svg>
+                </div>
+            </button>
+        </div>
 
-            // Definir la primera animación
-            gsap.to(animacion1, {
-                duration: 1,
-                text: '¡Bienvenido! Nos alegra que estés aquí Juntos cuidaremos de tu Ostomía',
-                ease: "none",
-                onComplete: () => {
-                    // Definir la segunda animación dentro de la función onComplete de la primera
-                    gsap.to(animacion2, {
-                        duration: 1,
-                        text: "",
-                        ease: "none"
-                    });
-                }
-            });
-        });
-    </script>
-<?php endif ?>
-<?php if ($enfermedad == "diabetes"): ?>
-    <script>
-        document.addEventListener("DOMContentLoaded", (event) => {
-            gsap.registerPlugin(TextPlugin);
+        <!-- Backdrop y Modal Principal -->
+        <div id="interactive-encuestas-modal" tabindex="-1" aria-hidden="true"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm transition-opacity duration-300 opacity-0 pointer-events-none">
+            
+            <div id="encuestas-modal-card" class="relative w-full max-w-lg bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden transform scale-95 transition-transform duration-300">
+                
+                <!-- Encabezado con Banner y Progreso -->
+                <div class="relative bg-gradient-to-r from-teal-700 via-emerald-700 to-slate-900 text-white p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-[11px] font-bold uppercase tracking-wider backdrop-blur-sm">
+                            <span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
+                            Tu Plan de Bienestar
+                        </div>
+                        <button type="button" id="close-encuestas-modal-btn" aria-label="Cerrar ventana"
+                            class="text-emerald-100 hover:text-white p-1.5 rounded-xl hover:bg-white/20 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
 
-            // Definir la primera animación
-            gsap.to(animacion1, {
-                duration: 1,
-                text: '¡Bienvenido! Nos alegra que estés aquí Juntos cuidaremos de tu diabetes',
-                ease: "none",
-                onComplete: () => {
-                    // Definir la segunda animación dentro de la función onComplete de la primera
-                    gsap.to(animacion2, {
-                        duration: 1,
-                        text: "",
-                        ease: "none"
-                    });
-                }
+                    <h3 class="text-xl md:text-2xl font-black text-white">
+                        ¡Queremos personalizar tu cuidado!
+                    </h3>
+                    <p class="text-xs md:text-sm text-emerald-100/90 mt-1 leading-relaxed">
+                        Completa estas 3 breves evaluaciones para que nuestro equipo médico, psicológico y legal diseñe recomendaciones exactas para ti.
+                    </p>
+
+                    <!-- Barra de Progreso Dinámica -->
+                    <div class="mt-4 pt-3 border-t border-emerald-600/50">
+                        <div class="flex justify-between items-center text-xs font-semibold mb-1.5 text-emerald-100">
+                            <span>Progreso de Autoevaluación</span>
+                            <span class="font-bold"><?php echo $completadas; ?> de <?php echo $totalEncuestas; ?> completadas (<?php echo $porcentajeCompletado; ?>%)</span>
+                        </div>
+                        <div class="w-full h-2 bg-emerald-950/60 rounded-full overflow-hidden p-0.5">
+                            <div class="h-full bg-gradient-to-r from-lime-300 to-emerald-300 rounded-full transition-all duration-700 ease-out" 
+                                style="width: <?php echo max(5, $porcentajeCompletado); ?>%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuerpo del Modal: Tarjetas Interactivas de las Encuestas -->
+                <div class="p-6 space-y-3.5 max-h-[60vh] overflow-y-auto">
+                    
+                    <!-- 1. Encuesta de Salud Física -->
+                    <div class="group relative rounded-2xl p-4 border transition-all duration-200 <?php echo $faltaSalud ? 'bg-slate-50 dark:bg-gray-900/60 border-emerald-200 dark:border-emerald-800/60 hover:border-emerald-400 hover:shadow-md' : 'bg-emerald-50/50 dark:bg-emerald-950/20 border-emerald-300 dark:border-emerald-800/80'; ?>">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-lg flex-shrink-0">
+                                    🩺
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Salud Física y Estoma</h4>
+                                        <?php if ($faltaSalud): ?>
+                                            <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300">~5 min</span>
+                                        <?php else: ?>
+                                            <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-emerald-200 text-emerald-900 dark:bg-emerald-800 dark:text-emerald-100 flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-emerald-700 dark:text-emerald-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                                Lista
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Control de glucemia, piel periestomal y dispositivos.</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <?php if ($faltaSalud): ?>
+                                    <a href="/public/encuestaSalud" 
+                                        class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow transition transform hover:-translate-y-0.5">
+                                        <span>Iniciar</span>
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                                    </a>
+                                <?php else: ?>
+                                    <span class="text-emerald-600 dark:text-emerald-400 text-xs font-bold">Completada ✓</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. Encuesta de Bienestar Emocional -->
+                    <div class="group relative rounded-2xl p-4 border transition-all duration-200 <?php echo $faltaPsicologia ? 'bg-slate-50 dark:bg-gray-900/60 border-sky-200 dark:border-sky-800/60 hover:border-sky-400 hover:shadow-md' : 'bg-sky-50/50 dark:bg-sky-950/20 border-sky-300 dark:border-sky-800/80'; ?>">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-sky-500/10 text-sky-600 dark:text-sky-400 flex items-center justify-center font-bold text-lg flex-shrink-0">
+                                    💭
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Estado Emocional y Resiliencia</h4>
+                                        <?php if ($faltaPsicologia): ?>
+                                            <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-sky-100 text-sky-800 dark:bg-sky-900/60 dark:text-sky-300">~4 min</span>
+                                        <?php else: ?>
+                                            <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-sky-200 text-sky-900 dark:bg-sky-800 dark:text-sky-100 flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-sky-700 dark:text-sky-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                                Lista
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Adaptación, imagen corporal y manejo del estrés.</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <?php if ($faltaPsicologia): ?>
+                                    <a href="/public/encuestaPsicologia" 
+                                        class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow transition transform hover:-translate-y-0.5">
+                                        <span>Iniciar</span>
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                                    </a>
+                                <?php else: ?>
+                                    <span class="text-sky-600 dark:text-sky-400 text-xs font-bold">Completada ✓</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Encuesta de Situación Jurídica -->
+                    <div class="group relative rounded-2xl p-4 border transition-all duration-200 <?php echo $faltaJuridico ? 'bg-slate-50 dark:bg-gray-900/60 border-indigo-200 dark:border-indigo-800/60 hover:border-indigo-400 hover:shadow-md' : 'bg-indigo-50/50 dark:bg-indigo-950/20 border-indigo-300 dark:border-indigo-800/80'; ?>">
+                        <div class="flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-11 h-11 rounded-xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-lg flex-shrink-0">
+                                    ⚖️
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="text-sm font-bold text-gray-900 dark:text-white">Garantías y Suministro EPS</h4>
+                                        <?php if ($faltaJuridico): ?>
+                                            <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-indigo-100 text-indigo-800 dark:bg-indigo-900/60 dark:text-indigo-300">~3 min</span>
+                                        <?php else: ?>
+                                            <span class="px-2 py-0.5 text-[10px] font-bold rounded-md bg-indigo-200 text-indigo-900 dark:bg-indigo-800 dark:text-indigo-100 flex items-center gap-1">
+                                                <svg class="w-3 h-3 text-indigo-700 dark:text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                                Lista
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Entrega oportuna de bolsas, insulinas y tutelas.</p>
+                                </div>
+                            </div>
+
+                            <div>
+                                <?php if ($faltaJuridico): ?>
+                                    <a href="/public/encuestaJuridica" 
+                                        class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-sm hover:shadow transition transform hover:-translate-y-0.5">
+                                        <span>Iniciar</span>
+                                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                                    </a>
+                                <?php else: ?>
+                                    <span class="text-indigo-600 dark:text-indigo-400 text-xs font-bold">Completada ✓</span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer del Modal -->
+                <div class="px-6 py-4 bg-slate-50 dark:bg-gray-900/60 border-t border-gray-100 dark:border-gray-700/60 flex items-center justify-between">
+                    <span class="text-[11px] text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                        🔒 Respuestas 100% confidenciales
+                    </span>
+                    <button type="button" id="defer-encuestas-modal-btn"
+                        class="px-4 py-2 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition">
+                        Recordármelo más tarde
+                    </button>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+
+<!-- SCRIPT INTERACTIVO DE ALERTAS Y MODALES -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Toast Flotante de Bienvenida (Visitantes)
+    const welcomeToast = document.getElementById('welcome-floating-toast');
+    const dismissWelcomeBtn = document.getElementById('dismiss-welcome-toast');
+    
+    if (welcomeToast && !sessionStorage.getItem('dismiss_welcome_toast')) {
+        setTimeout(function() {
+            welcomeToast.classList.remove('hidden');
+            requestAnimationFrame(function() {
+                welcomeToast.classList.remove('translate-y-24', 'opacity-0');
+                welcomeToast.classList.add('translate-y-0', 'opacity-100');
             });
+        }, 1200);
+
+        if (dismissWelcomeBtn) {
+            dismissWelcomeBtn.addEventListener('click', function() {
+                welcomeToast.classList.add('translate-y-24', 'opacity-0');
+                setTimeout(function() { welcomeToast.classList.add('hidden'); }, 500);
+                sessionStorage.setItem('dismiss_welcome_toast', 'true');
+            });
+        }
+    }
+
+    // 2. Callout de Perfil Incompleto
+    const profileAlert = document.getElementById('incomplete-profile-alert');
+    const dismissProfileBtn = document.getElementById('dismiss-profile-alert');
+
+    if (profileAlert && sessionStorage.getItem('dismiss_profile_alert')) {
+        profileAlert.style.display = 'none';
+    } else if (profileAlert && dismissProfileBtn) {
+        dismissProfileBtn.addEventListener('click', function() {
+            profileAlert.style.opacity = '0';
+            profileAlert.style.transform = 'scale(0.98)';
+            setTimeout(function() {
+                profileAlert.style.display = 'none';
+            }, 300);
+            sessionStorage.setItem('dismiss_profile_alert', 'true');
         });
-    </script>
-<?php endif ?>
+    }
+
+    // 3. Modal Interactivo de Encuestas Diagnósticas + Widget Flotante
+    const encuestasModal = document.getElementById('interactive-encuestas-modal');
+    const encuestasCard = document.getElementById('encuestas-modal-card');
+    const floatingWidget = document.getElementById('floating-encuestas-widget');
+    const closeBtn = document.getElementById('close-encuestas-modal-btn');
+    const deferBtn = document.getElementById('defer-encuestas-modal-btn');
+    const openWidgetBtn = document.getElementById('open-encuestas-modal-btn');
+
+    function openModal() {
+        if (!encuestasModal) return;
+        if (floatingWidget) floatingWidget.classList.add('hidden');
+        encuestasModal.classList.remove('opacity-0', 'pointer-events-none');
+        encuestasModal.classList.add('opacity-100', 'pointer-events-auto');
+        if (encuestasCard) {
+            encuestasCard.classList.remove('scale-95');
+            encuestasCard.classList.add('scale-100');
+        }
+    }
+
+    function closeModalAndShowWidget(storeSession) {
+        if (!encuestasModal) return;
+        encuestasModal.classList.remove('opacity-100', 'pointer-events-auto');
+        encuestasModal.classList.add('opacity-0', 'pointer-events-none');
+        if (encuestasCard) {
+            encuestasCard.classList.remove('scale-100');
+            encuestasCard.classList.add('scale-95');
+        }
+        if (floatingWidget) {
+            setTimeout(function() {
+                floatingWidget.classList.remove('hidden');
+            }, 300);
+        }
+        if (storeSession) {
+            sessionStorage.setItem('encuestas_minimizadas', 'true');
+        }
+    }
+
+    if (encuestasModal) {
+        const isMinimizadas = sessionStorage.getItem('encuestas_minimizadas');
+        if (isMinimizadas) {
+            if (floatingWidget) floatingWidget.classList.remove('hidden');
+        } else {
+            // Mostrar modal suavemente tras 1.8 segundos
+            setTimeout(openModal, 1800);
+        }
+
+        if (closeBtn) closeBtn.addEventListener('click', function() { closeModalAndShowWidget(true); });
+        if (deferBtn) deferBtn.addEventListener('click', function() { closeModalAndShowWidget(true); });
+        if (openWidgetBtn) openWidgetBtn.addEventListener('click', openModal);
+
+        // Cerrar al hacer clic en el backdrop
+        encuestasModal.addEventListener('click', function(e) {
+            if (e.target === encuestasModal) {
+                closeModalAndShowWidget(true);
+            }
+        });
+    }
+});
+</script>

@@ -1,19 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{html,js,php,ts}", // Archivos HTML y JS en la carpeta src
-    "./src/types/index.ts", // Archivos HTML y JS en la carpeta src
-    "./public/**/*.{html,js,php}", // Archivos HTML y JS en la carpeta src
-    "./node_modules/**/*.js", // Archivos HTML y JS en la carpeta src
-    "./admin/**/*.php", // Archivos PHP en la carpeta de administración
-    "/views/**/*.php", // Archivos PHP en la carpeta de administración
-    "/views/**/**/*.php", // Archivos PHP en la carpeta de administración
-    "./views/*.php", // Archivos PHP en la carpeta de administración
-    "./includes/templates/*.php", // Archivos PHP en la carpeta de administración
-    "./**/*.php", // Archivos PHP en la raíz del proyecto
+    "./src/**/*.{html,js,php,ts}",
+    "./public/**/*.{html,js,php}",
+    "./views/**/*.php",
+    "./admin/**/*.php",
+    "./includes/**/*.php",
     "./node_modules/flowbite/**/*.js",
   ],
-  darkMode: "media",
+  darkMode: "class",
   theme: {
     extend: {
       colors: {

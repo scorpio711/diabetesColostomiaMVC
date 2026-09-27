@@ -16,11 +16,11 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div class="ml-3 text-sm font-medium">
-                    El usuario ha sido creado correctamente
+                    El blog ha sido creado correctamente
                 </div>
                 <button type="button"
                     class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
-                    data-dismiss-target="#alert-2" aria-label="Close">
+                    data-dismiss-target="#alert-1" aria-label="Close">
                     <span class="sr-only">Close</span>
                     <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                         xmlns="http://www.w3.org/2000/svg">
@@ -44,7 +44,7 @@
                 </svg>
                 <span class="sr-only">Info</span>
                 <div class="ml-3 text-sm font-medium">
-                    La investigacion ha sido actualizada
+                    El blog ha sido actualizado correctamente
                 </div>
                 <button type="button"
                     class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
@@ -176,22 +176,20 @@
                             </svg>
                             Crear blog
                         </button>
-                        <a href="/public/blogplantilla"> <button type="button"
-                                class="focus:outline-none text-white w-full bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Plantilla</button>
+                        <a href="/public/investigaciones" target="_blank"
+                            class="focus:outline-none text-white w-full sm:w-auto bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:ring-teal-300 font-semibold rounded-xl text-sm px-4 py-2 transition-all flex items-center justify-center gap-1.5">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            Ver Catálogo
                         </a>
-                        <div class="flex items-center space-x-3 w-full  md:w-auto">
-                            <a class="w-full" href="/public/admin/<?php if ($rol == 'abogado') {
-                                echo "abogados";
-                            } elseif ($rol == 'enfermero') {
-                                echo "enfermeros";
-                            } elseif ($rol == 'psicologo') {
-                                echo "psicologos";
-                            } else {
-                                echo "index";
-                            } ?>">
-
+                        <div class="flex items-center space-x-3 w-full md:w-auto">
+                            <a class="w-full" href="/public/admin/index">
                                 <button type="button"
-                                    class="py-2 px-5 w-full  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Volver</button>
+                                    class="py-2 px-5 w-full text-sm font-semibold text-slate-700 focus:outline-none bg-white rounded-xl border border-slate-300 hover:bg-slate-100 hover:text-teal-600 focus:z-10 focus:ring-4 focus:ring-slate-100 dark:focus:ring-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-600 transition-all">
+                                    Volver
+                                </button>
                             </a>
                         </div>
                     </div>
@@ -390,35 +388,35 @@
                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
                             <label for="correo"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo</label>
-                            <input type="text" id="disabled-input" aria-label="disabled input" name="correo"
-                                class=" bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                value="<?php echo s($sesion["email"]); ?>" disabled>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Correo del Autor</label>
+                            <input type="email" name="correo"
+                                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+                                value="<?php echo s($sesion["email"] ?? ''); ?>" readonly>
                         </div>
                         <div>
                             <label for="nombre"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Autor</label>
-                            <input type="text" id="disabled-input" aria-label="disabled input" name="nombre"
-                                class=" bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                value="<?php echo s($sesion["nombre"]); ?>" disabled>
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del Autor</label>
+                            <input type="text" name="nombre"
+                                class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-xl block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300"
+                                value="<?php echo s($sesion["nombre"] ?? ''); ?>" readonly>
                         </div>
                         <div class="sm:col-span-2">
-                            <label for="Titulo"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Titulo</label>
-                            <input type="text" name="titulo"
-                                class=" bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                value="">
+                            <label for="titulo"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Título del Artículo</label>
+                            <input type="text" name="titulo" id="titulo" required
+                                class="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                placeholder="Ej: Protocolo de manejo nutricional en pacientes ostomizados">
                         </div>
                     </div>
                     <button type="submit" name="crear"
-                        class="text-white inline-flex items-center  bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewbox="0 0 20 20"
+                        class="text-white inline-flex items-center bg-teal-600 hover:bg-teal-700 focus:ring-4 focus:outline-none focus:ring-teal-300 font-semibold rounded-xl text-sm px-5 py-2.5 text-center transition-all shadow-xs">
+                        <svg class="mr-1 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
                                 d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
                                 clip-rule="evenodd" />
                         </svg>
-                        Crear
+                        Crear Borrador
                     </button>
                 </form>
             </div>
@@ -451,18 +449,19 @@
                             d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                             clip-rule="evenodd" />
                     </svg>
-                    <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estas seguro de borrar este Usuario?</p>
-                    <div class="flex justify-center align-center items-center space-x-4">
+                    <p class="mb-1 text-base font-bold text-gray-900 dark:text-white">¿Eliminar este artículo?</p>
+                    <p class="mb-4 text-xs text-gray-500 dark:text-gray-400">Si el artículo está publicado, se retirará del catálogo de investigaciones.</p>
+                    <div class="flex justify-center align-center items-center space-x-3">
                         <button data-modal-toggle="deleteModal<?php echo $blog->id; ?>" type="button"
-                            class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No,
-                            cancelar</button>
-                        <form method="POST" class="m-0""
-                            enctype=" multipart/form-data">
-                            <input type="number" name="id" class="hidden" value="<?php echo $blog->id; ?>">
-                            <input type="text" name="tipo" class="hidden" value="usuario">
+                            class="py-2 px-3 text-xs font-semibold text-gray-700 bg-white rounded-xl border border-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-600">
+                            Cancelar
+                        </button>
+                        <form method="POST" class="m-0">
+                            <input type="hidden" name="id" value="<?php echo $blog->id; ?>">
                             <button type="submit" name="borrar"
-                                class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Si,
-                                estoy seguro</button>
+                                class="py-2 px-4 text-xs font-semibold text-center text-white bg-red-600 rounded-xl hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900 shadow-xs">
+                                Sí, eliminar
+                            </button>
                         </form>
                     </div>
                 </div>

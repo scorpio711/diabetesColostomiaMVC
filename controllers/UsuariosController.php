@@ -14,14 +14,17 @@ class UsuariosController
 {
     public static function administrarUsuarios(Router $router)
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         isAdmin();
 
         //administrar los datos del usuario
         $usuarios = Usuario::all();
         $usuario = new Usuario();
-        $resultado = $_GET["resultado"];
+        $usuariosC = new Usuario();
+        $resultado = $_GET["resultado"] ?? null;
 
         //arreglo con mensajes de errores
         $errores = Usuario::getErrores();
@@ -123,13 +126,12 @@ class UsuariosController
                 }
 
                 //Verificar si el password esta vacio
-                if ($_POST["usuario"]["password"] === "") {
-                    $password = $infoPreviaUsuario->password;
-                    $usuario->password = $password;
+                if (empty($_POST["usuario"]["password"])) {
+                    $usuario->password = $infoPreviaUsuario->password;
                 } else {
                     //hashear nuevo password
-                    $password = $args["usuario"];
-                    $usuario->hashPassword($password);
+                    $usuario->password = $_POST["usuario"]["password"];
+                    $usuario->hashPassword();
                 }
 
                 $usuario->sincronizar($args);
@@ -149,7 +151,6 @@ class UsuariosController
                     $usuario->actualizado = $actualizado;
                     $usuario->rol = $rol;
 
-                    //Almacenar la imagen
                     if ($bool) {
                         $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
                     }
@@ -158,176 +159,188 @@ class UsuariosController
                     if ($resultado) {
                         //redireccionar al usuario
                         header("location:/public/admin/usuarios/administrar?resultado=2");
+                        exit;
                     }
                 }
             } elseif (isset($_POST['borrar'])) {
-                $id = $_POST["id"];
+                $id = intval($_POST["id"] ?? 0);
 
                 $usuario = Usuario::find($id);
-                $resultado = $usuario->eleminar();
+                if ($usuario) {
+                    $resultado = $usuario->eliminar();
 
-                unlink(CARPETA_IMAGENES_USUARIOS . $usuario->imagen);
+                    if (!empty($usuario->imagen) && file_exists(CARPETA_IMAGENES_USUARIOS . $usuario->imagen)) {
+                        unlink(CARPETA_IMAGENES_USUARIOS . $usuario->imagen);
+                    }
 
-                if ($resultado) {
-                    header("location:/public/admin/usuarios/administrar?resultado=3");
+                    if ($resultado) {
+                        header("location:/public/admin/usuarios/administrar?resultado=3");
+                        exit;
+                    }
                 }
             }
         }
+
+        // Calcular métricas
+        $totalUsuarios = count($usuarios);
+        $totalPacientes = 0;
+        $totalProfesionales = 0;
+        $totalConfirmados = 0;
+
+        foreach ($usuarios as $u) {
+            $r = strtolower(trim($u->rol ?? ''));
+            if ($r === 'paciente') {
+                $totalPacientes++;
+            } elseif ($r === 'abogado' || $r === 'enfermero' || $r === 'psicologo') {
+                $totalProfesionales++;
+            }
+            if (intval($u->confirmado ?? 0) === 1) {
+                $totalConfirmados++;
+            }
+        }
+
+        $stats = [
+            'total' => $totalUsuarios,
+            'pacientes' => $totalPacientes,
+            'profesionales' => $totalProfesionales,
+            'confirmados' => $totalConfirmados
+        ];
+
         $router->render("/admin/usuarios/administrar", [
             "usuarios" => $usuarios,
             "usuariosC" => $usuariosC,
             "usuario" => $usuario,
             "resultado" => $resultado,
             "errores" => $errores,
-            "erroresActualizacion" => $erroresActualizacion
+            "erroresActualizacion" => $erroresActualizacion,
+            "stats" => $stats
         ]);
     }
 
-    public static function perfil($router)
+    public static function perfil(Router $router)
     {
-        session_start();
-        //obtener datos de la sesion
-        $id = $_SESSION["id"];
-        $nombre = $_SESSION["nombre"];
-        $sexo = $_SESSION["sexo"];
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        estaAutenticado();
 
+        // Obtener datos del usuario autenticado
+        $id = intval($_SESSION["id"] ?? 0);
         $usuario = Usuario::find($id);
+
+        if (!$usuario) {
+            header("Location: /public/login");
+            exit;
+        }
+
         $usuarioId = $usuario->id;
+        $nombre = $usuario->nombre;
+        $sexo = $usuario->sexo;
 
-
-        $query = "SELECT * FROM pacientes WHERE pacienteId = " . $usuarioId . ";";
-
+        $query = "SELECT * FROM pacientes WHERE pacienteId = " . intval($usuarioId) . " LIMIT 1;";
         $datosPacienteActualizado = Paciente::SQL($query);
-        $pacienteActualizado = $datosPacienteActualizado[0];
+        $pacienteActualizado = $datosPacienteActualizado[0] ?? new Paciente();
 
         $paciente = new Paciente($_POST);
-
-        // debuguear($usuario);
         $errores = [];
+        $resultado = $_GET["resultado"] ?? null;
 
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        if (($_SERVER["REQUEST_METHOD"] ?? '') === "POST") {
 
-            if (isset($_POST['actualizar'])) {
+            // Sincronizar objetos con los datos enviados
+            $paciente->sincronizar($_POST);
+            if (!empty($pacienteActualizado->id)) {
+                $pacienteActualizado->sincronizar($_POST);
+            }
 
-                $paciente->sincronizar($_POST);
+            // Validar teléfono obligatorio
+            if (empty($_POST["telefono"])) {
+                $errores[] = "Debes ingresar tu número de teléfono celular de contacto.";
+            }
 
-                /**SUBIDA DE ARCHIVOS**/
+            // Validar campos sociodemográficos del paciente
+            $targetParaValidar = (!empty($pacienteActualizado->id)) ? $pacienteActualizado : $paciente;
+            $erroresValidacion = $targetParaValidar->validarActualizacionPerfil();
+            $errores = array_merge($errores, $erroresValidacion);
 
-                //verificar si la carpeta esta creada
-                if (!is_dir(CARPETA_IMAGENES_USUARIOS)) {
-                    mkdir(CARPETA_IMAGENES_USUARIOS);
-                }
-
-                //generar un nombre unico
-                $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-
-                //Setear la imagen
-                //Realiza un resize a la imagen con intervention
-                if ($_FILES["imagen"]["tmp_name"]) {
-                    $image = Image::make($_FILES["imagen"]["tmp_name"])->fit( 400, 400);
-                    $usuario->setImagen($nombreImagen);
-                }
-
-                //Validar el formulario y agregar los errores a un arreglo
-                $errores = $paciente->validarActualizacionPerfil();
-                $errores= $usuario->validarImagen();
-
-                if (empty($errores)) {
-                    
-
-                    //variables del servidor
-                    $paciente->pacienteId = $id;
-                    $paciente->nombre = $nombre;
-                    $paciente->sexo = $sexo;
-
-                    // Fecha de nacimiento en formato 'YYYY-MM-DD'
-                    $fechaNacimiento = $_SESSION["fecha_nacimiento"];
-
-                    // Calcular la fecha actual
-                    $fechaActual = date('Y-m-d');
-
-                    // Calcular la edad
-                    $diff = date_diff(date_create($fechaNacimiento), date_create($fechaActual));
-                    $edad = $diff->format('%y');
-
-                    $paciente->edad = $edad;
-
-                    //agregar actualizado al usuario
-                    $usuario->actualizado = "1";
-                    
-                    //Guarda la imagen en el servidor
-                    $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
-                    //actualizar el usuario y su perfil
-                    $usuario->actualizar();
-
-                    $_SESSION["imagen"] = $usuario->imagen;
-                    $_SESSION["actualizado"] = 1;
-
-                    $resultado = $paciente->crear();
-
-                    if ($resultado) {
-                        header("location:/public/");
-
+            if (empty($errores)) {
+                // Subida opcional de imagen de perfil
+                if (!empty($_FILES["imagen"]["tmp_name"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
+                    if (!is_dir(CARPETA_IMAGENES_USUARIOS)) {
+                        mkdir(CARPETA_IMAGENES_USUARIOS, 0777, true);
                     }
-                }
-            } elseif (isset($_POST['actulizarImagen'])) {
-                $usuario = Usuario::find($usuarioId);
-                
-                //generar nombre unico
-                $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-                $imagenPrevia = $_POST["imagenPrevia"];
-                
-                //verificar si la carpeta esta creada
-                if (!is_dir(CARPETA_IMAGENES_USUARIOS)) {
-                    mkdir(CARPETA_IMAGENES_USUARIOS);
-                }
 
-                if (isset($_FILES["imagen"]["tmp_name"]) && $_FILES["imagen"]["error"] === UPLOAD_ERR_OK) {
+                    $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
+                    $imagenPrevia = $_POST["imagenPrevia"] ?? $usuario->imagen;
 
-                    // Verificar que el archivo se envió correctamente y no hubo errores
                     $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(400, 400);
-
-                    // Guardar la imagen con el nuevo nombre
                     if ($image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen)) {
-                        if (file_exists(CARPETA_IMAGENES_USUARIOS . $imagenPrevia)) {
+                        if (!empty($imagenPrevia) && file_exists(CARPETA_IMAGENES_USUARIOS . $imagenPrevia)) {
                             unlink(CARPETA_IMAGENES_USUARIOS . $imagenPrevia);
                         }
                         $usuario->setImagen($nombreImagen);
-                        $bool = true;
-                    } else {
-                        // Manejar el error al guardar la imagen
-                        $bool = false;
+                        $_SESSION["imagen"] = $usuario->imagen;
+                        if (!empty($pacienteActualizado->id)) {
+                            $pacienteActualizado->imagen = $nombreImagen;
+                        }
                     }
+                }
+
+                // Cálculo seguro de edad
+                $edad = 0;
+                $fechaNac = $usuario->fecha_nacimiento ?: ($_SESSION["fecha_nacimiento"] ?? null);
+                if (!empty($fechaNac) && $fechaNac !== '0' && $fechaNac !== '0000-00-00') {
+                    try {
+                        $nac = new DateTime($fechaNac);
+                        $hoy = new DateTime();
+                        $edad = $nac->diff($hoy)->y;
+                    } catch (\Throwable $e) {
+                        $edad = 0;
+                    }
+                }
+
+                // Actualizar teléfono y estado del usuario
+                if (isset($_POST["telefono"])) {
+                    $usuario->telefono = trim($_POST["telefono"]);
+                }
+                $usuario->actualizado = "1";
+                $usuario->actualizar();
+
+                $_SESSION["actualizado"] = 1;
+
+                // Actualizar o crear registro en pacientes
+                if (!empty($pacienteActualizado->id)) {
+                    $pacienteActualizado->edad = $edad;
+                    $pacienteActualizado->nombre = $nombre;
+                    $pacienteActualizado->sexo = $sexo;
+                    $pacienteActualizado->email = $usuario->email ?? '';
+                    $pacienteActualizado->telefono = $usuario->telefono ?? '';
+                    if (!empty($usuario->imagen)) {
+                        $pacienteActualizado->imagen = $usuario->imagen;
+                    }
+                    $pacienteActualizado->actualizar();
                 } else {
-                    $usuario->setImagen($imagenPrevia);
-                    $bool = false;
+                    $paciente->pacienteId = $usuarioId;
+                    $paciente->nombre = $nombre;
+                    $paciente->sexo = $sexo;
+                    $paciente->edad = $edad;
+                    $paciente->email = $usuario->email ?? '';
+                    $paciente->telefono = $usuario->telefono ?? '';
+                    $paciente->imagen = $usuario->imagen ?? '';
+                    $paciente->crear();
                 }
 
-
-                $errores = $usuario->validarImagen();
-
-                if (empty($errores)) {
-
-                    //Almacenar la imagen
-                    if ($bool) {
-                        $image->save(CARPETA_IMAGENES_USUARIOS . $nombreImagen);
-                    }
-                    $_SESSION["imagen"] = $usuario->imagen;
-                    $resultado = $usuario->actualizar();
-
-                    if ($resultado) {
-                        header("location:/public/");
-                    }
-                }
+                header("Location: /public/perfil?resultado=1");
+                exit;
             }
         }
 
-        $router->render("/auth/perfil", [
+        $router->render("auth/perfil", [
             "usuario" => $usuario,
             "paciente" => $paciente,
             "pacienteActualizado" => $pacienteActualizado,
-            "errores" => $errores
+            "errores" => $errores,
+            "resultado" => $resultado
         ]);
     }
-
 }

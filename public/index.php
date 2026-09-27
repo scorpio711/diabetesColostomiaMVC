@@ -24,6 +24,7 @@ use Controllers\BookingsController;
 $router = new Router();
 
 $router->get("/public/admin/index", [PaginasController::class, "indexAdmin"]);
+$router->get("/public/admin/simular-rol", [PaginasController::class, "simularRol"]);
 
 //Crud investigaciones
 $router->get("/public/admin/investigaciones/administrar", [InvestigacionController::class, "administrarInvestigaciones"]);
@@ -42,8 +43,6 @@ $router->post("/public/admin/profesionales/administrar", [ProfesionalesControlle
 //Crud pacientes
 $router->get("/public/admin/pacientes/administrar", [PacientesController::class, "administrarPacientes"]);
 
-//Crud citas
-$router->get("/public/admin/citas/administrar", [CitaController::class, "administrarCitas"]);
 
 //Crud srvicios
 $router->get("/public/admin/servicios/administrar", [ServiciosController::class, "administrarServicios"]);
@@ -86,7 +85,7 @@ $router->get("/public/investigaciones", [PaginasController::class, "investigacio
 $router->get("/public/juridico", [PaginasController::class, "juridico"]);
 $router->get("/public/medico", [PaginasController::class, "medico"]);
 $router->get("/public/psicologico", [PaginasController::class, "psicologico"]);
-$router->get("/public/contacto", [PaginasController::class, "contacto"]);
+// $router->get("/public/contacto", [PaginasController::class, "contacto"]);
 
 $router->get("/public/blogplantilla", [PaginasController::class, "blog"]);
 
@@ -111,20 +110,25 @@ $router->get("/public/colostomia", [ColostomiaController::class, "index"]);
 //Area privada diabetes
 $router->get("/public/diabetes", [DiabetesController::class, "index"]);
 
-//Area Privada
-$router->get("/public/cita", [CitaController::class, "index"]);
-$router->get("/public/citas", [APIController::class, "citas"]);
-$router->get("/public/misCitas", [CitaController::class, "misCitas"]);
-$router->post("/public/misCitas", [CitaController::class, "misCitas"]);
-
 //API de citas
 $router->get("/public/api/servicios", [APIController::class, "index"]);
 $router->post("/public/api/cita", [APIController::class, "guardar"]);
-$router->post("/public/api/eliminar", fn: [APIController::class, "eliminar"]);
+$router->post("/public/api/eliminar", [APIController::class, "eliminar"]);
 $router->get("/public/api/profesionales", [APIController::class, "profesionales"]);
+$router->get("/public/api/horarios", [APIController::class, "horarioProfesionales"]);
+$router->get("/public/api/disponibilidad", [APIController::class, "disponibilidad"]);
 
 //bookings
-$router->get("/public/bookings/view", [BookingsController::class, "view"]);
+$router->get("/public/citas", [CitaController::class, "view"]);
+$router->get("/public/contacto", [APIController::class, "citas"]);
+$router->get("/public/misCitas", [CitaController::class, "misCitas"]);
+$router->post("/public/misCitas", [CitaController::class, "misCitas"]);
+
+//Crud citas
+$router->get("/public/admin/contacto", [CitaController::class, "administrarContacto"]);
+$router->post("/public/admin/contacto", [CitaController::class, "administrarContacto"]);
+$router->get("/public/admin/citas", [CitaController::class, "administrarCitas"]);
+$router->post("/public/admin/citas", [CitaController::class, "administrarCitas"]);
 
 //API para edición de blogs
 $router->get("/public/editor", [BlogController::class, "editor"]);

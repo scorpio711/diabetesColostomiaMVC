@@ -6,11 +6,12 @@ class AdminCita extends ActiveRecord
 {
 
     protected static $tabla = "citaServicios";
-    protected static $columnasDB = ["id", "citaId", "id_paciente", "fecha", "hora", "nombre", "email", "nombre_servicio"];
+    protected static $columnasDB = ["id", "citaId", "id_paciente", "id_profesional", "fecha", "hora", "nombre", "email", "nombre_servicio"];
 
     public $id;
     public $citaId;
     public $id_paciente;
+    public $id_profesional;
     public $fecha;
 
     public $hora;
@@ -21,7 +22,8 @@ class AdminCita extends ActiveRecord
     public function __construct($args = [])
     {
         $this->id = $args["id"] ?? null;
-        $this->id = $args["id_paciente"] ?? "";
+        $this->id_paciente = $args["id_paciente"] ?? "";
+        $this->id_profesional = $args["id_profesional"] ?? "";
         $this->fecha = $args["fecha"] ?? "";
         $this->hora = $args["hora"] ?? "";
         $this->nombre = $args["nombre"] ?? "";

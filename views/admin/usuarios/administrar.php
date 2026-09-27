@@ -1,653 +1,585 @@
-<main class="contenedor">
+<main class="min-h-screen bg-slate-50 dark:bg-slate-900 py-8 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+    <div class="max-w-7xl mx-auto space-y-8">
 
+        <!-- Header Principal de Gestión de Usuarios -->
+        <header class="bg-white dark:bg-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 dark:border-slate-700/80 relative overflow-hidden">
+            <div class="absolute -right-16 -top-16 w-64 h-64 bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300 mb-3 border border-indigo-200 dark:border-indigo-800">
+                        <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
+                        SEGURIDAD & ADMINISTRACIÓN DE CUENTAS
+                    </div>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                        Gestión de <span class="text-indigo-600 dark:text-indigo-400">Usuarios</span>
+                    </h1>
+                    <p class="mt-2 text-slate-600 dark:text-slate-300 text-sm sm:text-base max-w-2xl leading-relaxed">
+                        Control centralizado de accesos, roles clínicos, estados de verificación y cuentas activas en la plataforma.
+                    </p>
+                </div>
 
-    <!-- Start block -->
-    <section class="mt-24 p-3 sm:p-5 antialiased">
-        <!-- alerta de investigacion creada-->
+                <div class="flex flex-wrap items-center gap-3">
+                    <button type="button" id="btnExportarUsuarios"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm text-emerald-700 bg-emerald-100 hover:bg-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-colors shadow-xs">
+                        <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Exportar Excel / CSV
+                    </button>
+                    <button type="button" data-modal-target="createProductModal" data-modal-toggle="createProductModal"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 transition-all shadow-xs">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                        </svg>
+                        Añadir Usuario
+                    </button>
+                    <a href="/public/admin/index"
+                        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 bg-white hover:bg-slate-100 dark:bg-slate-700 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600 transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Alertas de Estado -->
         <?php if (intval($resultado) === 1): ?>
-            <div id="alert-1"
-                class="flex p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                role="alert">
-                <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clip-rule="evenodd"></path>
+            <div class="flex items-center p-4 text-emerald-800 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 shadow-xs" role="alert">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
-                <span class="sr-only">Info</span>
-                <div class="ml-3 text-sm font-medium">
-                    El usuario ha sido creado correctamente
-                </div>
-                <button type="button"
-                    class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
-                    data-dismiss-target="#alert-1" aria-label="Close">
-                    <span class="sr-only">Close</span>
-                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </button>
+                <div class="text-sm font-semibold">El usuario ha sido creado correctamente y se le ha enviado el correo de confirmación.</div>
             </div>
-            <!-- fin de la alerta -->
-            <!-- alerta de usuario creado-->
         <?php elseif (intval($resultado) === 2): ?>
-            <div id="alert-2"
-                class="flex p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                role="alert">
-                <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clip-rule="evenodd"></path>
+            <div class="flex items-center p-4 text-teal-800 rounded-2xl bg-teal-50 dark:bg-teal-950/40 dark:text-teal-300 border border-teal-200 dark:border-teal-800 shadow-xs" role="alert">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                 </svg>
-                <span class="sr-only">Info</span>
-                <div class="ml-3 text-sm font-medium">
-                    El usuario ha sido actualizado
-                </div>
-                <button type="button"
-                    class="ml-auto -mx-1.5 -my-1.5 bg-green-50 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-green-400 dark:hover:bg-gray-700"
-                    data-dismiss-target="#alert-2" aria-label="Close">
-                    <span class="sr-only">Close</span>
-                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </button>
+                <div class="text-sm font-semibold">El perfil del usuario ha sido actualizado correctamente.</div>
             </div>
-            <!-- fin de la alerta -->
-            <!-- alerta de usuario creado-->
         <?php elseif (intval($resultado) === 3): ?>
-            <div id="alert-3" class="flex p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
-                role="alert">
-                <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clip-rule="evenodd"></path>
+            <div class="flex items-center p-4 text-blue-800 rounded-2xl bg-blue-50 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shadow-xs" role="alert">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                 </svg>
-                <span class="sr-only">Info</span>
-                <div class="ml-3 text-sm font-medium">
-                    Se ha borrado el usuario
-                </div>
-                <button type="button"
-                    class="ml-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
-                    data-dismiss-target="#alert-3" aria-label="Close">
-                    <span class="sr-only">Close</span>
-                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </button>
+                <div class="text-sm font-semibold">La cuenta de usuario ha sido eliminada del sistema.</div>
             </div>
         <?php endif; ?>
-        <!-- fin de la alerta -->
-        <!-- alerta de Usuario no creadao-->
-        <?php if (!empty($errores)): ?>
-            <div id="alert-4" class="flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                role="alert">
-                <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clip-rule="evenodd"></path>
-                </svg>
-                <span class="sr-only">Info</span>
-                <div class="ml-3 text-sm font-medium">
-                    Error al crear el usuario revisa nuevamente
-                </div>
-                <button type="button"
-                    class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                    data-dismiss-target="#alert-4" aria-label="Close">
-                    <span class="sr-only">Close</span>
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </button>
-            </div>
-        <?php endif; ?>
-        <!-- fin de la alerta -->
-        <!-- alerta investigacion no actualizada -->
-        <?php if (!empty($erroresActualizacion)): ?>
-            <div id="alert-5" class="flex p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                role="alert">
-                <svg aria-hidden="true" class="flex-shrink-0 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                        clip-rule="evenodd"></path>
-                </svg>
-                <span class="sr-only">Info</span>
-                <div class="ml-3 text-sm font-medium">
-                    Error al actualiza el usuario revisa nuevamente
-                </div>
-                <button type="button"
-                    class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
-                    data-dismiss-target="#alert-5" aria-label="Close">
-                    <span class="sr-only">Close</span>
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </button>
-            </div>
-        <?php endif; ?>
-        <!-- fin de la alerta -->
-        <div class="mx-auto max-w-screen-xl px-4 lg:px-12">
-            <!-- Start coding here -->
-            <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
-                <div
-                    class="flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4">
-                    <div class="w-full md:w-1/2">
-                        <form class="flex items-center">
-                            <label for="simple-search" class="sr-only">Search</label>
-                            <div class="relative w-full">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400"
-                                        fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd"
-                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <input type="text" id="simple-search"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Search" required="">
-                            </div>
-                        </form>
-                    </div>
 
-                    <div
-                        class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                        <button type="button" id="exportExcel"
-                            class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Excel</button>
-                        <button type="button" id="createProductModalButton" data-modal-target="createProductModal"
-                            data-modal-toggle="createProductModal"
-                            class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
-                            <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                <path clip-rule="evenodd" fill-rule="evenodd"
-                                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                            </svg>
-                            Añadir Usuario
-                        </button>
-                        <div class="flex items-center space-x-3 w-full  md:w-auto">
-                            <a class="w-full" href="/public/admin/index">
-                                <button type="button"
-                                    class="py-2 px-5 w-full  text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-green-500 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Volver</button>
-                            </a>
-                        </div>
-                    </div>
+        <!-- Métricas Rápidas (KPIs) -->
+        <section aria-label="Estadísticas de Usuarios" class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700/80 shadow-xs flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Usuarios</span>
+                    <p class="text-2xl font-black text-slate-900 dark:text-white"><?= intval($stats['total'] ?? count($usuarios)) ?></p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700/80 shadow-xs flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-teal-100 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center flex-shrink-0">
+                    <span class="text-xl">🧑‍⚕️</span>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Profesionales</span>
+                    <p class="text-2xl font-black text-teal-600 dark:text-teal-400"><?= intval($stats['profesionales'] ?? 0) ?></p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700/80 shadow-xs flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
+                    <span class="text-xl">🩺</span>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Pacientes</span>
+                    <p class="text-2xl font-black text-emerald-600 dark:text-emerald-400"><?= intval($stats['pacientes'] ?? 0) ?></p>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-700/80 shadow-xs flex items-center gap-4">
+                <div class="w-12 h-12 rounded-xl bg-blue-100 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Verificados</span>
+                    <p class="text-2xl font-black text-blue-600 dark:text-blue-400"><?= intval($stats['confirmados'] ?? 0) ?></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Barra de Búsqueda y Filtros Rápidos -->
+        <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-700/80 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <!-- Campo de Búsqueda en Vivo -->
+            <div class="w-full md:w-80 relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <input type="text" id="buscadorUsuarios"
+                    class="bg-slate-50 dark:bg-slate-700/60 border border-slate-200 dark:border-slate-600 text-slate-900 dark:text-white text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-10 p-2.5 transition-colors placeholder:text-slate-400"
+                    placeholder="Buscar por nombre, email, rol o condición..." />
+            </div>
+
+            <!-- Botones de Filtro por Rol -->
+            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mr-1 hidden sm:inline">Rol:</span>
+                <button type="button" class="filtro-usuario-btn active px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all bg-indigo-600 text-white shadow-xs" data-rol="todos">
+                    Todos
+                </button>
+                <button type="button" class="filtro-usuario-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all" data-rol="paciente">
+                    🩺 Pacientes
+                </button>
+                <button type="button" class="filtro-usuario-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all" data-rol="profesional">
+                    🧑‍⚕️ Profesionales
+                </button>
+                <button type="button" class="filtro-usuario-btn px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 transition-all" data-rol="admin">
+                    🛡️ Admins
+                </button>
+            </div>
+
+            <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                Mostrando <span id="conteoUsuarios" class="font-bold text-indigo-600 dark:text-indigo-400"><?= count($usuarios) ?></span> usuario(s)
+            </div>
+        </div>
+
+        <!-- Tabla de Usuarios -->
+        <section class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200/80 dark:border-slate-700/80 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-slate-600 dark:text-slate-300" id="tablaUsuarios">
+                    <thead class="text-xs uppercase tracking-wider bg-slate-100/80 dark:bg-slate-700/50 text-slate-700 dark:text-slate-200 border-b border-slate-200 dark:border-slate-700">
+                        <tr>
+                            <th scope="col" class="px-5 py-4">Usuario</th>
+                            <th scope="col" class="px-5 py-4">Correo Electrónico</th>
+                            <th scope="col" class="px-5 py-4">Rol en Plataforma</th>
+                            <th scope="col" class="px-5 py-4">Condición</th>
+                            <th scope="col" class="px-5 py-4 text-center">Verificación</th>
+                            <th scope="col" class="px-5 py-4 text-center">Perfil</th>
+                            <th scope="col" class="px-5 py-4 text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700/60">
+                        <?php if (empty($usuarios)): ?>
                             <tr>
-                                <th scope="col" class="px-4 py-4">Id</th>
-                                <th scope="col" class="px-4 py-4">email</th>
-
-                                <th scope="col" class="px-4 py-3">nombre</th>
-                                <th scope="col" class="px-4 py-3">fecha_nacimiento</th>
-                                <th scope="col" class="px-4 py-3">confirmado</th>
-                                <th scope="col" class="px-4 py-3">actualizado</th>
-                                <th scope="col" class="px-4 py-3">rol</th>
-                                <th scope="col" class="px-4 py-3">condición</th>
-                                <th scope="col" class="px-4 py-3">Imagen</th>
-                                <th scope="col" class="px-4 py-3">
-                                    <span class="sr-only">Actions</span>
-                                </th>
+                                <td colspan="7" class="px-6 py-12 text-center text-slate-400">
+                                    No se encontraron cuentas de usuario registradas.
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($usuarios as $usuario): ?>
-                                <tr class="border-b dark:border-gray-700">
-                                    <td class="px-4 py-3">
-                                        <?php echo $usuario->id; ?>
-                                    </td>
-                                    <th scope="row"
-                                        class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        <?php echo $usuario->email; ?>
-                                    </th>
+                        <?php else: ?>
+                            <?php foreach ($usuarios as $usr): ?>
+                                <?php
+                                $r = strtolower(trim($usr->rol ?? ''));
+                                $enf = strtolower(trim($usr->enfermedad ?? ''));
+                                $esProf = ($r === 'abogado' || $r === 'enfermero' || $r === 'psicologo');
+                                $esAdm = ($r === 'admin' || !empty($usr->admin));
+                                $imgSrc = !empty($usr->imagen)
+                                    ? "/public/imagenesUsuarios/" . htmlspecialchars($usr->imagen)
+                                    : "https://ui-avatars.com/api/?name=" . urlencode($usr->nombre ?: 'Usuario') . "&background=6366F1&color=fff";
+                                ?>
+                                <tr class="usuario-fila hover:bg-slate-50/80 dark:hover:bg-slate-700/30 transition-colors"
+                                    data-rol="<?= $esAdm ? 'admin' : ($esProf ? 'profesional' : ($r === 'paciente' ? 'paciente' : 'otro')) ?>"
+                                    data-search="<?= htmlspecialchars(strtolower(($usr->nombre ?? '') . ' ' . ($usr->email ?? '') . ' ' . ($usr->rol ?? '') . ' ' . ($usr->enfermedad ?? '') . ' ' . ($usr->id ?? ''))) ?>">
 
-                                    <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $usuario->nombre; ?>
-                                    </td>
-
-                                    <td class="px-4 py-3">
-                                        <?php echo $fechaFormateada = date("d/m/Y", strtotime($usuario->fecha_nacimiento)); ?>
-                                    </td>
-                                    <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $usuario->confirmado; ?>
-                                    </td>
-                                    <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $usuario->actualizado; ?>
-                                    </td>
-                                    <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $usuario->rol; ?>
-                                    </td>
-                                    <td class="px-4 py-3 max-w-[12rem] truncate">
-                                        <?php echo $usuario->enfermedad; ?>
-                                    </td>
-                                    <td class="px-4 py-3">
-                                        <button data-popover-target="popover-default<?php echo $usuario->id; ?>"
-                                            type="button"
-                                            class="text-white bg-emerald-700 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-sm px-5 py-2 text-center dark:bg-emerald-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">ver</button>
-                                        <div data-popover id="popover-default<?php echo $usuario->id; ?>" role="tooltip"
-                                            class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
-                                            <div
-                                                class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
-                                                <h3 class="font-semibold text-center text-gray-900 dark:text-white">imagen
-                                                </h3>
+                                    <!-- 1. Usuario (Avatar + Nombre + ID) -->
+                                    <td class="px-5 py-4 whitespace-nowrap">
+                                        <div class="flex items-center gap-3">
+                                            <img src="<?= $imgSrc ?>" alt="<?= htmlspecialchars($usr->nombre) ?>"
+                                                 class="w-10 h-10 rounded-2xl object-cover border border-slate-200 dark:border-slate-700 flex-shrink-0" />
+                                            <div>
+                                                <div class="font-bold text-slate-900 dark:text-white"><?= htmlspecialchars($usr->nombre) ?></div>
+                                                <div class="text-xs text-slate-400">ID #<?= $usr->id ?> &middot; <?= htmlspecialchars($usr->sexo ?: 'N/D') ?></div>
                                             </div>
-                                            <div class="px-3 py-2 flex align-center justify-center">
-                                                <img class="w-32 h-auto rounded-2"
-                                                    src="../../../public/imagenesUsuarios/<?php echo $usuario->imagen; ?>">
-                                            </div>
-                                            <div data-popper-arrow></div>
                                         </div>
                                     </td>
-                                    <td class="px-4 py-3 flex items-center justify-end">
-                                        <button id="apple-imac-27-dropdown-button<?php echo $usuario->id; ?>"
-                                            data-dropdown-toggle="apple-imac-27-dropdown<?php echo $usuario->id; ?>"
-                                            class="inline-flex items-center text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-700 p-1.5 dark:hover-bg-gray-800 text-center text-gray-500 hover:text-gray-800 rounded-lg focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
-                                            type="button">
-                                            <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
-                                            </svg>
-                                        </button>
-                                        <div id="apple-imac-27-dropdown<?php echo $usuario->id; ?>"
-                                            class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
-                                            <ul class="py-1 text-sm" aria-labelledby="apple-imac-27-dropdown-button">
-                                                <li>
-                                                    <button type="button"
-                                                        data-modal-target="updateProductModal<?php echo $usuario->id; ?>"
-                                                        data-modal-toggle="updateProductModal<?php echo $usuario->id; ?>"
-                                                        class="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-gray-700 dark:text-gray-200">
-                                                        <svg class="w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg"
-                                                            viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                            <path
-                                                                d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
-                                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" />
-                                                        </svg>
-                                                        Editar
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button"
-                                                        data-modal-target="deleteModal<?php echo $usuario->id; ?>"
-                                                        data-modal-toggle="deleteModal<?php echo $usuario->id; ?>"
-                                                        class="flex w-full items-center py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 dark:hover:text-red-400">
-                                                        <svg class="w-4 h-4 mr-2" viewbox="0 0 14 15" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                                                fill="currentColor"
-                                                                d="M6.09922 0.300781C5.93212 0.30087 5.76835 0.347476 5.62625 0.435378C5.48414 0.523281 5.36931 0.649009 5.29462 0.798481L4.64302 2.10078H1.59922C1.36052 2.10078 1.13161 2.1956 0.962823 2.36439C0.79404 2.53317 0.699219 2.76209 0.699219 3.00078C0.699219 3.23948 0.79404 3.46839 0.962823 3.63718C1.13161 3.80596 1.36052 3.90078 1.59922 3.90078V12.9008C1.59922 13.3782 1.78886 13.836 2.12643 14.1736C2.46399 14.5111 2.92183 14.7008 3.39922 14.7008H10.5992C11.0766 14.7008 11.5344 14.5111 11.872 14.1736C12.2096 13.836 12.3992 13.3782 12.3992 12.9008V3.90078C12.6379 3.90078 12.8668 3.80596 13.0356 3.63718C13.2044 3.46839 13.2992 3.23948 13.2992 3.00078C13.2992 2.76209 13.2044 2.53317 13.0356 2.36439C12.8668 2.1956 12.6379 2.10078 12.3992 2.10078H9.35542L8.70382 0.798481C8.62913 0.649009 8.5143 0.523281 8.37219 0.435378C8.23009 0.347476 8.06631 0.30087 7.89922 0.300781H6.09922ZM4.29922 5.70078C4.29922 5.46209 4.39404 5.23317 4.56282 5.06439C4.73161 4.8956 4.96052 4.80078 5.19922 4.80078C5.43791 4.80078 5.66683 4.8956 5.83561 5.06439C6.0044 5.23317 6.09922 5.46209 6.09922 5.70078V11.1008C6.09922 11.3395 6.0044 11.5684 5.83561 11.7372C5.66683 11.906 5.43791 12.0008 5.19922 12.0008C4.96052 12.0008 4.73161 11.906 4.56282 11.7372C4.39404 11.5684 4.29922 11.3395 4.29922 11.1008V5.70078ZM8.79922 4.80078C8.56052 4.80078 8.33161 4.8956 8.16282 5.06439C7.99404 5.23317 7.89922 5.46209 7.89922 5.70078V11.1008C7.89922 11.3395 7.99404 11.5684 8.16282 11.7372C8.33161 11.906 8.56052 12.0008 8.79922 12.0008C9.03791 12.0008 9.26683 11.906 9.43561 11.7372C9.6044 11.5684 9.69922 11.3395 9.69922 11.1008V5.70078C9.69922 5.46209 9.6044 5.23317 9.43561 5.06439C9.26683 4.8956 9.03791 4.80078 8.79922 4.80078Z" />
-                                                        </svg>
-                                                        Eliminar
-                                                    </button>
-                                                </li>
-                                            </ul>
+
+                                    <!-- 2. Correo -->
+                                    <td class="px-5 py-4 whitespace-nowrap">
+                                        <div class="text-xs font-semibold text-slate-700 dark:text-slate-300"><?= htmlspecialchars($usr->email) ?></div>
+                                        <div class="text-[11px] text-slate-400">
+                                            <?= !empty($usr->fecha_nacimiento) ? 'Nac: ' . date("d/m/Y", strtotime($usr->fecha_nacimiento)) : 'Sin fecha' ?>
+                                        </div>
+                                    </td>
+
+                                    <!-- 3. Rol en Plataforma -->
+                                    <td class="px-5 py-4 whitespace-nowrap">
+                                        <?php if ($esAdm): ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+                                                🛡️ Administrador
+                                            </span>
+                                        <?php elseif ($r === 'enfermero'): ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800 dark:bg-teal-950/60 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
+                                                🩺 Enfermería
+                                            </span>
+                                        <?php elseif ($r === 'psicologo'): ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                                                🧠 Psicología
+                                            </span>
+                                        <?php elseif ($r === 'abogado'): ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
+                                                ⚖️ Asesoría Jurídica
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                                                👤 Paciente
+                                            </span>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <!-- 4. Condición Médica -->
+                                    <td class="px-5 py-4 whitespace-nowrap">
+                                        <?php if ($enf === 'colostomia'): ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-teal-50 text-teal-700 dark:bg-teal-950/40 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
+                                                Colostomía
+                                            </span>
+                                        <?php elseif ($enf === 'diabetes'): ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                                                Diabetes
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="text-xs text-slate-400">N/A</span>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <!-- 5. Estado de Verificación -->
+                                    <td class="px-5 py-4 whitespace-nowrap text-center">
+                                        <?php if (intval($usr->confirmado) === 1): ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300">
+                                                ✓ Verificado
+                                            </span>
+                                        <?php else: ?>
+                                            <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-300">
+                                                ⏳ Pendiente
+                                            </span>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <!-- 6. Perfil -->
+                                    <td class="px-5 py-4 whitespace-nowrap text-center">
+                                        <?php if (intval($usr->actualizado) === 1): ?>
+                                            <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">Completo</span>
+                                        <?php else: ?>
+                                            <span class="text-xs text-slate-400">Incompleto</span>
+                                        <?php endif; ?>
+                                    </td>
+
+                                    <!-- 7. Acciones -->
+                                    <td class="px-5 py-4 whitespace-nowrap text-right">
+                                        <div class="inline-flex items-center gap-1">
+                                            <button type="button" data-modal-target="updateProductModal<?= $usr->id ?>" data-modal-toggle="updateProductModal<?= $usr->id ?>"
+                                                class="p-2 text-slate-500 hover:text-indigo-600 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-colors" title="Editar Usuario">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                                </svg>
+                                            </button>
+                                            <button type="button" data-modal-target="deleteModal<?= $usr->id ?>" data-modal-toggle="deleteModal<?= $usr->id ?>"
+                                                class="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 rounded-xl transition-colors" title="Eliminar Usuario">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-                <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4"
-                    aria-label="Table navigation">
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
-                        Showing
-                        <span class="font-semibold text-gray-900 dark:text-white">1-10</span>
-                        of
-                        <span class="font-semibold text-gray-900 dark:text-white">1000</span>
-                    </span>
-                    <ul class="inline-flex items-stretch -space-x-px">
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center h-full py-1.5 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span class="sr-only">Previous</span>
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                        </li>
-                        <li>
-                            <a href="#" aria-current="page"
-                                class="flex items-center justify-center text-sm z-10 py-2 px-3 leading-tight text-primary-600 bg-primary-50 border border-primary-300 hover:bg-primary-100 hover:text-primary-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">...</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center text-sm py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">100</a>
-                        </li>
-                        <li>
-                            <a href="#"
-                                class="flex items-center justify-center h-full py-1.5 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                                <span class="sr-only">Next</span>
-                                <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewbox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
             </div>
-        </div>
-    </section>
-    <!-- End block -->
+        </section>
 
-    <!-- Modal para crear-->
+    </div>
+
+    <!-- MODAL CREAR USUARIO -->
     <div id="createProductModal" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 flex-col justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-slate-900/50 backdrop-blur-xs">
         <div class="relative p-4 w-full max-w-2xl max-h-full">
-            <!-- Modal content -->
-            <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                <!-- Modal header -->
-                <div
-                    class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Añadir Usuario</h3>
-                    <button type="button"
-                        class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-target="createProductModal" data-modal-toggle="createProductModal">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
+            <div class="relative p-6 bg-white rounded-3xl shadow-xl dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                <div class="flex justify-between items-center pb-4 mb-4 border-b border-slate-200 dark:border-slate-700">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white">Añadir Nuevo Usuario</h3>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Registra un nuevo paciente o personal asistencial en la plataforma.</p>
+                    </div>
+                    <button type="button" class="text-slate-400 hover:text-slate-600 rounded-lg p-1.5"
+                        data-modal-toggle="createProductModal">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
-                        <span class="sr-only">Close modal</span>
                     </button>
                 </div>
-                <!-- alerta -->
-                <?php foreach ($errores as $error): ?>
-                    <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                        role="alert">
-                        <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor"
-                            viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        <span class="sr-only">Info</span>
+
+                <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                    <div class="grid gap-4 sm:grid-cols-2">
                         <div>
-                            <span class="font-medium">Alerta!</span>
-                            <?php echo $error ?>
+                            <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Correo Electrónico</label>
+                            <input type="email" name="email" required
+                                class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                placeholder="ejemplo@correo.com">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Nombre Completo</label>
+                            <input type="text" name="nombre" required
+                                class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                placeholder="Nombre y Apellidos">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Fecha de Nacimiento</label>
+                            <input type="date" name="fecha_nacimiento"
+                                class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Contraseña Inicial</label>
+                            <input type="password" name="password" required
+                                class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                placeholder="••••••••">
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Sexo</label>
+                            <select name="sexo" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                                <option value="">Selecciona sexo</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="femenino">Femenino</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Condición / Diagnóstico</label>
+                            <select name="enfermedad" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                                <option value="">Ninguna / Personal</option>
+                                <option value="colostomia">Colostomía</option>
+                                <option value="diabetes">Diabetes</option>
+                            </select>
                         </div>
                     </div>
-                <?php endforeach; ?>
-                <!--cierre alerta -->
-                <!-- Modal body -->
-                <form method="POST" enctype="multipart/form-data">
-                    <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                        <div>
-                            <label for="email"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                            <input value="<?php echo s($usuariosC->email); ?>" type="email" name="email" id="email"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Escribe el email" required="">
-                        </div>
-                        <div>
-                            <label for="nombre"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre
-                                Completo</label>
-                            <input value="<?php echo s($usuariosC->nombre); ?>" type="text" name="nombre" id="nombre"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                placeholder="Escribre tu nombre" required="">
-                        </div>
-                        <div>
-                            <label for="fecha_nacimiento"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de
-                                nacimiento</label>
-                            <input value="<?php echo date('Y-m-d', strtotime(s($usuariosC->fecha_nacimiento))); ?>"
-                                type="date" name="fecha_nacimiento" id="fecha"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                            <div class="mt-6">
-                                <label for="password"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                <input value="<?php echo s($usuariosC->password); ?>" type="text" name="password"
-                                    id="password"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="password" required="">
-                            </div>
-                        </div>
 
-                        <div>
-                            <div class="w-full">
-                                <label for="sexo"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sexo</label>
-                                <select name="sexo"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option selected value="">Escoge tu sexo</option>
-                                    <option value="masculino" <?php echo $usuariosC->sexo === "masculino" ? "selected" : '' ?>>
-                                        Masculino</option>
-                                    <option value="femenino" <?php echo $usuariosC->sexo === "femenino" ? "selected" : '' ?>>
-                                        Femenino</option>
-                                </select>
-                            </div>
-                            <div id="opcionPaciente">
-                                <label for="enfermedad"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white mt-6">Condición</label>
-                                <select id="countries" name="enfermedad"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                    <option value="">Selecciona tu condición</option>
-                                    <option value="diabetes" <?php echo $usuariosC->enfermedad == "diabetes" ? "selected" : "" ?>>Diabetes</option>
-                                    <option value="colostomia" <?php echo $usuariosC->enfermedad == "colostomia" ? "selected" : "" ?>>Colostomia</option>
-                                </select>
-                            </div>
-                        </div>
-
+                    <div class="pt-4 flex justify-end gap-3 border-t border-slate-200 dark:border-slate-700">
+                        <button type="button" data-modal-toggle="createProductModal"
+                            class="py-2.5 px-5 text-sm font-medium text-slate-700 bg-white rounded-xl border border-slate-300 hover:bg-slate-50 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600">
+                            Cancelar
+                        </button>
+                        <button type="submit" name="crear"
+                            class="text-white bg-indigo-600 hover:bg-indigo-700 font-semibold rounded-xl text-sm px-6 py-2.5 transition-all shadow-xs">
+                            Crear Usuario
+                        </button>
                     </div>
-                    <button type="submit" name="crear"
-                        class="text-white inline-flex items-center  bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                        <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewbox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        Crear
-                    </button>
                 </form>
             </div>
         </div>
     </div>
-    <!-- Actualizar modal -->
 
-    <?php foreach ($usuarios as $usuario): ?>
-        <div id="updateProductModal<?php echo $usuario->id; ?>" tabindex="-1" aria-hidden="true"
-            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <!-- MODALES DE EDICIÓN Y ELIMINACIÓN -->
+    <?php foreach ($usuarios as $usr): ?>
+        <!-- Modal Editar Usuario -->
+        <div id="updateProductModal<?= $usr->id ?>" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-slate-900/50 backdrop-blur-xs">
             <div class="relative p-4 w-full max-w-2xl max-h-full">
-                <!-- Modal content -->
-                <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                    <!-- Modal header -->
-                    <div
-                        class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Actualizar Usuario</h3>
-                        <button type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                            data-modal-toggle="updateProductModal<?php echo $usuario->id; ?>">
-                            <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                    clip-rule="evenodd" />
+                <div class="relative p-6 bg-white rounded-3xl shadow-xl dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                    <div class="flex justify-between items-center pb-4 mb-4 border-b border-slate-200 dark:border-slate-700">
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Editar Usuario</h3>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Modifica los datos de la cuenta #<?= $usr->id ?>.</p>
+                        </div>
+                        <button type="button" class="text-slate-400 hover:text-slate-600 rounded-lg p-1.5"
+                            data-modal-toggle="updateProductModal<?= $usr->id ?>">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
-                            <span class="sr-only">Close modal</span>
                         </button>
                     </div>
-                    <!-- Modal body -->
-                    <!-- alerta -->
-                    <?php foreach ($erroresActualizacion as $error): ?>
-                        <div class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                            role="alert">
-                            <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor"
-                                viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                            <span class="sr-only">Info</span>
+
+                    <form method="POST" enctype="multipart/form-data" class="space-y-4">
+                        <input type="hidden" name="usuario[id]" value="<?= $usr->id ?>">
+                        <input type="hidden" name="imagenPrevia" value="<?= htmlspecialchars($usr->imagen ?? '') ?>">
+
+                        <div class="grid gap-4 sm:grid-cols-2">
                             <div>
-                                <span class="font-medium">Alerta!</span>
-                                <?php echo $error ?>
+                                <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Correo Electrónico</label>
+                                <input type="email" name="usuario[email]" value="<?= htmlspecialchars($usr->email) ?>" required
+                                    class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Nombre Completo</label>
+                                <input type="text" name="usuario[nombre]" value="<?= htmlspecialchars($usr->nombre) ?>" required
+                                    class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Fecha de Nacimiento</label>
+                                <input type="date" name="usuario[fecha_nacimiento]" value="<?= $usr->fecha_nacimiento ? date('Y-m-d', strtotime($usr->fecha_nacimiento)) : '' ?>"
+                                    class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Nueva Contraseña (Opcional)</label>
+                                <input type="password" name="usuario[password]"
+                                    class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white"
+                                    placeholder="Dejar en blanco para no cambiar">
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Sexo</label>
+                                <select name="usuario[sexo]" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                                    <option value="">Selecciona sexo</option>
+                                    <option value="masculino" <?= $usr->sexo === 'masculino' ? 'selected' : '' ?>>Masculino</option>
+                                    <option value="femenino" <?= $usr->sexo === 'femenino' ? 'selected' : '' ?>>Femenino</option>
+                                    <option value="otro" <?= $usr->sexo === 'otro' ? 'selected' : '' ?>>Otro</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block mb-1 text-xs font-semibold text-slate-700 dark:text-slate-300">Condición / Diagnóstico</label>
+                                <select name="usuario[enfermedad]" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5 dark:bg-slate-700 dark:border-slate-600 dark:text-white">
+                                    <option value="" <?= empty($usr->enfermedad) ? 'selected' : '' ?>>Ninguna / Personal</option>
+                                    <option value="colostomia" <?= $usr->enfermedad === 'colostomia' ? 'selected' : '' ?>>Colostomía</option>
+                                    <option value="diabetes" <?= $usr->enfermedad === 'diabetes' ? 'selected' : '' ?>>Diabetes</option>
+                                </select>
                             </div>
                         </div>
-                    <?php endforeach; ?>
-                    <!--cierre alerta -->
-                    <form method="POST" enctype="multipart/form-data">
-                        <input type="number" name="usuario[id]" class="hidden" value="<?php echo $usuario->id; ?>">
-                        <input type="text" name="imagenPrevia" class="hidden" value="<?php echo $usuario->imagen; ?>">
-                        <div class="grid gap-4 mb-4 sm:grid-cols-2">
-                            <div>
-                                <label for="email"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                                <input value="<?php echo s($usuario->email); ?>" type="email" name="usuario[email]"
-                                    id="email"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Escribe el email" required="">
-                            </div>
-                            <div>
-                                <label for="nombre"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre
-                                    Completo</label>
-                                <input value="<?php echo s($usuario->nombre); ?>" type="text" name="usuario[nombre]"
-                                    id="nombre"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    placeholder="Escribre tu nombre" required="">
-                            </div>
 
-                            <div>
-                                <label for="fecha_nacimiento"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fecha de
-                                    nacimiento</label>
-                                <input value="<?php echo date('Y-m-d', strtotime(s($usuario->fecha_nacimiento))); ?>"
-                                    type="date" name="usuario[fecha_nacimiento]" id="fecha"
-                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <div class="mt-6">
-                                    <label for="password"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                    <input value="" type="text" name="usuario[password]" id="password"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="password">
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="w-full">
-                                    <label for="sexo"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Sexo</label>
-                                    <select name="usuario[sexo]"
-                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option selected value="">Escoge tu sexo</option>
-                                        <option value="masculino" <?php echo $usuario->sexo === "masculino" ? "selected" : '' ?>>Masculino </option>
-                                        <option value="femenino" <?php echo $usuario->sexo === "femenino" ? "selected" : '' ?>>
-                                            Femenino</option>
-                                    </select>
-                                </div>
-                            </div>
-
-
+                        <div class="pt-4 flex justify-end gap-3 border-t border-slate-200 dark:border-slate-700">
+                            <button type="button" data-modal-toggle="updateProductModal<?= $usr->id ?>"
+                                class="py-2.5 px-5 text-sm font-medium text-slate-700 bg-white rounded-xl border border-slate-300 hover:bg-slate-50 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600">
+                                Cancelar
+                            </button>
+                            <button type="submit" name="actualizar"
+                                class="text-white bg-indigo-600 hover:bg-indigo-700 font-semibold rounded-xl text-sm px-6 py-2.5 transition-all shadow-xs">
+                                Actualizar Datos
+                            </button>
                         </div>
-
-                        <button type="submit" name="actualizar"
-                            class="text-white inline-flex items-center  bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            <svg class="mr-1 -ml-1 w-6 h-6" fill="currentColor" viewbox="0 0 20 20"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            Update
-                        </button>
                     </form>
                 </div>
             </div>
         </div>
-    <?php endforeach; ?>
-    <!-- Delete modal -->
-    <?php foreach ($usuarios as $usuario): ?>
-        <div id="deleteModal<?php echo $usuario->id; ?>" tabindex="-1" aria-hidden="true"
-            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+
+        <!-- Modal Eliminar Usuario -->
+        <div id="deleteModal<?= $usr->id ?>" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-slate-900/50 backdrop-blur-xs">
             <div class="relative p-4 w-full max-w-md max-h-full">
-                <!-- Modal content -->
-                <div class="relative p-4 text-center bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
-                    <button type="button"
-                        class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                        data-modal-toggle="deleteModal<?php echo $usuario->id; ?>">
-                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewbox="0 0 20 20"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
+                <div class="relative p-5 text-center bg-white rounded-2xl shadow-xl dark:bg-slate-800 border border-slate-200 dark:border-slate-700">
+                    <button type="button" class="text-slate-400 absolute top-3 right-3 hover:text-slate-600" data-modal-toggle="deleteModal<?= $usr->id ?>">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                         </svg>
-                        <span class="sr-only">Close modal</span>
                     </button>
-                    <svg class="text-gray-400 dark:text-gray-500 w-11 h-11 mb-3.5 mx-auto" aria-hidden="true"
-                        fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                            clip-rule="evenodd" />
-                    </svg>
-                    <p class="mb-4 text-gray-500 dark:text-gray-300">¿Estas seguro de borrar este Usuario?</p>
-                    <div class="flex justify-center align-center items-center space-x-4">
-                        <button data-modal-toggle="deleteModal<?php echo $usuario->id; ?>" type="button"
-                            class="py-2 px-3 text-sm font-medium text-gray-500 bg-white rounded-lg border border-gray-200 hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-primary-300 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No,
-                            cancelar</button>
-                        <form method="POST" class="m-0""
-                            enctype=" multipart/form-data">
-                            <input type="number" name="id" class="hidden" value="<?php echo $usuario->id; ?>">
-                            <input type="text" name="tipo" class="hidden" value="usuario">
+                    <div class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-950/60 text-red-600 dark:text-red-400 flex items-center justify-center mx-auto mb-3.5">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </div>
+                    <p class="mb-1 text-base font-bold text-slate-900 dark:text-white">¿Eliminar usuario?</p>
+                    <p class="mb-4 text-xs text-slate-500 dark:text-slate-400">Se eliminará la cuenta de <strong><?= htmlspecialchars($usr->nombre) ?></strong> y su acceso al sistema.</p>
+                    <div class="flex justify-center items-center gap-3">
+                        <button data-modal-toggle="deleteModal<?= $usr->id ?>" type="button"
+                            class="py-2.5 px-4 text-xs font-semibold text-slate-700 bg-white rounded-xl border border-slate-300 hover:bg-slate-100 dark:bg-slate-700 dark:text-slate-300 dark:border-slate-600">
+                            Cancelar
+                        </button>
+                        <form method="POST" class="m-0">
+                            <input type="hidden" name="id" value="<?= $usr->id ?>">
                             <button type="submit" name="borrar"
-                                class="py-2 px-3 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900">Si,
-                                estoy seguro</button>
+                                class="py-2.5 px-4 text-xs font-semibold text-center text-white bg-red-600 rounded-xl hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 shadow-xs">
+                                Sí, eliminar
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    <?php endforeach ?>
+    <?php endforeach; ?>
 </main>
 
-<!-- js para exportar en excel -->
+<!-- Lógica de Búsqueda, Filtrado y Exportación de Usuarios -->
 <script>
-    document.getElementById('exportExcel').addEventListener('click', function () {
-        // Selecciona la tabla (ajusta el selector según tu HTML)
-        var table = document.querySelector('table');
+document.addEventListener('DOMContentLoaded', function () {
+    const inputBuscador = document.getElementById('buscadorUsuarios');
+    const filas = document.querySelectorAll('.usuario-fila');
+    const conteo = document.getElementById('conteoUsuarios');
+    const btnsFiltro = document.querySelectorAll('.filtro-usuario-btn');
+    const btnExportar = document.getElementById('btnExportarUsuarios');
 
-        // Convierte la tabla HTML a una hoja de cálculo
-        var wb = XLSX.utils.table_to_book(table);
+    let rolActual = 'todos';
 
-        // Guarda el archivo
-        XLSX.writeFile(wb, 'tabla_exportada.xlsx');
+    function filtrarTabla() {
+        const query = (inputBuscador.value || '').toLowerCase().trim();
+        let visibles = 0;
+
+        filas.forEach(fila => {
+            const dataSearch = fila.getAttribute('data-search') || '';
+            const rolFila = fila.getAttribute('data-rol') || '';
+
+            const coincideTexto = !query || dataSearch.includes(query);
+            let coincideRol = (rolActual === 'todos') || (rolFila === rolActual);
+
+            if (coincideTexto && coincideRol) {
+                fila.style.display = '';
+                visibles++;
+            } else {
+                fila.style.display = 'none';
+            }
+        });
+
+        if (conteo) {
+            conteo.textContent = visibles;
+        }
+    }
+
+    if (inputBuscador) {
+        inputBuscador.addEventListener('input', filtrarTabla);
+    }
+
+    btnsFiltro.forEach(btn => {
+        btn.addEventListener('click', function () {
+            btnsFiltro.forEach(b => {
+                b.classList.remove('bg-indigo-600', 'text-white', 'shadow-xs');
+                b.classList.add('text-slate-600', 'dark:text-slate-300', 'bg-slate-100', 'dark:bg-slate-700');
+            });
+            this.classList.remove('text-slate-600', 'dark:text-slate-300', 'bg-slate-100', 'dark:bg-slate-700');
+            this.classList.add('bg-indigo-600', 'text-white', 'shadow-xs');
+
+            rolActual = this.getAttribute('data-rol') || 'todos';
+            filtrarTabla();
+        });
     });
+
+    // Exportación a Excel / CSV con UTF-8 BOM
+    if (btnExportar) {
+        btnExportar.addEventListener('click', function () {
+            const datos = [
+                ['ID', 'Nombre', 'Correo', 'Rol', 'Condición', 'Estado Verificación', 'Perfil']
+            ];
+
+            filas.forEach(fila => {
+                if (fila.style.display !== 'none') {
+                    const id = fila.querySelector('td:nth-child(1) .text-xs')?.textContent?.replace('ID #', '')?.split('·')[0]?.trim() || '';
+                    const nombre = fila.querySelector('td:nth-child(1) .font-bold')?.textContent?.trim() || '';
+                    const email = fila.querySelector('td:nth-child(2) div:nth-child(1)')?.textContent?.trim() || '';
+                    const rol = fila.querySelector('td:nth-child(3) span')?.textContent?.trim() || '';
+                    const cond = fila.querySelector('td:nth-child(4) span')?.textContent?.trim() || '';
+                    const verif = fila.querySelector('td:nth-child(5) span')?.textContent?.trim() || '';
+                    const perfil = fila.querySelector('td:nth-child(6) span')?.textContent?.trim() || '';
+
+                    datos.push([id, nombre, email, rol, cond, verif, perfil]);
+                }
+            });
+
+            let csvContent = '\uFEFF';
+            datos.forEach(row => {
+                const escaped = row.map(val => `"${(val || '').replace(/"/g, '""')}"`);
+                csvContent += escaped.join(';') + '\r\n';
+            });
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `usuarios_${new Date().toISOString().slice(0, 10)}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        });
+    }
+});
 </script>

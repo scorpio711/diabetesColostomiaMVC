@@ -19,6 +19,11 @@ class ActiveRecord
         self::$db = $database;
     }
 
+    public static function getDB()
+    {
+        return self::$db;
+    }
+
     public function crear()
     {
 
@@ -49,13 +54,12 @@ class ActiveRecord
     }
 
 
-    //Elliminar un registro
-    public function eleminar()
-    {
+    // Eliminar un registro
 
+    public function eliminar()
+    {
         //Eliminar el registro
         $query = "DELETE FROM " . static::$tabla . " WHERE id= " . self::$db->escape_string($this->id) . " LIMIT 1;";
-
         $resultado = self::$db->query($query);
 
         return $resultado;
@@ -73,14 +77,11 @@ class ActiveRecord
 
         $query = "UPDATE " . static::$tabla . " SET ";
         $query .= join(", ", $valores);
-        $query .= "WHERE id = '" . self::$db->escape_string($this->id) . "' ";
+        $query .= " WHERE id = '" . self::$db->escape_string($this->id) . "' ";
         $query .= "LIMIT 1;";
+
         $resultado = self::$db->query($query);
 
-        // if ($resultado) {
-        //     //redireccionar al usuario
-        //     header("location:/public/admin/" . static::$tabla . "/administrar?resultado=2");
-        // }
         return $resultado;
     }
 
@@ -106,7 +107,7 @@ class ActiveRecord
         $sanitizado = [];
 
         foreach ($atributos as $key => $value) {
-            $sanitizado[$key] = self::$db->escape_string($value);
+            $sanitizado[$key] = self::$db->escape_string(strval($value ?? ''));
         }
         return $sanitizado;
     }
@@ -142,6 +143,20 @@ class ActiveRecord
         return $resultado;
     }
 
+    // Cuenta el total de registros de forma ultra rapida en MySQL
+    public static function count(string $condicion = ""): int
+    {
+        $query = "SELECT COUNT(*) as total FROM " . static::$tabla;
+        if (!empty($condicion)) {
+            $query .= " WHERE " . $condicion;
+        }
+        $resultado = self::$db->query($query);
+        if ($resultado && $fila = $resultado->fetch_assoc()) {
+            return (int) $fila['total'];
+        }
+        return 0;
+    }
+
     //busca un registro por su id
     public static function find($id)
     {
@@ -162,6 +177,11 @@ class ActiveRecord
     {
         //consultar la base de datos
         $resultado = self::$db->query($query);
+
+        // Si la consulta no retorna un conjunto de datos (ej: DELETE, UPDATE, INSERT), retornar el resultado booleano
+        if (!($resultado instanceof \mysqli_result)) {
+            return $resultado;
+        }
 
         //iterar los resultados
         $array = [];
@@ -191,7 +211,7 @@ class ActiveRecord
     public function sincronizar($args = [])
     {
         foreach ($args as $key => $value) {
-            if (property_exists($this, $key) && is_null($value)) {
+            if (property_exists($this, $key) && !is_null($value)) {
                 $this->$key = $value;
             }
         }

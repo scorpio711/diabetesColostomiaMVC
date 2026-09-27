@@ -19,11 +19,17 @@ class Profesionales extends ActiveRecord
     public $especializacion;
     public $descripcion;
     public $archivos;
-    
+
+    // Propiedades virtuales para JOIN con tabla usuarios
+    public $imagen;
+    public $fecha_nacimiento;
+    public $usuario_confirmado;
+    public $usuario_actualizado;
 
     public function __construct($args = [])
     {
         $this->id = $args["id"] ?? null;
+        $this->id_usuario = $args["id_usuario"] ?? null;
         $this->nombre = $args["nombre"] ?? "";
         $this->apellido = $args["apellido"] ?? "";
         $this->edad = $args["edad"] ?? "";
@@ -34,39 +40,42 @@ class Profesionales extends ActiveRecord
         $this->especializacion = $args["especializacion"] ?? "";
         $this->descripcion = $args["descripcion"] ?? "";
         $this->archivos = $args["archivos"] ?? "";
-        
+        $this->imagen = $args["imagen"] ?? "";
+        $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? "";
     }
     public function validarProfesional()
     {
+        self::$errores = [];
         if (!$this->nombre) {
-            self::$errores[] = "Debes añadir tu nombre";
+            self::$errores[] = "Debes añadir el nombre";
         }
         if (!$this->email) {
-            self::$errores[] = "Debes añadir tu email";
+            self::$errores[] = "Debes añadir el email";
         }
         if (!$this->telefono) {
-            self::$errores[] = "Debes añadir tu telefono";
+            self::$errores[] = "Debes añadir el teléfono";
         }
         if (!$this->profesion) {
-            self::$errores[] = "Debes añadir tu profesión";
+            self::$errores[] = "Debes seleccionar la profesión";
         }
 
         return self::$errores;
     }
     public function validarActualizacionPerfil()
     {
+        self::$errores = [];
         if (!$this->telefono) {
-            self::$errores[] = "Debes llenar el campo de telefono.";
+            self::$errores[] = "Debes ingresar tu número de teléfono celular de contacto.";
         }
         
         if (!$this->especializacion) {
             self::$errores[] = "Debes escoger tu especialidad.";
         }
         if (strlen($this->descripcion) < 50) {
-            self::$errores[] = "La descrpcion es muy corta debe ser de almenos 50 caracteres";
+            self::$errores[] = "La descripción profesional es muy corta (debe tener al menos 50 caracteres).";
         }
         if (strlen($this->descripcion) > 500) {
-            self::$errores[] = "La descrpcion es muy larga debe ser de menos 500 caracteres";
+            self::$errores[] = "La descripción profesional no debe superar los 500 caracteres.";
         }
         return self::$errores;
     }

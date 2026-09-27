@@ -11,69 +11,115 @@ function incluirTemplate(string $nombre, bool $inicio = false)
     include TEMPLATES_URL . "/${nombre}.php";
 }
 
-function estaAutenticado()
+function estaAutenticado(): void
 {
-    session_start();
-
-    if (!$_SESSION["login"]) {
-        header("location: /public");
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
 
+    if (empty($_SESSION["login"])) {
+        header("Location: /public");
+        exit;
+    }
 }
 
 function isAdmin(): void
 {
-    if (!isset($_SESSION["admin"])) {
-        header("location: /public");
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (empty($_SESSION["admin"]) && empty($_SESSION["admin_real"])) {
+        header("Location: /public");
+        exit;
     }
 }
 
-function esAbogado()
+function esAbogado(): void
 {
-    if ($_SESSION["rol"] !== "abogado") {
-        header("location: /public");
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
-}
-function esEnfermero()
-{
-    if ($_SESSION["rol"] !== "enfermero") {
-        header("location: /public");
+
+    if (!empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]) || ($_SESSION["rol"] ?? '') === "abogado") {
+        return;
     }
-}
-function esPsicologo()
-{
-    if ($_SESSION["rol"] !== "psicologo") {
-        header("location: /public");
-    }
+
+    header("Location: /public");
+    exit;
 }
 
-function esFuncionario()
+function esEnfermero(): void
 {
-    if ($_SESSION["rol"] == "abogado") {
-        esAbogado();
-    } elseif ($_SESSION["admin"] == "1") {
-        isAdmin();
-    } elseif ($_SESSION["rol"] == "enfermero") {
-        esEnfermero();
-    } elseif ($_SESSION["rol"] == "psicologo") {
-        esPsicologo();
-    } else {
-        header("Location:/public");
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+
+    if (!empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]) || ($_SESSION["rol"] ?? '') === "enfermero") {
+        return;
+    }
+
+    header("Location: /public");
+    exit;
 }
 
-function esColostomia()
+function esPsicologo(): void
 {
-    if ($_SESSION["enfermedad"] !== "colostomia") {
-        header("location: /public");
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+
+    if (!empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]) || ($_SESSION["rol"] ?? '') === "psicologo") {
+        return;
+    }
+
+    header("Location: /public");
+    exit;
 }
 
-function esDiabetes()
+function esFuncionario(): void
 {
-    if ($_SESSION["enfermedad"] !== "diabetes") {
-        header("location: /public");
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
     }
+
+    $rol = $_SESSION["rol"] ?? '';
+    $admin = !empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]);
+
+    if ($rol === "abogado" || $rol === "enfermero" || $rol === "psicologo" || $admin) {
+        return;
+    }
+
+    header("Location: /public");
+    exit;
+}
+
+function esColostomia(): void
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (!empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]) || ($_SESSION["enfermedad"] ?? '') === "colostomia") {
+        return;
+    }
+
+    header("Location: /public");
+    exit;
+}
+
+function esDiabetes(): void
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+
+    if (!empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]) || ($_SESSION["enfermedad"] ?? '') === "diabetes") {
+        return;
+    }
+
+    header("Location: /public");
+    exit;
 }
 
 function debuguear($variable)

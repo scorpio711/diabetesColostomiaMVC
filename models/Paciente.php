@@ -23,13 +23,21 @@ class Paciente extends ActiveRecord
     public $email;
     public $imagen;
 
+    // Propiedades adicionales del JOIN con usuarios
+    public $enfermedad;
+    public $encuesta_salud;
+    public $encuesta_psicologia;
+    public $encuesta_juridico;
+    public $fecha_nacimiento;
+
     public function __construct($args = [])
     {
         $this->id = $args["id"] ?? null;
         $this->pacienteId = $args["pacienteId"] ?? "";
+        $this->edad = $args["edad"] ?? 0;
         $this->sexo = $args["sexo"] ?? "";
         $this->escolaridad = $args["escolaridad"] ?? "";
-        $this->estrato_socioeconomico = $args["estrato_socioeconomico"] ?? "";
+        $this->estrato_socioeconomico = $args["estrato_socioeconomico"] ?? 1;
         $this->lugar_de_residencia = $args["lugar_de_residencia"] ?? "";
         $this->ocupacion = $args["ocupacion"] ?? "";
         $this->apoyo = $args["apoyo"] ?? "";
@@ -37,34 +45,38 @@ class Paciente extends ActiveRecord
         $this->tiempo_enfermedad = $args["tiempo_enfermedad"] ?? "";
         $this->nombre = $args["nombre"] ?? "";
         $this->email = $args["email"] ?? "";
-        $this->telefono = $args["nombre"] ?? 0;
-        $this->telefono = $args["imagen"] ?? "";
-        
+        $this->telefono = $args["telefono"] ?? "";
+        $this->imagen = $args["imagen"] ?? "";
+        $this->enfermedad = $args["enfermedad"] ?? "";
+        $this->encuesta_salud = $args["encuesta_salud"] ?? 0;
+        $this->encuesta_psicologia = $args["encuesta_psicologia"] ?? 0;
+        $this->encuesta_juridico = $args["encuesta_juridico"] ?? 0;
+        $this->fecha_nacimiento = $args["fecha_nacimiento"] ?? "";
     }
     public function validarActualizacionPerfil()
     {
+        self::$errores = [];
         if (!$this->escolaridad) {
-            self::$errores[] = "Debes escoger tu nivel escolar";
+            self::$errores[] = "Debes escoger tu nivel de escolaridad";
         }
         if (!$this->estrato_socioeconomico) {
-            self::$errores[] = "Debes ecoger tu estrato socieconomico";
+            self::$errores[] = "Debes escoger tu estrato socioeconómico";
         }
         if (!$this->lugar_de_residencia) {
             self::$errores[] = "Debes escoger tu lugar de residencia";
         }
         if (!$this->ocupacion) {
-            self::$errores[] = "Debes escoger tu ocupacion";
+            self::$errores[] = "Debes escoger tu ocupación principal";
         }
         if (!$this->apoyo) {
-            self::$errores[] = "Debes escoger tu apoyo";
+            self::$errores[] = "Debes escoger tu principal red de apoyo";
         }
         if (!$this->afiliacion) {
-            self::$errores[] = "debes escoger tu tipo de afiliacion";
+            self::$errores[] = "Debes escoger tu régimen de afiliación en salud";
         }
         if (!$this->tiempo_enfermedad) {
-            self::$errores[] = "debes  esoger tu tiempo con tu enfermedad";
+            self::$errores[] = "Debes indicar el tiempo que llevas con tu condición";
         }
-        
 
         return self::$errores;
     }

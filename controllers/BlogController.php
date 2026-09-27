@@ -2,7 +2,6 @@
 
 namespace Controllers;
 
-use Google\Service\Blogger\Blog;
 use Intervention\Image\ImageManagerStatic as Image;
 use Model\BlogPost;
 use Model\Profesionales;
@@ -14,61 +13,79 @@ class BlogController
 {
     public static function editor(Router $router)
     {
-
-        $router->render("/admin/blogs/editor", [
-        ]);
-    }
-    public static function admin(Router $router)
-    {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
         esFuncionario();
 
-       
-        $sesion = $_SESSION;
+        header("Location: /public/admin/blog");
+        exit;
+    }
 
-        //query para buscar los blogs con el id del usuariof
-        $query = "SELECT * FROM blog_posts WHERE id_usuario = ${_SESSION['id']};";
+    public static function admin(Router $router)
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        esFuncionario();
+
+        $sesion = $_SESSION;
+        $idUsuario = intval($_SESSION['id'] ?? 0);
+
+        // Query para buscar los blogs del profesional logueado
+        $query = "SELECT * FROM blog_posts WHERE id_usuario = {$idUsuario} ORDER BY id DESC;";
         $blogs = BlogPost::SQL($query);
-        $rol = $_SESSION["rol"];
+        $rol = $_SESSION["rol"] ?? "profesional";
         $errores = [];
-        $resultado = $_GET["resultado"];
+        $resultado = $_GET["resultado"] ?? null;
 
         if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if (isset($_POST['crear'])) {
                 $blog = new BlogPost($_POST);
-                $blog->nombre = $_SESSION["nombre"];
-                $blog->id_usuario = intval($_SESSION["id"]);
-                $blog->correo = $_SESSION["email"];
-                $blog->contenido_html = "Comienza a editar tu blog";
+                $blog->nombre = $_SESSION["nombre"] ?? "Profesional";
+                $blog->id_usuario = $idUsuario;
+                $blog->correo = $_SESSION["email"] ?? "";
+                $blog->cargo = $_SESSION["rol"] ?? "Profesional";
+                $blog->contenido_html = "<p>Comienza a redactar tu artículo aquí...</p>";
                 $errores = $blog->validarBlog();
+
                 if (empty($errores)) {
                     $resultado = $blog->crear();
                     if ($resultado) {
-                        //redireccionar al usuario
-                        header("location:/public/admin/blog?resultado=1");
+                        header("Location: /public/admin/blog?resultado=1");
+                        exit;
                     }
                 }
             } else {
-                $id = $_POST["id"];
-
+                $id = intval($_POST["id"] ?? 0);
                 $blog = BlogPost::find($id);
 
+                if ($blog) {
+                    $esAdmin = !empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]);
+                    // Validar que solo el creador o un admin pueda eliminarlo
+                    if ($esAdmin || intval($blog->id_usuario) === $idUsuario) {
+                        if (intval($blog->publico) === 1) {
+                            $query = "SELECT * FROM investigaciones WHERE idBlog = {$id};";
+                            $investigaciones = Investigacion::SQL($query);
 
-                if ($blog->publico == 1) {
+                            if (!empty($investigaciones)) {
+                                $inv = $investigaciones[0];
+                                $inv->eliminar();
 
-                    $query = "SELECT * FROM investigaciones WHERE idBlog = ${id};";
-                    $investigacion = Investigacion::SQL($query);
+                                if (!empty($inv->imagen) && file_exists(CARPETA_IMAGENES_INVESTIGACIONES . $inv->imagen)) {
+                                    unlink(CARPETA_IMAGENES_INVESTIGACIONES . $inv->imagen);
+                                }
+                            }
+                        }
 
-                    $investigacion[0]->eleminar();
+                        $resultado = $blog->eliminar();
 
-                    unlink(CARPETA_IMAGENES_INVESTIGACIONES . $investigacion->imagen);
-                }
-
-                $resultado = $blog->eleminar();
-
-                if ($resultado) {
-                    header("location:/public/admin/blog?resultado=3");
+                        if ($resultado) {
+                            header("Location: /public/admin/blog?resultado=3");
+                            exit;
+                        }
+                    }
                 }
             }
         }
@@ -84,98 +101,116 @@ class BlogController
 
     public static function lector(Router $router)
     {
-        session_start();
-
-        //obtener la id del blog
-        $blogId = $_GET["id"];
-        $resultado = $_GET["resultado"];
-        $blog = BlogPost::find($blogId);
-        $id_usuario = $blog->id_usuario;
-        //buscar información del profesional que creo el blog
-        $query = "SELECT * FROM profesionales WHERE id_usuario = ${id_usuario};";
-        $profesional = Profesionales::sql($query);
-        $usuario = Usuario::find($id_usuario);
-
-        //formatear fecha
-        $date = $blog->fecha_creacion; // Fecha original
-
-        // Convertir la fecha a timestamp y luego formatearla
-        $formattedDate = date("M. j, Y", strtotime($date));
-
-        // Validar que el usuario de la sesión es el mismo que el propietario del blog
-        if ($_SESSION['id'] == $id_usuario) {
-            // El usuario es el propietario del blog, mostrar el contenido
-            $contenido_html = $blog->contenido_html;
-        } else {
-            // El usuario no es el propietario, mostrar un mensaje de error
-            $contenido_html = $blog->contenido_html;
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
 
-        //publicar el blog
-        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+        $blogId = intval($_GET["id"] ?? 0);
+        $resultado = $_GET["resultado"] ?? null;
+
+        if ($blogId <= 0) {
+            header("Location: /public/investigaciones");
+            exit;
+        }
+
+        $blog = BlogPost::find($blogId);
+        if (!$blog) {
+            header("Location: /public/investigaciones");
+            exit;
+        }
+
+        $id_usuario = intval($blog->id_usuario);
+
+        // Buscar información del profesional que creó el blog
+        $query = "SELECT * FROM profesionales WHERE id_usuario = {$id_usuario};";
+        $profesionales = Profesionales::sql($query);
+        $profesional = !empty($profesionales) ? $profesionales[0] : null;
+        $usuario = Usuario::find($id_usuario);
+
+        // Formatear fecha
+        $date = $blog->fecha_creacion ?: date("Y-m-d H:i:s");
+        $formattedDate = date("M. j, Y", strtotime($date));
+
+        // Permisos de autor o administrador
+        $sessionId = $_SESSION['id'] ?? null;
+        $esDuenio = ($sessionId && intval($sessionId) === $id_usuario);
+        $esAdmin = !empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]);
+
+        // Si el blog está en borrador (privado), solo el dueño o un admin pueden verlo
+        if (intval($blog->publico) !== 1 && !$esDuenio && !$esAdmin) {
+            header("Location: /public/investigaciones");
+            exit;
+        }
+
+        $contenido_html = $blog->contenido_html;
+
+        // Comprobar si ya existe una investigación publicada para este blog
+        $queryInv = "SELECT * FROM investigaciones WHERE idBlog = {$blogId} LIMIT 1;";
+        $invList = Investigacion::SQL($queryInv);
+        $investigacionC = !empty($invList) ? $invList[0] : new Investigacion();
+        $errores = [];
+
+        // Publicar / Ocultar el blog
+        if ($_SERVER["REQUEST_METHOD"] === "POST" && ($esDuenio || $esAdmin)) {
 
             if (isset($_POST['crear'])) {
+                $datosInv = $_POST;
+                $datosInv['idBlog'] = $blogId;
+                $datosInv['url'] = "/public/blog?id={$blogId}";
 
-                //Crea una nueva instancia
-                $investigacionC = new Investigacion($_POST);
-                /**SUBIDA DE ARCHIVOS**/
+                if (!empty($invList)) {
+                    $investigacionC->sincronizar($datosInv);
+                } else {
+                    $investigacionC = new Investigacion($datosInv);
+                }
 
-                //generar un nombre unico
-                $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
-
-                //Setear la imagen
-                //Realiza un resize a la imagen con intervention
-                if ($_FILES["imagen"]["tmp_name"]) {
+                $nombreImagen = "";
+                if (!empty($_FILES["imagen"]["tmp_name"])) {
+                    $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
                     $image = Image::make($_FILES["imagen"]["tmp_name"])->fit(800, 600);
                     $investigacionC->setImagen($nombreImagen);
+                } elseif (!empty($invList) && !empty($invList[0]->imagen)) {
+                    $investigacionC->imagen = $invList[0]->imagen;
                 }
 
-                //Validar
                 $errores = $investigacionC->validar();
 
-                //revisar que errores este vacio
                 if (empty($errores)) {
-
-                    //Crear la carpeta para subir imagenes
                     if (!is_dir(CARPETA_IMAGENES_INVESTIGACIONES)) {
-                        mkdir(CARPETA_IMAGENES_INVESTIGACIONES);
+                        mkdir(CARPETA_IMAGENES_INVESTIGACIONES, 0777, true);
                     }
 
-                    //Guarda la imagen en el servidor
-                    $image->save(CARPETA_IMAGENES_INVESTIGACIONES . $nombreImagen);
+                    if (!empty($nombreImagen) && isset($image)) {
+                        $image->save(CARPETA_IMAGENES_INVESTIGACIONES . $nombreImagen);
+                    }
 
-                    //Asignar una url
-                    $investigacionC->url = "/public/blog?id={$blogId}";
-                    $investigacionC->idBlog = $blogId;
-
-                    //poner publico el blog
                     $blog->publico = 1;
-
                     $blog->actualizar();
-                    //guarda en la base de datos
-                    $resultado = $investigacionC->crear();
 
-                    if ($resultado) {
-                        header("location:/public/blog?id=${blogId}&resultado=1");
+                    if (!empty($invList)) {
+                        $investigacionC->actualizar();
+                    } else {
+                        $investigacionC->crear();
                     }
 
+                    header("Location: /public/blog?id={$blogId}&resultado=1");
+                    exit;
                 }
             } elseif (isset($_POST['ocultar'])) {
-
-                $query = "SELECT * FROM investigaciones WHERE idBlog = ${blogId};";
-                $investigacion = Investigacion::SQL($query);
-                //poner publico el blog
                 $blog->publico = 0;
-
                 $blog->actualizar();
 
-                $resultado = $investigacion[0]->eleminar();
+                if (!empty($invList)) {
+                    $inv = $invList[0];
+                    $inv->eliminar();
 
-                unlink(CARPETA_IMAGENES_INVESTIGACIONES . $investigacion->imagen);
-
-                if ($resultado) {
-                    header("location:/public/blog?id=${blogId}&resultado=3");
+                    if (!empty($inv->imagen) && file_exists(CARPETA_IMAGENES_INVESTIGACIONES . $inv->imagen)) {
+                        unlink(CARPETA_IMAGENES_INVESTIGACIONES . $inv->imagen);
+                    }
                 }
+
+                header("Location: /public/blog?id={$blogId}&resultado=3");
+                exit;
             }
         }
 
@@ -186,18 +221,44 @@ class BlogController
             "blog" => $blog,
             "id_usuario" => $id_usuario,
             "contenido_html" => $contenido_html,
-            "profesional" => $profesional[0],
+            "profesional" => $profesional,
             "usuario" => $usuario,
-            "fecha" => $formattedDate
+            "fecha" => $formattedDate,
+            "esDuenio" => $esDuenio,
+            "esAdmin" => $esAdmin
         ]);
     }
 
     public static function guardar()
     {
-        $blog = BlogPost::find($_POST["id"]);
-        $blog->contenido_html = $_POST["contenido_html"];
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        header('Content-Type: application/json');
+
+        $id = intval($_POST["id"] ?? 0);
+        $blog = BlogPost::find($id);
+
+        if (!$blog) {
+            echo json_encode(["status" => "error", "mensaje" => "El artículo no existe."]);
+            return;
+        }
+
+        $sessionId = $_SESSION["id"] ?? null;
+        $esAdmin = !empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]);
+
+        if (!$esAdmin && (!$sessionId || intval($sessionId) !== intval($blog->id_usuario))) {
+            echo json_encode(["status" => "error", "mensaje" => "No tienes permisos para editar este artículo."]);
+            return;
+        }
+
+        $blog->contenido_html = $_POST["contenido_html"] ?? "";
         $resultado = $blog->actualizar();
 
-        echo json_encode($resultado);
+        echo json_encode([
+            "status" => $resultado ? "ok" : "error",
+            "resultado" => $resultado
+        ]);
     }
 }

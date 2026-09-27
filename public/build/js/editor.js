@@ -1,1 +1,130 @@
-const demoBaseConfig={selector:"#editor",language:"es",width:"100%",height:500,resize:!1,branding:!1,statusbar:!1,menubar:!1,autosave_ask_before_unload:!1,powerpaste_allow_local_images:!0,plugins:["a11ychecker","advcode","advlist","anchor","autolink","codesample","fullscreen","help","image","editimage","tinydrive","lists","link","media","powerpaste","preview","searchreplace","table","tinymcespellchecker","visualblocks","wordcount"],toolbar:"insertfile a11ycheck undo redo | bold italic | forecolor backcolor | codesample | alignleft aligncenter alignright alignjustify | bullist numlist | link image | lineheight",spellchecker_dialog:!0,spellchecker_ignore_list:["Ephox","Moxiecode"],tinydrive_demo_files_url:"../_images/tiny-drive-demo/demo_files.json",tinydrive_token_provider:(e,i)=>{e({token:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJqb2huZG9lIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.Ks_BdfH4CWilyzLNk8S2gDARFhuxIauLa8PwhdEQhEo"})},content_style:"body { font-family:Helvetica,Arial,sans-serif; font-size:16px }"};tinymce.init(demoBaseConfig);const formulario=document.getElementById("formulario");async function actualizarBlog(){const e=new URLSearchParams(window.location.search).get("id"),i=tinymce.activeEditor.getContent(),o=new FormData;o.append("contenido_html",i),o.append("id",e);const a=location.origin+"/public/api/blog",t=await fetch(a,{method:"POST",body:o}),l=await t.json();console.log(l)}formulario.addEventListener("submit",e=>{document.body.style.opacity=0,setTimeout((function(){location.reload()}),500),e.preventDefault(),actualizarBlog()});
+// Configuración limpia y estable de TinyMCE con plugins de código abierto locales
+const editorConfig = {
+  selector: "#editor",
+  language: "es",
+  width: "100%",
+  height: 520,
+  resize: true,
+  branding: false,
+  statusbar: true,
+  menubar: "edit insert format table tools",
+  plugins: [
+    "advlist",
+    "autolink",
+    "lists",
+    "link",
+    "image",
+    "charmap",
+    "preview",
+    "anchor",
+    "searchreplace",
+    "visualblocks",
+    "code",
+    "fullscreen",
+    "insertdatetime",
+    "media",
+    "table",
+    "help",
+    "wordcount"
+  ],
+  toolbar:
+    "undo redo | styles | bold italic underline forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image media table | preview fullscreen code",
+  content_style:
+    "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #1e293b; padding: 12px; } img { max-width: 100%; height: auto; border-radius: 8px; }",
+  setup: function (editor) {
+    editor.on("init", function () {
+      console.log("TinyMCE inicializado correctamente.");
+    });
+  }
+};
+
+// Inicializar TinyMCE
+if (typeof tinymce !== "undefined") {
+  tinymce.init(editorConfig);
+}
+
+// Manejar el guardado del formulario
+const formulario = document.getElementById("formulario");
+
+if (formulario) {
+  formulario.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await actualizarBlog();
+  });
+}
+
+async function actualizarBlog() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  if (!id) {
+    alert("Error: No se encontró el identificador del artículo.");
+    return;
+  }
+
+  // Obtener contenido de TinyMCE de forma segura
+  let contenido = "";
+  if (typeof tinymce !== "undefined") {
+    const editorInstance = tinymce.get("editor") || tinymce.activeEditor;
+    if (editorInstance) {
+      contenido = editorInstance.getContent();
+    }
+  }
+
+  const btnGuardar = document.getElementById("btnGuardarBlog");
+  const textoOriginal = btnGuardar ? btnGuardar.innerHTML : "Guardar";
+
+  if (btnGuardar) {
+    btnGuardar.disabled = true;
+    btnGuardar.innerHTML = `
+      <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg> Guardando...
+    `;
+  }
+
+  try {
+    const datos = new FormData();
+    datos.append("contenido_html", contenido);
+    datos.append("id", id);
+
+    const url = `${location.origin}/public/api/blog`;
+    const respuesta = await fetch(url, {
+      method: "POST",
+      body: datos,
+    });
+
+    const resultado = await respuesta.json();
+
+    if (resultado && (resultado.status === "ok" || resultado === true || resultado.resultado)) {
+      if (btnGuardar) {
+        btnGuardar.classList.remove("bg-blue-700", "hover:bg-blue-800");
+        btnGuardar.classList.add("bg-emerald-600", "hover:bg-emerald-700");
+        btnGuardar.innerHTML = `
+          <svg class="w-4 h-4 mr-1 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg> ¡Guardado con éxito!
+        `;
+      }
+
+      // Cerrar modal o recargar suavemente
+      setTimeout(() => {
+        location.reload();
+      }, 700);
+    } else {
+      alert("No se pudo guardar: " + (resultado.mensaje || "Ocurrió un error inesperado."));
+      if (btnGuardar) {
+        btnGuardar.disabled = false;
+        btnGuardar.innerHTML = textoOriginal;
+      }
+    }
+  } catch (error) {
+    console.error("Error al actualizar el blog:", error);
+    alert("Error de conexión al intentar guardar los cambios.");
+    if (btnGuardar) {
+      btnGuardar.disabled = false;
+      btnGuardar.innerHTML = textoOriginal;
+    }
+  }
+}

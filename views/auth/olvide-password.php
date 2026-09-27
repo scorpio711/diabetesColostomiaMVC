@@ -1,70 +1,80 @@
-<section class=" dark:bg-gray-900 py-20">
-    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <a href="#" class="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-            <img class="w-8 h-8 mr-2" src="/public/build/img/zyro-image.png" alt="logo">
-            CareFullness
-        </a>
-        <?php foreach ($errores as $error): ?>
-            <div class="p-4 text-sm my-4 text-red-800 w-96 text-center rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                role="alert">
-                <span class="font-medium">¡Cuidado!</span>
-                <?php echo $error; ?>
-            </div>
-        <?php endforeach; ?>
-        <?php if ($resultado == 1): ?>
-            <div id="alert-4"
-                class="flex items-center p-4 my-4 text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
-                role="alert">
-                <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                    viewBox="0 0 20 20">
-                    <path
-                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
-                </svg>
-                <span class="sr-only">Info</span>
-                <div class="ml-3 text-sm font-medium">
-                    Revisa tu email para continuar
-                </div>
-                <button type="button"
-                    class="ml-auto -mx-1.5 -my-1.5 bg-yellow-50 text-yellow-500 rounded-lg focus:ring-2 focus:ring-yellow-400 p-1.5 hover:bg-yellow-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-yellow-300 dark:hover:bg-gray-700"
-                    data-dismiss-target="#alert-4" aria-label="Close">
-                    <span class="sr-only">Close</span>
-                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 14 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                    </svg>
-                </button>
+<main class="min-h-screen py-16 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md space-y-6">
+        
+        <!-- Encabezado con Logo -->
+        <div class="text-center">
+            <a href="/public" class="inline-flex items-center justify-center gap-2 mb-4 group">
+                <img class="h-12 w-auto transform group-hover:scale-105 transition-transform"
+                    src="/public/build/img/Logo CAREFULNESS.svg" alt="CAREFULNESS">
+                <span class="text-2xl font-bold text-gray-900 dark:text-white">CAREFULNESS</span>
+            </a>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                ¿Olvidaste tu Contraseña?
+            </h1>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
+                No te preocupes, escribe tu email para enviarte las instrucciones de restablecimiento.
+            </p>
+        </div>
+
+        <!-- Errores -->
+        <?php if (!empty($errores)): ?>
+            <div class="space-y-2">
+                <?php foreach ($errores as $error): ?>
+                    <div class="flex items-center gap-2 p-3.5 text-sm text-red-800 rounded-xl bg-red-50 border border-red-200 dark:bg-gray-800 dark:border-red-900 dark:text-red-400 shadow-sm"
+                        role="alert">
+                        <svg class="w-4 h-4 flex-shrink-0 text-red-600 dark:text-red-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="font-medium"><?php echo htmlspecialchars($error); ?></span>
+                    </div>
+                <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <div
-            class="w-full p-6 bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 sm:p-8">
-            <h1 class="mb-1 text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                ¿Olvidaste tu contraseña?
-            </h1>
-            <p class="font-light text-gray-500 dark:text-gray-400">No te asustes, Escribe tu email para enviarte la instrucciones para cambiar tu Contraseña</p>
-            <form class="mt-4 space-y-4 lg:mt-5 md:space-y-5" action="#" method="POST">
+
+        <!-- Alerta de éxito -->
+        <?php if (isset($resultado) && $resultado == 1): ?>
+            <div id="alert-4"
+                class="flex items-center p-4 text-emerald-800 rounded-xl bg-emerald-50 border border-emerald-200 dark:bg-gray-800 dark:border-emerald-800 dark:text-emerald-300 shadow-sm"
+                role="alert">
+                <svg class="flex-shrink-0 w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                </svg>
+                <div class="ms-3 text-sm font-semibold">
+                    ¡Listo! Revisa tu bandeja de correo para continuar con el restablecimiento.
+                </div>
+            </div>
+        <?php endif; ?>
+
+        <!-- Tarjeta del Formulario -->
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-3xl border border-gray-200 dark:border-gray-700 shadow-xl space-y-6">
+            <form class="space-y-5" method="POST">
                 <div>
-                    <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your
-                        email</label>
-                    <input type="email" name="email" id="email"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="nombre@compañia.com" required="">
+                    <label for="email" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">
+                        Correo Electrónico Registrado
+                    </label>
+                    <input type="email" name="email" id="email" required
+                        class="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/50 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition text-sm"
+                        placeholder="tu-correo@ejemplo.com">
                 </div>
-                <div class="flex items-start">
-                    <div class="flex items-center h-5">
-                        <input id="terms" aria-describedby="terms" type="checkbox"
-                            class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                            required="">
-                    </div>
-                    <div class="ml-3 text-sm">
-                        <label for="terms" class="font-light text-gray-500 dark:text-gray-300">Aceptos los <a
-                                class="font-medium text-primary-600 hover:underline dark:text-primary-500"
-                                href="#">Terminos y Condiciones</a></label>
-                    </div>
-                </div>
+
                 <button type="submit"
-                    class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Cambiar Contraseña</button>
+                    class="w-full inline-flex items-center justify-center gap-2 text-white bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-semibold rounded-xl text-base px-6 py-3.5 text-center shadow-lg shadow-emerald-600/25 hover:shadow-emerald-600/40 hover:-translate-y-0.5 transition-all duration-200">
+                    <span>Enviar instrucciones</span>
+                    <svg class="w-4 h-4 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                    </svg>
+                </button>
             </form>
+
+            <div class="pt-4 border-t border-gray-100 dark:border-gray-700/60 text-center">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
+                    ¿Recordaste tu contraseña?
+                    <a href="/public/login"
+                        class="font-semibold text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 hover:underline ms-1">
+                        Regresar a iniciar sesión
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
-</section>
+</main>

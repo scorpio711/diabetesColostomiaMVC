@@ -510,6 +510,10 @@
                         <div class="grid gap-4 mb-4 sm:grid-cols-2">
                             <input type="number" name="investigacion[id]" class="hidden"
                                 value="<?php echo $investigacion->id; ?>">
+                            <input type="number" name="investigacion[idBlog]" class="hidden"
+                                value="<?php echo $investigacion->idBlog; ?>">
+                            <input type="number" name="investigacion[url]" class="hidden"
+                                value="<?php echo $investigacion->url; ?>">
                             <input type="text" name="imagenPrevia" class="hidden"
                                 value="<?php echo $investigacion->imagen; ?>">
                             <div>

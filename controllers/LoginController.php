@@ -8,39 +8,39 @@ use Model\Profesionales;
 use Model\Paciente;
 use Classes\Email;
 
-
 class LoginController
 {
     public static function login(Router $router)
     {
-        if ($_SESSION["login"]) {
-            header("Location:/public");
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!empty($_SESSION["login"])) {
+            header("Location: /public");
+            exit;
         }
 
         $errores = [];
-        $resultado = $_GET["resultado"];
-
+        $resultado = $_GET["resultado"] ?? null;
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $auth = new Usuario($_POST);
-
             $errores = $auth->validarLogin();
 
             if (empty($errores)) {
                 $usuario = Usuario::where("email", $auth->email);
 
                 if ($usuario) {
-                    //verificar el password
+                    // Verificar el password y estado de confirmación
                     if ($usuario->comprobarPasswordAndVerificado($auth->password)) {
-                        //Autenticar el usuario
-                        session_start();
+                        // Autenticar el usuario
                         $usuarioId = $usuario->id;
                         
-                        $query = "SELECT * FROM pacientes WHERE pacienteId = " . $usuarioId . ";";
-                        
+                        $query = "SELECT * FROM pacientes WHERE pacienteId = " . intval($usuarioId) . ";";
                         $pacienteDatos = Paciente::SQL($query);
-                        $paciente = $pacienteDatos[0];
+                        $paciente = !empty($pacienteDatos) ? $pacienteDatos[0] : null;
                     
                         $_SESSION["id"] = $usuarioId;
                         $_SESSION["nombre"] = $usuario->nombre;
@@ -53,32 +53,32 @@ class LoginController
                         $_SESSION["enfermedad"] = $usuario->enfermedad;
                         $_SESSION["login"] = true;
 
-                        
-                        //redireccionamiento
+                        // Redireccionamiento según rol o condición
                         if ($usuario->admin === "1") {
                             $_SESSION["admin"] = $usuario->admin ?? 0;
-                            header("location: /public/admin/index");
+                            header("Location: /public/admin/index");
+                            exit;
                         } elseif ($_SESSION["rol"] === "abogado") {
                             header('Location: /public/admin/abogados');
-                        }elseif ($_SESSION["rol"] === "enfermero") {
+                            exit;
+                        } elseif ($_SESSION["rol"] === "enfermero") {
                             header('Location: /public/admin/enfermeros');
-                        }elseif ($_SESSION["rol"] === "psicologo") {
+                            exit;
+                        } elseif ($_SESSION["rol"] === "psicologo") {
                             header('Location: /public/admin/psicologos');
-                        }elseif ($_SESSION["enfermedad"] === "diabetes") {
+                            exit;
+                        } elseif ($_SESSION["enfermedad"] === "diabetes" || $_SESSION["enfermedad"] === "colostomia") {
                             header('Location: /public');
-                        }elseif ($_SESSION["enfermedad"] === "colostomia") {
-                            header('Location: /public');
+                            exit;
                         } else {
                             header('Location: /public/cita');
+                            exit;
                         }
-
-
                     }
                 } else {
                     Usuario::setErrores("El usuario no existe");
                 }
             }
-
         }
 
         $errores = Usuario::getErrores();
@@ -88,34 +88,51 @@ class LoginController
             "resultado" => $resultado
         ]);
     }
+
     public static function logout()
     {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
 
         $_SESSION = [];
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000,
+                $params["path"], $params["domain"],
+                $params["secure"], $params["httponly"]
+            );
+        }
+        session_destroy();
 
-        header("location: /public");
+        header("Location: /public");
+        exit;
     }
 
     public static function olvidePassword($router)
     {
-        if ($_SESSION["login"]) {
-            header("Location:/public");
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!empty($_SESSION["login"])) {
+            header("Location: /public");
+            exit;
         }
 
         $errores = [];
-        $resultado = $_GET["resultado"];
+        $resultado = $_GET["resultado"] ?? null;
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $auth = new Usuario($_POST);
-            $auth->validarEmail();
+            $errores = $auth->validarEmail();
 
             if (empty($errores)) {
-                $usuario = Usuario::Where("email", $auth->email);
+                $usuario = Usuario::where("email", $auth->email);
 
-                if ($usuario && $usuario->confirmado === "1") {
+                if ($usuario && $usuario->confirmado == "1") {
 
-                    //Generar un token
+                    // Generar un token
                     $usuario->crearToken();
                     $usuario->actualizar();
 
@@ -123,11 +140,12 @@ class LoginController
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
                     $email->enviarIntrucciones($usuario->email);
 
-                    //Alerta de exito
-                    header("location:/public/olvide-password?resultado=1");
+                    // Alerta de éxito
+                    header("Location: /public/olvide-password?resultado=1");
+                    exit;
 
                 } else {
-                    Usuario::setErrores("El usuario no esta confirmado o no existe");
+                    Usuario::setErrores("El usuario no está confirmado o no existe");
                     $errores = Usuario::getErrores();
                 }
             }
@@ -141,31 +159,33 @@ class LoginController
 
     public static function cambioPassword($router)
     {
-        if ($_SESSION["login"]) {
-            header("Location:/public");
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!empty($_SESSION["login"])) {
+            header("Location: /public");
+            exit;
         }
 
         $errores = [];
-        $token = s($_GET["token"]);
+        $token = s($_GET["token"] ?? '');
         $noToken = false;
 
-        //Buscar usuario por su token
-
-        $usuario = Usuario::where("token", $token);
+        // Buscar usuario por su token
+        $usuario = !empty($token) ? Usuario::where("token", $token) : null;
 
         if (empty($usuario)) {
-            Usuario::setErrores("token no valido");
+            Usuario::setErrores("El enlace no es válido o ha expirado");
             $noToken = true;
         }
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            //Leer el nuevo password y guardarlo
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !$noToken) {
+            // Leer el nuevo password y guardarlo
             $password = new Usuario($_POST);
             $errores = $password->validarPassword();
 
             if (empty($errores)) {
-                $usuario->password = null;
-
                 $usuario->password = $password->password;
                 $usuario->hashPassword();
                 $usuario->token = null;
@@ -173,7 +193,8 @@ class LoginController
                 $resultado = $usuario->actualizar();
 
                 if ($resultado) {
-                    header("location:/public/login?resultado=3");
+                    header("Location: /public/login?resultado=3");
+                    exit;
                 }
             }
         }
@@ -184,90 +205,97 @@ class LoginController
             "errores" => $errores
         ]);
     }
+
     public static function registro($router)
     {
-        if ($_SESSION["login"]) {
-            header("Location:/public");
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
 
-        $usuario = new Usuario($_POST);
+        if (!empty($_SESSION["login"])) {
+            header("Location: /public");
+            exit;
+        }
 
-        //Alertas Vacias
+        $usuario = new Usuario($_POST ?? []);
         $errores = [];
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
            
             $usuario->sincronizar($_POST);
             $errores = $usuario->validarNuevaCuenta();
 
-            //validar condición
+            // Validar condición
             if (!$usuario->enfermedad) {
-                $errores[] = "Debes seleccionar un condicion";
+                $errores[] = "Debes seleccionar una condición";
             }
 
             $usuario->rol = "paciente";
 
-            //Revisar que alertas este vacio
+            // Revisar que errores esté vacío
             if (empty($errores)) {
-                //Verificar que el usuario no este registrado
+                // Verificar que el usuario no esté registrado
                 $resultado = $usuario->existeUsuario();
 
-                if ($resultado->num_rows) {
+                if ($resultado && $resultado->num_rows) {
                     $errores = Usuario::getErrores();
                 } else {
-                    //hashear el password
+                    // Hashear el password
                     $usuario->hashPassword();
 
-                    //Generar un token unico
+                    // Generar un token único
                     $usuario->crearToken();
 
-                    //Enviar el email
+                    // Enviar el email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
-
                     $email->enviarConfirmacion($usuario->email);
 
-                    //Crear el usuario
+                    // Crear el usuario
                     $resultado = $usuario->crear();
 
                     if ($resultado) {
-                        header("Location:/public/login?resultado=1");
+                        header("Location: /public/login?resultado=1");
+                        exit;
                     }
                 }
             }
         }
+
         $router->render("/auth/registro", [
             "usuario" => $usuario,
             "errores" => $errores
         ]);
     }
 
-
-
     public static function confirmarCuenta($router)
     {
-        if ($_SESSION["login"]) {
-            header("Location:/public");
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (!empty($_SESSION["login"])) {
+            header("Location: /public");
+            exit;
         }
 
         $errores = [];
-        $token = s($_GET["token"]);
-        $resultado = s($_GET["resultado"]);
+        $token = s($_GET["token"] ?? '');
+        $resultado = s($_GET["resultado"] ?? '');
 
-        $usuario = Usuario::where("token", $token);
+        $usuario = !empty($token) ? Usuario::where("token", $token) : null;
 
         if (empty($usuario)) {
-            //mostrar mensaje de error
-            Usuario::setErrores("Token no valido");
+            Usuario::setErrores("El token no es válido o ha expirado");
         } else {
-
             $usuario->confirmado = "1";
             $usuario->token = null;
             $usuario->actualizar();
-            header("Location:/public/login?resultado=2");
+            header("Location: /public/login?resultado=2");
+            exit;
         }
-        //obetener errores
+
         $errores = Usuario::getErrores();
 
-        //renderizar vistas
         $router->render("/auth/confirmar-cuenta", [
             "errores" => $errores,
             "resultado" => $resultado

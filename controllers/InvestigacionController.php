@@ -13,12 +13,12 @@ class InvestigacionController
     {
         session_start();
        
-        esFuncionario();
+        isAdmin();
         $rol = $_SESSION["rol"];
 
         $investigaciones = Investigacion::all();
         $investigacion = new Investigacion();
-        $resultado = $_GET["resultado"];
+        $resultado = $_GET["resultado"] ?? null;
 
         //arreglo con mensajes de errores
         $errores = Investigacion::getErrores();
@@ -71,7 +71,7 @@ class InvestigacionController
                 $args = $_POST["investigacion"];
 
                 //Subida de archivos
-
+                
                 //generar nombre unico
                 $nombreImagen = md5(uniqid(rand(), true)) . ".jpg";
                 $imagenPrevia = $_POST["imagenPrevia"];
@@ -94,7 +94,6 @@ class InvestigacionController
                     $bool = false;
                 }
 
-
                 $investigacion->sincronizar($args);
 
                 //Validacion
@@ -114,7 +113,6 @@ class InvestigacionController
                     if ($resultado) {
                         header("location:/public/admin/investigaciones/administrar?resultado=2");
                     }
-
                 }
             } elseif (isset($_POST['borrar'])) {
 

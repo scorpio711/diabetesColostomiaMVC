@@ -33,7 +33,7 @@ const tabElements: TabItem[] = [
 const options: TabsOptions = {
     defaultTabId: 'profile',
     activeClasses:
-        'text-blue-600 hover:text-blue-600 dark:text-blue-500 dark:hover:text-blue-400 border-blue-600 dark:border-blue-500',
+        'text-green-500 hover:text-green-600 dark:text-green-500 dark:hover:text-green-400 border-green-600 dark:border-green-500',
     inactiveClasses:
         'text-gray-500 hover:text-gray-600 dark:text-gray-400 border-gray-100 hover:border-gray-300 dark:border-gray-700 dark:hover:text-gray-300',
     onShow: () => {
@@ -89,43 +89,3 @@ atras.addEventListener("click", function () {
         showTabByIndex(currentTabIndex - 1);
     }
 });
-
-import { Datepicker } from 'flowbite';
-import type { DatepickerOptions, DatepickerInterface } from 'flowbite';
-import type { InstanceOptions } from 'flowbite';
-
-// set the target element of the input field or div
-const $datepickerEl: HTMLInputElement = document.getElementById('horario') as HTMLInputElement;
-
-// optional options with default values and callback functions
-const options: DatepickerOptions = {
-    defaultDatepickerId: null,
-    autohide: false,
-    format: 'mm/dd/yyyy',
-    maxDate: null,
-    minDate: "today",
-    orientation: 'bottom',
-    buttons: true,
-    autoSelectToday: 1,
-    title: null,
-    rangePicker: false,
-    onShow: () => { },
-    onHide: () => { },
-};
-
-// instance options object
-const instanceOptions: InstanceOptions = {
-    id: 'datepicker-custom-example',
-    override: true
-};
-
-/*
- * $datepickerEl: required
- * options: optional
- * instanceOptions: optional
- */
-const datepicker: DatepickerInterface = new Datepicker(
-    $datepickerEl,
-    options,
-    instanceOptions
-);

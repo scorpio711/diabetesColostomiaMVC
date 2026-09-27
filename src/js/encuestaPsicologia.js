@@ -118,13 +118,13 @@ function tabs() {
         showTab(currentTabIndex);
     });
 
-    finalizarButton.addEventListener('click', () => {
-        // Aquí puedes realizar cualquier acción adicional
-        alert("Has respondido a la encuesta")
-        setTimeout(function () {
-            window.location.reload(); // Recargar la página
-        }, 500);
-    });
+    // finalizarButton.addEventListener('click', () => {
+    //     // Aquí puedes realizar cualquier acción adicional
+    //     alert("Has respondido a la encuesta")
+    //     setTimeout(function () {
+    //         window.location.reload(); // Recargar la página
+    //     }, 500);
+    // });
 
     // Inicializa mostrando la primera pestaña y pregunta
     showTab(currentTabIndex);

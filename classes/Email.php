@@ -3,10 +3,10 @@
 namespace Classes;
 
 use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 class Email
 {
-
     public $email;
     public $nombre;
     public $token;
@@ -18,104 +18,82 @@ class Email
         $this->token = $token;
     }
 
-    public function enviarConfirmacion($destinatario)
+    /**
+     * Configura y retorna una instancia lista de PHPMailer
+     */
+    private function configurarMailer()
     {
-
-        //crear el objeto de email
-        $mail = new PHPMailer();
+        $mail = new PHPMailer(true);
         $mail->isSMTP();
-        $mail->Host = $_ENV["EMAIL_HOST"];
+        $mail->Host = $_ENV["EMAIL_HOST"] ?? 'smtp-relay-offshore-southamerica-east-v2.sendinblue.com';
         $mail->SMTPAuth = true;
-        $mail->Port = $_ENV["EMAIL_PORT"];
-        $mail->Username = $_ENV["EMAIL_USER"];
-        $mail->Password = $_ENV["EMAIL_PASS"];
+        $mail->Port = intval($_ENV["EMAIL_PORT"] ?? 2525);
+        $mail->Username = $_ENV["EMAIL_USER"] ?? '';
+        $mail->Password = $_ENV["EMAIL_PASS"] ?? '';
 
-        //Quien lo envia
-        $mail->setFrom("stomadiahelp@gmail.com", "stomadiahelp");
-
-        //Quien recibe
-        $mail->addAddress($destinatario);
-        $mail->Subject = "Confirma tu cuenta";
-
-        //Set HTML
-        $mail->isHTML(TRUE);
+        // Remitente oficial de la plataforma
+        $mail->setFrom("stomadiahelp@gmail.com", "CAREFULNESS");
+        $mail->isHTML(true);
         $mail->CharSet = 'UTF-8';
 
-
-        $rutaArchivo = "../views/correos/confirmarCorreo.php";
-
-        // Lee el contenido del archivo
-        $contenido = file_get_contents($rutaArchivo);
-
-        // Agrega nuevas variables o contenido al principio
-        // Define la variable $nombre
-        $nombre = $this->nombre;
-        $url = $_ENV['APP_URL'] . "/public/confirmar-cuenta?token=" . $this->token;
-
-        // Reemplaza la variable en el contenido del archivo
-        $contenidoModificado = str_replace(["<?php echo \$nombre; ?>", "<?php echo \$url; ?>"], [$nombre, $url], $contenido);
-
-        // Guarda el contenido modificado en el archivo
-        file_put_contents($rutaArchivo, $contenidoModificado);
-        $mail->Body = $contenidoModificado;
-
-        //Enviar el mail
-        $mail->Send();
-
-        // Después de enviar el correo, restablece el contenido original
-        file_put_contents($rutaArchivo, $contenido);
-
-
-
+        return $mail;
     }
 
+    /**
+     * Enviar correo de confirmación de cuenta nueva
+     */
+    public function enviarConfirmacion($destinatario)
+    {
+        try {
+            $mail = $this->configurarMailer();
+            $mail->addAddress($destinatario, $this->nombre);
+            $mail->Subject = "Confirma tu cuenta en CAREFULNESS";
+
+            $nombre = $this->nombre;
+            $baseUrl = rtrim($_ENV['APP_URL'] ?? 'http://localhost:3000', '/');
+            $url = $baseUrl . "/public/confirmar-cuenta?token=" . urlencode($this->token);
+
+            // Renderizado seguro en memoria con output buffering (sin tocar el disco)
+            ob_start();
+            include __DIR__ . "/../views/correos/confirmarCorreo.php";
+            $cuerpoHTML = ob_get_clean();
+
+            $mail->Body = $cuerpoHTML;
+            $mail->AltBody = "Hola {$nombre},\n\nGracias por registrarte en CAREFULNESS. Confirma tu cuenta ingresando al siguiente enlace:\n{$url}\n\nSi no creaste esta cuenta, puedes ignorar este mensaje.";
+
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar correo de confirmación: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Enviar correo con instrucciones para restablecer contraseña
+     */
     public function enviarIntrucciones($destinatario)
     {
-        //crear el objeto de email
-        $mail = new PHPMailer();
-        // $mail->SMTPDebug = \PHPMailer\PHPMailer\SMTP::DEBUG_SERVER;
-        // $mail->SMTPDebug = 2;
-        $mail->isSMTP();
-        $mail->Host = $_ENV["EMAIL_HOST"];
-        $mail->SMTPAuth = true;
-        $mail->Port = $_ENV["EMAIL_PORT"];
-        $mail->Username = $_ENV["EMAIL_USER"];
-        $mail->Password = $_ENV["EMAIL_PASS"];
+        try {
+            $mail = $this->configurarMailer();
+            $mail->addAddress($destinatario, $this->nombre);
+            $mail->Subject = "Restablece tu contraseña - CAREFULNESS";
 
-        //Quien lo envia
-        $mail->setFrom("stomadiahelp@gmail.com", "stomadiahelp");
+            $nombre = $this->nombre;
+            $baseUrl = rtrim($_ENV['APP_URL'] ?? 'http://localhost:3000', '/');
+            $url = $baseUrl . "/public/cambio-password?token=" . urlencode($this->token);
 
-        //Quien recibe
-        $mail->addAddress($destinatario);
-        $mail->Subject = "Restablece tu password";
+            // Renderizado seguro en memoria con output buffering (sin tocar el disco)
+            ob_start();
+            include __DIR__ . "/../views/correos/olvidarContraseña.php";
+            $cuerpoHTML = ob_get_clean();
 
-        //Set HTML
-        $mail->isHTML(TRUE);
-        $mail->CharSet = 'UTF-8';
+            $mail->Body = $cuerpoHTML;
+            $mail->AltBody = "Hola {$nombre},\n\nHas solicitado restablecer tu contraseña en CAREFULNESS. Hazlo en el siguiente enlace:\n{$url}\n\nSi no realizaste esta solicitud, puedes ignorar este correo.";
 
-        $rutaArchivo = "../views/correos/olvidarContraseña.php";
-
-        // Lee el contenido del archivo
-        $contenido = file_get_contents($rutaArchivo);
-
-        // Agrega nuevas variables o contenido al principio
-        // Define la variable $nombre
-        $nombre = $this->nombre;
-        $url = $_ENV['APP_URL'] . "/public/cambio-password?token=" . $this->token;
-
-        // Reemplaza la variable en el contenido del archivo
-        $contenidoModificado = str_replace(["<?php echo \$nombre; ?>", "<?php echo \$url; ?>"], [$nombre, $url], $contenido);
-
-
-        // Guarda el contenido modificado en el archivo
-        file_put_contents($rutaArchivo, $contenidoModificado);
-        $mail->Body = $contenidoModificado;
-
-        //Enviar el mail
-        $mail->Send();
-
-        // Después de enviar el correo, restablece el contenido original
-        file_put_contents($rutaArchivo, $contenido);
-     
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar correo de recuperación: " . $e->getMessage());
+            return false;
+        }
     }
 }

@@ -187,3 +187,24 @@ input[type="range"]::-moz-range-thumb {
     content: url('/public/build/img/PsicologiaPequeña5.png');
   }
 }
+@media (max-width: 1023px) {
+  .img-1d {
+    content: url('/public/build/img/derecho1_pequeña.png');
+  }
+
+  .img-2d {
+    content: url('/public/build/img/derecho2_pequeña.png');
+  }
+
+  .img-3d {
+    content: url('/public/build/img/derecho3_pequeña.png');
+  }
+
+  .img-4d {
+    content: url('/public/build/img/derecho4_pequeña.png');
+  }
+
+  .img-5d {
+    content: url('/public/build/img/derecho5_pequeña.png');
+  }
+}
