@@ -236,7 +236,6 @@ $currentRoute = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
                         $isHome = ($currentRoute === '/public' || $currentRoute === '/public/');
                         $isServicios = in_array($currentRoute, ['/public/medico', '/public/psicologico', '/public/juridico', '/public/encuestaSalud', '/public/encuestaPsicologia', '/public/encuestaJuridica']);
                         $isBlog = ($currentRoute === '/public/blog');
-                        $isInvestigaciones = ($currentRoute === '/public/investigaciones');
                         $isCitas = ($currentRoute === '/public/citas');
                         ?>
 
@@ -248,21 +247,21 @@ $currentRoute = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
                             </a>
                         </li>
 
-                        <!-- ESPECIALIDADES (DESPLEGABLE INTERACTIVO) -->
+                        <!-- ESPECIALIDADES (DESPLEGABLE INTERACTIVO MÓVIL Y DESKTOP) -->
                         <li class="relative">
-                            <button id="dropdownServiciosBtn" data-dropdown-toggle="dropdownServicios" type="button"
-                                class="nav-link flex items-center justify-between w-full px-2.5 lg:px-2 xl:px-3 py-1.5 lg:py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-semibold transition-all <?php echo $isServicios ? 'text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10' : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5'; ?>">
+                            <button id="dropdownServiciosBtn" type="button" aria-expanded="false"
+                                class="flex items-center justify-between w-full px-2.5 lg:px-2 xl:px-3 py-1.5 lg:py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-semibold transition-all cursor-pointer <?php echo $isServicios ? 'text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10' : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5'; ?>">
                                 <span>Especialidades</span>
-                                <svg class="w-3.5 h-3.5 ml-1 transition-transform duration-200 group-hover:rotate-180"
+                                <svg id="dropdownServiciosArrow" class="w-3.5 h-3.5 ml-1 transition-transform duration-200"
                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
 
-                            <!-- Menú Desplegable con Frosted Glass -->
+                            <!-- Menú Desplegable con Frosted Glass (Adaptable a columna en móvil y flotante en desktop) -->
                             <div id="dropdownServicios"
-                                class="z-50 hidden glass-panel divide-y divide-gray-100 dark:divide-gray-700/60 rounded-2xl shadow-2xl w-full sm:w-72 overflow-hidden">
+                                class="z-50 hidden glass-panel divide-y divide-gray-100 dark:divide-gray-700/60 rounded-2xl shadow-2xl w-full lg:w-72 overflow-hidden lg:absolute lg:top-full lg:left-0 mt-1.5 transition-all">
                                 <div class="p-2 space-y-1">
                                     <a href="/public/medico"
                                         class="nav-sublink flex items-center gap-3 p-2.5 rounded-xl hover:bg-emerald-500/10 group transition">
@@ -336,17 +335,32 @@ $currentRoute = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
                             </div>
                         </li>
 
-                        <!-- AGENDAR CITA (DESTACADO) -->
+                        <!-- AGENDAR CITA (CON ACCESO DIRECTO SI HAY SESIÓN O AVISO AMABLE SI ES VISITANTE) -->
                         <li>
-                            <a href="/public/citas"
-                                class="nav-link inline-flex items-center gap-1.5 px-2.5 lg:px-2 xl:px-3 py-1.5 lg:py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-semibold transition-all <?php echo $isCitas ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 font-bold' : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5'; ?>">
-                                <svg class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                </svg>
-                                <span>Citas</span>
-                            </a>
+                            <?php if ($auth): ?>
+                                <a href="/public/citas"
+                                    class="nav-link inline-flex items-center gap-1.5 px-2.5 lg:px-2 xl:px-3 py-1.5 lg:py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-semibold transition-all <?php echo $isCitas ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 font-bold' : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5'; ?>">
+                                    <svg class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <span>Citas</span>
+                                </a>
+                            <?php else: ?>
+                                <button type="button" id="btn-citas-unauthenticated"
+                                    class="inline-flex items-center justify-between lg:justify-start gap-1.5 w-full lg:w-auto px-2.5 lg:px-2 xl:px-3 py-1.5 lg:py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-semibold text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5 transition-all cursor-pointer">
+                                    <span class="inline-flex items-center gap-1.5">
+                                        <svg class="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <span>Citas</span>
+                                    </span>
+                                    <span class="lg:hidden text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">Requiere Registro</span>
+                                </button>
+                            <?php endif; ?>
                         </li>
 
                         <!-- BLOG -->
@@ -354,14 +368,6 @@ $currentRoute = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
                             <a href="/public/blog"
                                 class="nav-link block px-2.5 lg:px-2 xl:px-3 py-1.5 lg:py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-semibold transition-all <?php echo $isBlog ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 font-bold' : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5'; ?>">
                                 Blog
-                            </a>
-                        </li>
-
-                        <!-- INVESTIGACIONES -->
-                        <li>
-                            <a href="/public/investigaciones"
-                                class="nav-link block px-2.5 lg:px-2 xl:px-3 py-1.5 lg:py-1.5 xl:py-2 rounded-xl text-xs xl:text-sm font-semibold transition-all <?php echo $isInvestigaciones ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 font-bold' : 'text-gray-700 dark:text-gray-200 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-black/5 dark:hover:bg-white/5'; ?>">
-                                Investigaciones
                             </a>
                         </li>
 
@@ -570,8 +576,8 @@ $currentRoute = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
                     setMenuState(!isExpanded);
                 });
 
-                // Auto-cerrar al hacer clic en enlaces del menú en mobile / tablet vertical
-                const navLinks = navMenu.querySelectorAll('.nav-link, .nav-sublink');
+                // Auto-cerrar al hacer clic SOLO en enlaces <a> del menú en mobile / tablet vertical
+                const navLinks = navMenu.querySelectorAll('a.nav-link, a.nav-sublink');
                 navLinks.forEach(function (link) {
                     link.addEventListener('click', function () {
                         if (window.innerWidth < 1024) {
@@ -584,6 +590,78 @@ $currentRoute = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
                 document.addEventListener('click', function (e) {
                     if (window.innerWidth < 1024 && !navMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
                         setMenuState(false);
+                    }
+                });
+            }
+
+            // Manejador del menú de Especialidades (Móvil y Escritorio)
+            const serviciosBtn = document.getElementById('dropdownServiciosBtn');
+            const serviciosDropdown = document.getElementById('dropdownServicios');
+            const serviciosArrow = document.getElementById('dropdownServiciosArrow');
+
+            if (serviciosBtn && serviciosDropdown) {
+                serviciosBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const isHidden = serviciosDropdown.classList.contains('hidden');
+                    if (isHidden) {
+                        serviciosDropdown.classList.remove('hidden');
+                        if (serviciosArrow) serviciosArrow.classList.add('rotate-180');
+                        serviciosBtn.setAttribute('aria-expanded', 'true');
+                    } else {
+                        serviciosDropdown.classList.add('hidden');
+                        if (serviciosArrow) serviciosArrow.classList.remove('rotate-180');
+                        serviciosBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Cerrar dropdown de Especialidades al hacer clic afuera
+                document.addEventListener('click', function (e) {
+                    if (!serviciosBtn.contains(e.target) && !serviciosDropdown.contains(e.target)) {
+                        serviciosDropdown.classList.add('hidden');
+                        if (serviciosArrow) serviciosArrow.classList.remove('rotate-180');
+                        serviciosBtn.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+
+            // Aviso para usuarios no autenticados al hacer clic en Citas
+            const btnCitasGuest = document.getElementById('btn-citas-unauthenticated');
+            if (btnCitasGuest) {
+                btnCitasGuest.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    if (typeof Swal !== 'undefined') {
+                        Swal.fire({
+                            title: '📅 Agendamiento de Citas',
+                            html: `
+                                <div class="space-y-3 pt-2 text-center">
+                                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto text-2xl">
+                                        🩺
+                                    </div>
+                                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-100">
+                                        ¡Nos encantaría atenderte!
+                                    </p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed max-w-sm mx-auto">
+                                        Para poder agendar y gestionar citas con nuestros especialistas (médicos, psicólogos o abogados), es necesario que tengas una cuenta en la plataforma.
+                                    </p>
+                                    <div class="pt-3 flex flex-col sm:flex-row gap-2.5 justify-center">
+                                        <a href="/public/registro" class="inline-flex items-center justify-center px-4 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 rounded-xl shadow-md transition transform hover:-translate-y-0.5">
+                                            Crear Cuenta Gratis
+                                        </a>
+                                        <a href="/public/login" class="inline-flex items-center justify-center px-4 py-2.5 text-xs font-semibold text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition">
+                                            Iniciar Sesión
+                                        </a>
+                                    </div>
+                                </div>
+                            `,
+                            showConfirmButton: false,
+                            showCloseButton: true,
+                            background: document.documentElement.classList.contains('dark') ? '#0f172a' : '#ffffff',
+                            color: document.documentElement.classList.contains('dark') ? '#f8fafc' : '#0f172a'
+                        });
+                    } else {
+                        if (confirm('Para agendar una cita necesitas una cuenta. ¿Deseas ir al registro?')) {
+                            window.location.href = '/public/registro';
+                        }
                     }
                 });
             }
