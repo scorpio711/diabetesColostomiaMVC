@@ -9,6 +9,7 @@ $rolActual = $_SESSION['rol'] ?? 'admin';
 $enfermedadActual = $_SESSION['enfermedad'] ?? 'Ninguna';
 $simulando = $_SESSION['simulando'] ?? null;
 $nombreAdmin = $_SESSION['admin_nombre_original'] ?? ($_SESSION['nombre'] ?? 'Administrador');
+$emailAdmin = $_SESSION['email'] ?? '';
 $currentUri = $_SERVER['REQUEST_URI'] ?? '/public';
 ?>
 
@@ -67,6 +68,17 @@ $currentUri = $_SERVER['REQUEST_URI'] ?? '/public';
 
             <!-- Utilidades Extra y Minimizar -->
             <div class="flex items-center gap-2">
+                <!-- Botón Probar Correo SMTP -->
+                <button type="button" 
+                        id="btn-test-email" 
+                        title="Probar servidor de correo SMTP"
+                        class="p-1.5 px-2.5 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/60 text-emerald-300 hover:text-white border border-emerald-500/50 shadow-sm transition-all flex items-center gap-1.5 text-[11px] font-semibold cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span class="hidden sm:inline">Probar Correo</span>
+                </button>
+
                 <!-- Toggle Dark Mode -->
                 <button type="button" 
                         id="toolbar-toggle-theme" 
@@ -234,6 +246,134 @@ $currentUri = $_SERVER['REQUEST_URI'] ?? '/public';
             } else {
                 html.classList.add('dark');
                 localStorage.setItem('color-theme', 'dark');
+            }
+        });
+    }
+
+    // Funcionalidad para probar el envío de correos
+    const btnTestEmail = document.getElementById('btn-test-email');
+    const defaultEmail = <?= json_encode($emailAdmin); ?>;
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    async function ejecutarPruebaCorreo(emailDestino) {
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                title: 'Enviando correo de prueba...',
+                html: `<div class="py-2">Conectando con el servidor SMTP para enviar a:<br><strong class="text-emerald-500">${escapeHtml(emailDestino)}</strong><br><span class="text-xs text-slate-400 mt-2 block">Esto puede tardar unos segundos...</span></div>`,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+        }
+
+        try {
+            const resp = await fetch('/public/api/test-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ email: emailDestino })
+            });
+
+            const data = await resp.json();
+
+            if (data.exito) {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Correo Enviado con Éxito!',
+                        html: `
+                            <p class="text-sm mb-3">${escapeHtml(data.mensaje)}</p>
+                            <div class="text-left text-xs bg-slate-100 dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 space-y-1.5 font-mono">
+                                <div><strong class="text-slate-700 dark:text-slate-300">🌐 URL Base detectada:</strong> <span class="text-emerald-600 dark:text-emerald-400">${escapeHtml(data.baseUrl)}</span></div>
+                                <div><strong class="text-slate-700 dark:text-slate-300">📨 Servidor SMTP:</strong> ${escapeHtml(data.host)}:${escapeHtml(data.port)}</div>
+                            </div>
+                            <p class="text-xs text-slate-500 dark:text-slate-400 mt-3">Revisa tu bandeja de entrada y la carpeta de Spam/No deseados.</p>
+                        `,
+                        confirmButtonText: 'Entendido',
+                        confirmButtonColor: '#059669'
+                    });
+                } else {
+                    alert('Éxito: ' + data.mensaje);
+                }
+            } else {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error al Enviar Correo',
+                        html: `
+                            <p class="text-sm text-rose-500 font-semibold mb-3">${escapeHtml(data.mensaje)}</p>
+                            <div class="text-left text-xs bg-slate-100 dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 space-y-1 text-slate-400">
+                                <div><strong>Servidor:</strong> ${escapeHtml(data.host || 'No configurado')}</div>
+                                <div><strong>Puerto:</strong> ${escapeHtml(data.port || 'No configurado')}</div>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-3">Revisa tus credenciales en <code>includes/.env</code> (EMAIL_HOST, EMAIL_USER, EMAIL_PASS, EMAIL_PORT).</p>
+                        `,
+                        confirmButtonText: 'Cerrar',
+                        confirmButtonColor: '#e11d48'
+                    });
+                } else {
+                    alert('Error: ' + data.mensaje);
+                }
+            }
+        } catch (err) {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Fallo de Red',
+                    text: 'No se pudo comunicar con el servidor: ' + err.message,
+                    confirmButtonColor: '#e11d48'
+                });
+            } else {
+                alert('Fallo de red: ' + err.message);
+            }
+        }
+    }
+
+    if (btnTestEmail) {
+        btnTestEmail.addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            if (typeof Swal === 'undefined') {
+                const emailPrompt = prompt('Ingresa el correo destinatario para la prueba:', defaultEmail || '');
+                if (emailPrompt) {
+                    ejecutarPruebaCorreo(emailPrompt.trim());
+                }
+                return;
+            }
+
+            const { value: emailIngresado } = await Swal.fire({
+                title: '📧 Probar Servicio de Correo',
+                text: 'Ingresa la dirección donde deseas recibir el correo de prueba para verificar SMTP y URLs:',
+                input: 'email',
+                inputValue: defaultEmail || '',
+                inputPlaceholder: 'tu-correo@ejemplo.com',
+                showCancelButton: true,
+                confirmButtonText: '🚀 Enviar Correo de Prueba',
+                cancelButtonText: 'Cancelar',
+                confirmButtonColor: '#059669',
+                cancelButtonColor: '#64748b',
+                inputValidator: (val) => {
+                    if (!val) {
+                        return '¡Debes ingresar un correo electrónico!';
+                    }
+                }
+            });
+
+            if (emailIngresado) {
+                ejecutarPruebaCorreo(emailIngresado.trim());
             }
         });
     }

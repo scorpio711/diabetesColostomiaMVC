@@ -456,4 +456,64 @@ class APIController
             exit;
         }
     }
+
+    /**
+     * Endpoint API para probar la conectividad y envío de correo desde la barra de admin
+     */
+    public static function testEmail()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        header('Content-Type: application/json; charset=utf-8');
+
+        // Seguridad: Solo administradores reales o en modo simulación
+        $esAdmin = !empty($_SESSION["admin"]) || !empty($_SESSION["admin_real"]);
+        if (!$esAdmin) {
+            http_response_code(403);
+            echo json_encode([
+                "exito" => false, 
+                "mensaje" => "Acceso no autorizado: debes ser administrador para realizar esta prueba."
+            ]);
+            return;
+        }
+
+        // Obtener datos del cuerpo JSON
+        $input = json_decode(file_get_contents('php://input'), true);
+        $emailDestino = filter_var($input['email'] ?? '', FILTER_VALIDATE_EMAIL);
+
+        if (!$emailDestino) {
+            http_response_code(400);
+            echo json_encode([
+                "exito" => false, 
+                "mensaje" => "La dirección de correo electrónico proporcionada no es válida."
+            ]);
+            return;
+        }
+
+        try {
+            $nombreAdmin = $_SESSION['admin_nombre_original'] ?? ($_SESSION['nombre'] ?? 'Administrador');
+            $mail = new \Classes\Email($emailDestino, $nombreAdmin, 'test-token');
+            $resultado = $mail->enviarPrueba($emailDestino);
+
+            if (!$resultado['exito']) {
+                http_response_code(500);
+            }
+
+            echo json_encode([
+                "exito" => $resultado["exito"],
+                "mensaje" => $resultado["mensaje"],
+                "baseUrl" => $resultado["baseUrl"] ?? '',
+                "host" => $_ENV['EMAIL_HOST'] ?? 'No configurado',
+                "port" => $_ENV['EMAIL_PORT'] ?? 'No configurado'
+            ]);
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo json_encode([
+                "exito" => false, 
+                "mensaje" => "Excepción en el servidor: " . $e->getMessage()
+            ]);
+        }
+    }
 }

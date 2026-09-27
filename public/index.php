@@ -141,4 +141,7 @@ $router->post("/public/api/blog", [BlogController::class, "guardar"]);
 //API para el chat
 $router->get("/public/api/chat", [APIController::class, "chat"]);
 
+//API para prueba de correo desde toolbar admin
+$router->post("/public/api/test-email", [APIController::class, "testEmail"]);
+
 $router->comprobarRutas();
