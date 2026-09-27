@@ -77,6 +77,3 @@ class EncuestaPsicologia extends ActiveRecord
         return in_array($categoria, $categorias_validas);
     }
 }
-
-// Alias para compatibilidad con código que use minúsculas
-class_alias(EncuestaPsicologia::class, 'Model\\encuestaPsicologia');

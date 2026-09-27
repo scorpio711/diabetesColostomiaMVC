@@ -83,6 +83,3 @@ class EncuestaJuridica extends ActiveRecord
         return self::$errores;
     }
 }
-
-// Alias para compatibilidad con código que use minúsculas
-class_alias(EncuestaJuridica::class, 'Model\\encuestaJuridica');
