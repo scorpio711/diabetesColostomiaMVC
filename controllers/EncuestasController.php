@@ -2,8 +2,8 @@
 
 namespace Controllers;
 
-use Model\encuestaJuridica;
-use Model\encuestaPsicologia;
+use Model\EncuestaJuridica;
+use Model\EncuestaPsicologia;
 use Model\EncuestaSalud;
 use Model\Usuario;
 use MVC\Router;
@@ -158,7 +158,7 @@ class EncuestasController
         }
         estaAutenticado();
         $id = $_SESSION["id"] ?? 0;
-        $conteo = encuestaPsicologia::contarPorId("usuario_id", $id);
+        $conteo = EncuestaPsicologia::contarPorId("usuario_id", $id);
         $usuario = Usuario::find($id);
         $encuestaHabilitada = intval($usuario->encuesta_psicologia ?? 0);
 
@@ -168,7 +168,7 @@ class EncuestasController
             $ira_hostilidad = (intval($_POST["pregunta2"] ?? 0) + intval($_POST["pregunta8"] ?? 0) + intval($_POST["pregunta11"] ?? 0) + intval($_POST["pregunta14"] ?? 0)) / 4;
             $alegria = (intval($_POST["pregunta3"] ?? 0) + intval($_POST["pregunta6"] ?? 0) + intval($_POST["pregunta12"] ?? 0) + intval($_POST["pregunta15"] ?? 0)) / 4;
 
-            $resultadoEncuesta = new encuestaPsicologia();
+            $resultadoEncuesta = new EncuestaPsicologia();
             $resultadoEncuesta->usuario_id = intval($_SESSION["id"]);
             $resultadoEncuesta->tristeza_depresion = $tristeza_depresion;
             $resultadoEncuesta->ansiedad = $ansiedad;
@@ -234,7 +234,7 @@ class EncuestasController
         }
         estaAutenticado();
         $id = $_SESSION["id"] ?? 0;
-        $conteo = encuestaJuridica::contarPorId("usuario_id", $id);
+        $conteo = EncuestaJuridica::contarPorId("usuario_id", $id);
         $usuario = Usuario::find($id);
         $encuestaHabilitada = intval($usuario->encuesta_juridico ?? 0);
 
@@ -253,7 +253,7 @@ class EncuestasController
                 $categoria = "Fuera de rango";
             }
 
-            $resultadoEncuesta = new encuestaJuridica();
+            $resultadoEncuesta = new EncuestaJuridica();
             $resultadoEncuesta->usuario_id = intval($_SESSION["id"]);
             $resultadoEncuesta->fundamental = $result["category_levels"]["fundamental"] ?? "Bajo";
             $resultadoEncuesta->salud = $result["category_levels"]["salud"] ?? "Bajo";

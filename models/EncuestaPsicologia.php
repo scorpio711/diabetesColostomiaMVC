@@ -2,7 +2,7 @@
 
 namespace Model;
 
-class encuestaPsicologia extends ActiveRecord
+class EncuestaPsicologia extends ActiveRecord
 {
     // Base de Datos
     protected static $tabla = "encuestapsicologia";
@@ -77,3 +77,6 @@ class encuestaPsicologia extends ActiveRecord
         return in_array($categoria, $categorias_validas);
     }
 }
+
+// Alias para compatibilidad con código que use minúsculas
+class_alias(EncuestaPsicologia::class, 'Model\\encuestaPsicologia');

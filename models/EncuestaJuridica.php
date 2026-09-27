@@ -2,7 +2,7 @@
 
 namespace Model;
 
-class encuestaJuridica extends ActiveRecord
+class EncuestaJuridica extends ActiveRecord
 {
     // Base de Datos
     protected static $tabla = "encuestajuridica";
@@ -83,3 +83,6 @@ class encuestaJuridica extends ActiveRecord
         return self::$errores;
     }
 }
+
+// Alias para compatibilidad con código que use minúsculas
+class_alias(EncuestaJuridica::class, 'Model\\encuestaJuridica');
